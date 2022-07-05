@@ -1,0 +1,53 @@
+# permission: playertags.tag.<identifier>
+# - to make things easier, keep all identifier names lowercase.
+tags:
+  love: # playertags.tag.love
+    tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
+  legend: # playertags.tag.legend
+    tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
+  pro:
+    tag: '&8[&cPro&8]'
+  yolo:
+    tag: '&8[&eYolo&8]'
+  bear:
+    tag: '&8[&6Bear&8]'
+  noob:
+    tag: '&8[&dNoob&8]'
+  bae:
+    tag: '&8[&cBae&8]'
+  '420':
+    tag: '&8[&a420&8]'
+  lol:
+    tag: '&8[&eLoL&8]'
+  savage:
+    tag: '&8[&4Savage&8]'
+  elo:
+    tag: '&8[&6Elo&8]'
+  babyrage:
+    tag: '&8[&eBabyRage&8]'
+  og:
+    tag: '&8[&2OG&8]'
+  nerd:
+    tag: '&8[&dNerd&8]'
+  troll:
+    tag: '&8[&aTroll&8]'
+  minecraft:
+    tag: '&8[&fMinecraft&8]'
+  rudolph:
+    tag: '&8[&6Rudolph&8]'
+  ninja:
+    tag: '&8[&bNinja&8]'
+  elmo:
+    tag: '&8[&dElmo&8]'
+  memes:
+    tag: '&8[&5Memes&8]'
+  notch:
+    tag: '&8[&6Notch&8]'
+  master:
+    tag: '&8[&cMaster&8]'
+  halloween:
+    tag: '&7[&cHall&4oween&7]'
+  snowman:
+    tag: '&7[&fSnow&bMan&7]'
+  santa:
+    tag: '&f[&cSanta&f]'
