@@ -1,6 +1,7 @@
 package net.noscape.project.supremetags;
 
 import net.noscape.project.supremetags.commands.*;
+import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.handlers.hooks.*;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.listeners.*;

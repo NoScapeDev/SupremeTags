@@ -1,14 +1,23 @@
 package net.noscape.project.supremetags.listeners;
 
 import net.noscape.project.supremetags.*;
+import net.noscape.project.supremetags.handlers.*;
 import net.noscape.project.supremetags.storage.*;
-import org.bukkit.event.*;
 import org.bukkit.entity.*;
+import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 
-import static net.noscape.project.supremetags.utils.Utils.format;
+import java.util.*;
+
+import static net.noscape.project.supremetags.utils.Utils.*;
 
 public class PlayerEvents implements Listener {
+
+    private final Map<String, Tag> tags;
+
+    public PlayerEvents() {
+        tags = SupremeTags.getInstance().getTagManager().getTags();
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -22,7 +31,9 @@ public class PlayerEvents implements Listener {
 
         String format = e.getFormat();
 
-        if (UserData.getActive(player).equals("None")) {
+        if (SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag() == null) {
+            e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
+        } else if (UserData.getActive(player).equals("None") ) {
             e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
         } else {
             e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())));

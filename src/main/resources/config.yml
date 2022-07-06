@@ -5,6 +5,7 @@ gui:
     back-next-material: 'DARK_OAK_BUTTON'
     reset-tag-material: 'RED_DYE'
     close-menu-material: 'BARRIER'
+    create-tag-material: 'NAME_TAG'
 
 # permission: playertags.tag.<identifier>
 # - to make things easier, keep all identifier names lowercase.

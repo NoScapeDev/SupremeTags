@@ -1,20 +1,19 @@
 package net.noscape.project.supremetags.guis;
 
+import de.tr7zw.nbtapi.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.storage.*;
 import org.bukkit.*;
-import org.bukkit.enchantments.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
-import org.bukkit.persistence.*;
 
 import java.util.*;
 
-import static net.noscape.project.supremetags.utils.Utils.format;
+import static net.noscape.project.supremetags.utils.Utils.*;
 
 public class TagMenu extends Paged {
 
@@ -22,7 +21,6 @@ public class TagMenu extends Paged {
 
     public TagMenu(MenuUtil menuUtil) {
         super(menuUtil);
-
         tags = SupremeTags.getInstance().getTagManager().getTags();
     }
 
@@ -44,8 +42,9 @@ public class TagMenu extends Paged {
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
-            if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
-                String identifier = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getPersistentDataContainer().get(new NamespacedKey(SupremeTags.getInstance(), "identifier"), PersistentDataType.STRING);
+            if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active") && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Create")) {
+                NBTItem nbt = new NBTItem(e.getCurrentItem());
+                String identifier = nbt.getString("identifier");
                 if (!UserData.getActive(player).equalsIgnoreCase(identifier)) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
@@ -93,21 +92,18 @@ public class TagMenu extends Paged {
                         ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
+                        NBTItem nbt = new NBTItem(tagItem);
+
+                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
                         tagMeta.setDisplayName(format("&7Tag: " + tags.get(tag.get(index)).getTag()));
-
-                        tagMeta.getPersistentDataContainer().set(new NamespacedKey(SupremeTags.getInstance(), "identifier"), PersistentDataType.STRING, tags.get(tag.get(index)).getIdentifier());
-
-                        String identifier = Objects.requireNonNull(tagItem.getItemMeta()).getPersistentDataContainer().get(new NamespacedKey(SupremeTags.getInstance(), "identifier"), PersistentDataType.STRING);
-
-                        if (UserData.getActive(menuUtil.getOwner()).equals(identifier)) {
-                            tagItem.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
-                        }
-
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
 
-                        tagItem.setItemMeta(tagMeta);
+                        nbt.getItem().setItemMeta(tagMeta);
+                        tagItem = nbt.getItem();
+
                         inventory.addItem(tagItem);
 
                     }
