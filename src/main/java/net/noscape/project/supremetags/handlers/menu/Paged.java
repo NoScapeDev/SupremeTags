@@ -1,7 +1,10 @@
 package net.noscape.project.supremetags.handlers.menu;
 
+import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.storage.*;
 import org.bukkit.*;
+
+import java.util.*;
 
 import static net.noscape.project.supremetags.utils.Utils.format;
 
@@ -16,15 +19,15 @@ public abstract class Paged extends Menu {
     }
 
     public void addBottom() {
-        inventory.setItem(48, makeItem(Material.DARK_OAK_BUTTON, ChatColor.GRAY + "Back"));
+        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
 
-        inventory.setItem(49, makeItem(Material.BARRIER, ChatColor.RED + "Close"));
+        inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
 
-        inventory.setItem(50, makeItem(Material.DARK_OAK_BUTTON, ChatColor.GRAY + "Next"));
+        inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
 
-        inventory.setItem(46, makeItem(Material.RED_DYE, ChatColor.RED + "Reset Tag"));
+        inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
 
-        inventory.setItem(52, makeItem(Material.NAME_TAG, format("&7Active: &6" + UserData.getActive(menuUtil.getOwner()))));
+        inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner()))));
 
         inventory.setItem(36, super.GLASS);
         inventory.setItem(37, super.GLASS);

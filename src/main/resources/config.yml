@@ -1,3 +1,11 @@
+gui:
+  layout:
+    glass-material: 'GRAY_STAINED_GLASS_PANE'
+    tag-material: 'NAME_TAG'
+    back-next-material: 'DARK_OAK_BUTTON'
+    reset-tag-material: 'RED_DYE'
+    close-menu-material: 'BARRIER'
+
 # permission: playertags.tag.<identifier>
 # - to make things easier, keep all identifier names lowercase.
 tags:

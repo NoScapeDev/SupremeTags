@@ -4,7 +4,7 @@ main: net.noscape.project.supremetags.SupremeTags
 api-version: 1.13
 softdepend: [PlaceholderAPI]
 authors: [NoScape]
-description: Allow player to show of their supreme tags!
+description: Allow players to show of their supreme tags!
 
 commands:
   tags:

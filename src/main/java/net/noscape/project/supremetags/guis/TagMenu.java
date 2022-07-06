@@ -43,7 +43,7 @@ public class TagMenu extends Paged {
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.NAME_TAG)) {
+        if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
                 String identifier = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getPersistentDataContainer().get(new NamespacedKey(SupremeTags.getInstance(), "identifier"), PersistentDataType.STRING);
                 if (!UserData.getActive(player).equalsIgnoreCase(identifier)) {
@@ -53,14 +53,14 @@ public class TagMenu extends Paged {
                     menuUtil.setIdentifier(identifier);
                 }
             }
-        } else if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
+        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
             player.closeInventory();
-        } else if (e.getCurrentItem().getType().equals(Material.RED_DYE)) {
+        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()))) {
             UserData.setActive(player, "None");
             player.closeInventory();
             new TagMenu(SupremeTags.getMenuUtil(player)).open();
             menuUtil.setIdentifier("None");
-        } else if (e.getCurrentItem().getType().equals(Material.DARK_OAK_BUTTON)) {
+        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
                 if (page != 0) {
                     page = page - 1;
@@ -90,7 +90,7 @@ public class TagMenu extends Paged {
 
                     if (menuUtil.getOwner().hasPermission("playertags.tag." + tag.get(index))) {
 
-                        ItemStack tagItem = new ItemStack(Material.NAME_TAG, 1);
+                        ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
                         tagMeta.setDisplayName(format("&7Tag: " + tags.get(tag.get(index)).getTag()));
@@ -103,7 +103,6 @@ public class TagMenu extends Paged {
                             tagItem.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
                         }
 
-                        tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
