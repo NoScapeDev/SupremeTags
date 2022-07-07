@@ -87,7 +87,7 @@ public class TagMenu extends Paged {
                 if(index >= tag.size()) break;
                 if (tag.get(index) != null){
 
-                    if (menuUtil.getOwner().hasPermission("playertags.tag." + tag.get(index))) {
+                    if (menuUtil.getOwner().hasPermission("supremetags.tag." + tag.get(index))) {
 
                         ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
