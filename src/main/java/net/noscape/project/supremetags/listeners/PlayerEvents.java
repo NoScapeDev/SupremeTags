@@ -31,12 +31,16 @@ public class PlayerEvents implements Listener {
 
         String format = e.getFormat();
 
-        if (SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag() == null) {
+        if (UserData.getActive(player).equalsIgnoreCase("None")) {
             e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
-        } else if (UserData.getActive(player).equals("None") ) {
+        } else if (UserData.getActive(player) == null) {
             e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
         } else {
             e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())));
         }
+    }
+
+    public Map<String, Tag> getTags() {
+        return tags;
     }
 }

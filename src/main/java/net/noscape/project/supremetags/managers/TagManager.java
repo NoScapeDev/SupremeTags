@@ -13,6 +13,7 @@ import static net.noscape.project.supremetags.utils.Utils.msgPlayer;
 public class TagManager {
 
     private final Map<String, Tag> tags = new HashMap<>();
+    private final Map<Integer, String> dataItem = new HashMap<>();
 
     public void createTag(Player player, String identifier, String tag_string) {
         if (!tags.containsKey(identifier)) {
@@ -70,6 +71,7 @@ public class TagManager {
     public Map<String, Tag> getTags() {
         return tags;
     }
+    public Map<Integer, String> getDataItem() { return dataItem; }
 
     public void setTag(Player player, String identifier, String tag) {
         if (tags.containsKey(identifier)) {

@@ -2,6 +2,7 @@ package net.noscape.project.supremetags.commands;
 
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
+import net.noscape.project.supremetags.storage.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.*;
@@ -83,6 +84,10 @@ public class Tags implements CommandExecutor {
                         msgPlayer(player, "&cNo Permission.");
                     }
                 }
+            }
+        } else if (cmd.getName().equalsIgnoreCase("mytag")) {
+            if (args.length == 0) {
+                msgPlayer(player, "&7Your tag: &e" + UserData.getActive(player));
             }
         }
         return false;

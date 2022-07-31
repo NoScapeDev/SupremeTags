@@ -10,3 +10,5 @@ commands:
   tags:
     aliases: [tag, supremetags, stags]
     description: main tag plugin to open menu and manage tags.
+  mytag:
+    description: test

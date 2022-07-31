@@ -1,7 +1,6 @@
 package net.noscape.project.supremetags;
 
 import net.noscape.project.supremetags.commands.*;
-import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.handlers.hooks.*;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.listeners.*;
@@ -37,6 +36,7 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
+        Objects.requireNonNull(getCommand("mytag")).setExecutor(new Tags());
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);

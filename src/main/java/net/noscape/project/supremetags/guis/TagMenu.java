@@ -1,6 +1,5 @@
 package net.noscape.project.supremetags.guis;
 
-import de.tr7zw.nbtapi.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
@@ -18,10 +17,12 @@ import static net.noscape.project.supremetags.utils.Utils.*;
 public class TagMenu extends Paged {
 
     private final Map<String, Tag> tags;
+    private final Map<Integer, String> dataItem;
 
     public TagMenu(MenuUtil menuUtil) {
         super(menuUtil);
         tags = SupremeTags.getInstance().getTagManager().getTags();
+        dataItem = SupremeTags.getInstance().getTagManager().getDataItem();
     }
 
     @Override
@@ -42,13 +43,12 @@ public class TagMenu extends Paged {
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
-            if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active") && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Create")) {
-                NBTItem nbt = new NBTItem(e.getCurrentItem());
-                String identifier = nbt.getString("identifier");
-                if (!UserData.getActive(player).equalsIgnoreCase(identifier)) {
+            if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
+                String identifier = dataItem.get(e.getSlot());
+                if (!UserData.getActive(player).equalsIgnoreCase(identifier) && identifier != null) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
-                    new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                    super.open();
                     menuUtil.setIdentifier(identifier);
                 }
             }
@@ -57,7 +57,7 @@ public class TagMenu extends Paged {
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()))) {
             UserData.setActive(player, "None");
             player.closeInventory();
-            new TagMenu(SupremeTags.getMenuUtil(player)).open();
+            super.open();
             menuUtil.setIdentifier("None");
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
@@ -92,20 +92,15 @@ public class TagMenu extends Paged {
                         ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
-                        NBTItem nbt = new NBTItem(tagItem);
-
-                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format("&7Tag: " + tags.get(tag.get(index)).getTag()));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-
-                        nbt.getItem().setItemMeta(tagMeta);
-                        tagItem = nbt.getItem();
+                        tagItem.setItemMeta(tagMeta);
 
                         inventory.addItem(tagItem);
-
+                        dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
                     }
                 }
             }
