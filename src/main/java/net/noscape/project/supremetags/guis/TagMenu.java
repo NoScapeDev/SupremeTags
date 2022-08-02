@@ -27,7 +27,7 @@ public class TagMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return "Tag Menu";
+        return format(SupremeTags.getInstance().getConfig().getString("gui.style.title"));
     }
 
     @Override
@@ -93,15 +93,25 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
-                        tagMeta.setDisplayName(format("&7Tag: " + tags.get(tag.get(index)).getTag()));
+                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag());
+
+                        tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+
+                        // set lore
+                        ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.style.tag-item.lore");
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".description")))));
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier()));
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", tags.get(tag.get(index)).getTag()));
+
+                        tagMeta.setLore(lore);
+
                         tagItem.setItemMeta(tagMeta);
 
                         inventory.addItem(tagItem);
                         dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
-
                     }
                 }
             }

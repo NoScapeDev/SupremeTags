@@ -1,6 +1,7 @@
 package net.noscape.project.supremetags.storage;
 
 import net.noscape.project.supremetags.*;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 
 import java.sql.*;
@@ -40,7 +41,7 @@ public class UserData {
         }
     }
 
-    public static void setActive(Player player, String identifier) {
+    public static void setActive(OfflinePlayer player, String identifier) {
         try {
             PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement("UPDATE `users` SET Active=? WHERE (UUID=?)");
             statement.setString(1, identifier);

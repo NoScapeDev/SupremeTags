@@ -3,6 +3,7 @@ package net.noscape.project.supremetags.commands;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.storage.*;
+import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.*;
@@ -46,6 +47,20 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
+                } else if (args[0].equalsIgnoreCase("set")) {
+                    if (player.hasPermission("supremetags.admin")) {
+                        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                        String identifier = args[2];
+
+                        if (SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
+                            UserData.setActive(target, identifier);
+                            msgPlayer(player, "&8[&b&lTag&8] &7Set &b" + target.getName() + "'s &7tag to &b" + identifier);
+                        } else {
+                            msgPlayer(player, "&cThis tag does not exist.");
+                        }
+                    } else {
+                        msgPlayer(player, "&cNo Permission.");
+                    }
                 }
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
@@ -67,6 +82,8 @@ public class Tags implements CommandExecutor {
                                 "&6/tags &7- will open the tag menu.",
                                 "&6/tags create <identifier> <tag> &7- creates a new tag.",
                                 "&6/tags delete <identifier> &7- creates a new tag.",
+                                "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
+                                "&6/tags reset <player> &7- resets the players tag to None.",
                                 "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
                                 "&6/tags help &7- displays this help message.",
                                 "");
@@ -83,6 +100,27 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
+                } else if (args[0].equalsIgnoreCase("reset")) {
+                    if (player.hasPermission("supremetags.admin")) {
+                        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+
+                        UserData.setActive(target, "None");
+                        msgPlayer(player, "&8[&b&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
+                    } else {
+                        msgPlayer(player, "&cNo Permission.");
+                    }
+                } else {
+                    msgPlayer(player, "",
+                            "&eSupremeTags Admin Help:",
+                            "",
+                            "&6/tags &7- will open the tag menu.",
+                            "&6/tags create <identifier> <tag> &7- creates a new tag.",
+                            "&6/tags delete <identifier> &7- creates a new tag.",
+                            "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
+                            "&6/tags reset <player> &7- resets the players tag to None.",
+                            "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                            "&6/tags help &7- displays this help message.",
+                            "");
                 }
             }
         } else if (cmd.getName().equalsIgnoreCase("mytag")) {

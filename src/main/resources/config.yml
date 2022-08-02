@@ -1,4 +1,17 @@
 gui:
+  style:
+    title: '&8Tag Menu'
+    tag-item:
+      displayname: '&7Tag: %tag%'
+      lore:
+        - '&7&m-----------------------------'
+        - ''
+        - '&bIdentifier: &7%identifier%'
+        - ''
+        - '&dDescription:'
+        - '&7%description%'
+        - ''
+        - '&7&m-----------------------------'
   layout:
     glass-material: 'GRAY_STAINED_GLASS_PANE'
     tag-material: 'NAME_TAG'
@@ -7,81 +20,100 @@ gui:
     close-menu-material: 'BARRIER'
     create-tag-material: 'NAME_TAG'
 
-# permission: playertags.tag.<identifier>
-# - to make things easier, keep all identifier names lowercase.
 tags:
-  love: # playertags.tag.love
+  love:
     tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.love'
-  legend: # playertags.tag.legend
+    description: '&7Love all around you!'
+  legend:
     tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.legend'
+    description: '&7Legends never die!'
   pro:
     tag: '&8[&cPro&8]'
     permission: 'supremetags.tag.pro'
+    description: '&7Professional Minecrafter!'
   yolo:
     tag: '&8[&eYolo&8]'
     permission: 'supremetags.tag.yolo'
+    description: '&7Just yolo it!'
   bear:
     tag: '&8[&6Bear&8]'
     permission: 'supremetags.tag.bear'
+    description: '&7Bears are cute, i guess!'
   noob:
     tag: '&8[&dNoob&8]'
     permission: 'supremetags.tag.noob'
+    description: '&7You noob!'
   bae:
     tag: '&8[&cBae&8]'
     permission: 'supremetags.tag.bae'
+    description: '&7What a bae you are!'
   '420':
     tag: '&8[&a420&8]'
     permission: 'supremetags.tag.420'
+    description: '&7420 smoke!'
   lol:
     tag: '&8[&eLoL&8]'
     permission: 'supremetags.tag.lol'
+    description: '&7LOL, that was soooo funny...'
   savage:
     tag: '&8[&4Savage&8]'
     permission: 'supremetags.tag.savage'
-  elo:
-    tag: '&8[&6Elo&8]'
-    permission: 'supremetags.tag.elo'
+    description: '&7What a savage!'
   babyrage:
     tag: '&8[&eBabyRage&8]'
     permission: 'supremetags.tag.babyrage'
+    description: '&7Don''t rage like a baby'
   og:
     tag: '&8[&2OG&8]'
     permission: 'supremetags.tag.og'
+    description: '&7OG Player!'
   nerd:
     tag: '&8[&dNerd&8]'
     permission: 'supremetags.tag.nerd'
+    description: '&7YOU''RE A NERD!'
   troll:
     tag: '&8[&aTroll&8]'
     permission: 'supremetags.tag.troll'
+    description: '&7Trolling is fun sometimes!'
   minecraft:
     tag: '&8[&fMinecraft&8]'
     permission: 'supremetags.tag.minecraft'
+    description: '&7Best game ever! Right?'
   rudolph:
     tag: '&8[&6Rudolph&8]'
     permission: 'supremetags.tag.rudolph'
+    description: '&7Christmas time tag!'
   ninja:
     tag: '&8[&bNinja&8]'
     permission: 'supremetags.tag.ninja'
+    description: '&7The first rule of being a ninja is, ''Do no harm.'' Unless you mean to do harm. Then do lots of harm!'
   elmo:
     tag: '&8[&dElmo&8]'
     permission: 'supremetags.tag.elmo'
+    description: '&7Be kind like elmo.'
   memes:
     tag: '&8[&5Memes&8]'
     permission: 'supremetags.tag.memes'
+    description: '&7The best memer ever...'
   notch:
     tag: '&8[&6Notch&8]'
     permission: 'supremetags.tag.notch'
+    description: '&7The creator of minecraft!'
   master:
     tag: '&8[&cMaster&8]'
     permission: 'supremetags.tag.master'
+    description: '&7People will bow down to you, master!'
   halloween:
     tag: '&7[&cHall&4oween&7]'
     permission: 'supremetags.tag.halloween'
+    description: '&7ooooh, scary. The ghosts are upon you...'
   snowman:
     tag: '&7[&fSnow&bMan&7]'
     permission: 'supremetags.tag.snowman'
+    description: '&7Wanna build a snowman man...'
   santa:
     tag: '&f[&cSanta&f]'
     permission: 'supremetags.tag.santa'
+    description: '&7ho ho hooo, merry christmas!'
