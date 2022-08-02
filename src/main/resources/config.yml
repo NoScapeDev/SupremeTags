@@ -12,51 +12,76 @@ gui:
 tags:
   love: # playertags.tag.love
     tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
+    permission: 'supremetags.tag.love'
   legend: # playertags.tag.legend
     tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
+    permission: 'supremetags.tag.legend'
   pro:
     tag: '&8[&cPro&8]'
+    permission: 'supremetags.tag.pro'
   yolo:
     tag: '&8[&eYolo&8]'
+    permission: 'supremetags.tag.yolo'
   bear:
     tag: '&8[&6Bear&8]'
+    permission: 'supremetags.tag.bear'
   noob:
     tag: '&8[&dNoob&8]'
+    permission: 'supremetags.tag.noob'
   bae:
     tag: '&8[&cBae&8]'
+    permission: 'supremetags.tag.bae'
   '420':
     tag: '&8[&a420&8]'
+    permission: 'supremetags.tag.420'
   lol:
     tag: '&8[&eLoL&8]'
+    permission: 'supremetags.tag.lol'
   savage:
     tag: '&8[&4Savage&8]'
+    permission: 'supremetags.tag.savage'
   elo:
     tag: '&8[&6Elo&8]'
+    permission: 'supremetags.tag.elo'
   babyrage:
     tag: '&8[&eBabyRage&8]'
+    permission: 'supremetags.tag.babyrage'
   og:
     tag: '&8[&2OG&8]'
+    permission: 'supremetags.tag.og'
   nerd:
     tag: '&8[&dNerd&8]'
+    permission: 'supremetags.tag.nerd'
   troll:
     tag: '&8[&aTroll&8]'
+    permission: 'supremetags.tag.troll'
   minecraft:
     tag: '&8[&fMinecraft&8]'
+    permission: 'supremetags.tag.minecraft'
   rudolph:
     tag: '&8[&6Rudolph&8]'
+    permission: 'supremetags.tag.rudolph'
   ninja:
     tag: '&8[&bNinja&8]'
+    permission: 'supremetags.tag.ninja'
   elmo:
     tag: '&8[&dElmo&8]'
+    permission: 'supremetags.tag.elmo'
   memes:
     tag: '&8[&5Memes&8]'
+    permission: 'supremetags.tag.memes'
   notch:
     tag: '&8[&6Notch&8]'
+    permission: 'supremetags.tag.notch'
   master:
     tag: '&8[&cMaster&8]'
+    permission: 'supremetags.tag.master'
   halloween:
     tag: '&7[&cHall&4oween&7]'
+    permission: 'supremetags.tag.halloween'
   snowman:
     tag: '&7[&fSnow&bMan&7]'
+    permission: 'supremetags.tag.snowman'
   santa:
     tag: '&f[&cSanta&f]'
+    permission: 'supremetags.tag.santa'

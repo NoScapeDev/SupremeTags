@@ -87,7 +87,7 @@ public class TagMenu extends Paged {
                 if(index >= tag.size()) break;
                 if (tag.get(index) != null){
 
-                    if (menuUtil.getOwner().hasPermission("supremetags.tag." + tag.get(index))) {
+                    if (menuUtil.getOwner().hasPermission(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".permission")))) {
 
                         ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
@@ -101,6 +101,7 @@ public class TagMenu extends Paged {
 
                         inventory.addItem(tagItem);
                         dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
+
                     }
                 }
             }
