@@ -41,10 +41,11 @@ public class Tags implements CommandExecutor {
                     }
                 } else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("reload")) {
-                        SupremeTags.getInstance().getTagManager().unloadTags();
-                        SupremeTags.getInstance().getTagManager().loadTags();
 
                         SupremeTags.getInstance().reloadConfig();
+
+                        SupremeTags.getInstance().getTagManager().unloadTags();
+                        SupremeTags.getInstance().getTagManager().loadTags();
                         msgPlayer(sender, "&6[TAG] &7Reloaded plugin.");
                     } else if (args[0].equalsIgnoreCase("help")) {
                             msgPlayer(sender, "",
@@ -132,10 +133,10 @@ public class Tags implements CommandExecutor {
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     if (player.hasPermission("supremetags.admin")) {
+                        SupremeTags.getInstance().reloadConfig();
+
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
-
-                        SupremeTags.getInstance().reloadConfig();
                         msgPlayer(player, "&6[TAG] &7Reloaded plugin.");
                     } else {
                         msgPlayer(player, "&cNo Permission.");
