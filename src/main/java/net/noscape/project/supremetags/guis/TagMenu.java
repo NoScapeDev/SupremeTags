@@ -96,7 +96,7 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
-                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag());
+                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -109,7 +109,7 @@ public class TagMenu extends Paged {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", tags.get(tag.get(index)).getTag()));
 
-                        tagMeta.setLore(lore);
+                        tagMeta.setLore(color(lore));
 
                         tagItem.setItemMeta(tagMeta);
 
@@ -120,7 +120,7 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
-                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag());
+                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -133,7 +133,7 @@ public class TagMenu extends Paged {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", tags.get(tag.get(index)).getTag()));
 
-                        tagMeta.setLore(lore);
+                        tagMeta.setLore(color(lore));
 
                         tagItem.setItemMeta(tagMeta);
 

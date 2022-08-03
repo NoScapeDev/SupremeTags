@@ -5,7 +5,9 @@ import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
 
+import java.util.*;
 import java.util.regex.*;
+import java.util.stream.*;
 
 public class Utils {
 
@@ -45,6 +47,10 @@ public class Utils {
 
     public static void soundPlayer(Player player, Sound sound, float volume, float pitch) {
         player.playSound(player.getLocation(), sound, volume, pitch);
+    }
+
+    public static List<String> color(List<String> lore){
+        return lore.stream().map(Utils::format).collect(Collectors.toList());
     }
 
 }
