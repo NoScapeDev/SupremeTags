@@ -16,6 +16,73 @@ public class Tags implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
         if (!(sender instanceof Player)) {
+            if (cmd.getName().equalsIgnoreCase("tags")) {
+                if (args.length == 0) {
+                } else if (args.length == 3) {
+                    if (args[0].equalsIgnoreCase("create")) {
+                            String name = args[1];
+                            String tag = args[2];
+
+                            SupremeTags.getInstance().getTagManager().createTag(sender, name, tag);
+                    } else if (args[0].equalsIgnoreCase("settag")) {
+                        String name = args[1];
+                        String tag = args[2];
+                        SupremeTags.getInstance().getTagManager().setTag(sender, name, tag);
+                    } else if (args[0].equalsIgnoreCase("set")) {
+                        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+                        String identifier = args[2];
+
+                        if (SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
+                            UserData.setActive(target, identifier);
+                            msgPlayer(sender, "&8[&b&lTag&8] &7Set &b" + target.getName() + "'s &7tag to &b" + identifier);
+                        } else {
+                            msgPlayer(sender, "&cThis tag does not exist.");
+                        }
+                    }
+                } else if (args.length == 1) {
+                    if (args[0].equalsIgnoreCase("reload")) {
+                        SupremeTags.getInstance().getTagManager().unloadTags();
+                        SupremeTags.getInstance().getTagManager().loadTags();
+
+                        SupremeTags.getInstance().reloadConfig();
+                        msgPlayer(sender, "&6[TAG] &7Reloaded plugin.");
+                    } else if (args[0].equalsIgnoreCase("help")) {
+                            msgPlayer(sender, "",
+                                    "&eSupremeTags Admin Help:",
+                                    "",
+                                    "&6/tags &7- will open the tag menu.",
+                                    "&6/tags create <identifier> <tag> &7- creates a new tag.",
+                                    "&6/tags delete <identifier> &7- creates a new tag.",
+                                    "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
+                                    "&6/tags reset <player> &7- resets the players tag to None.",
+                                    "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                                    "&6/tags help &7- displays this help message.",
+                                    "");
+                    }
+                } else if (args.length == 2) {
+                    if (args[0].equalsIgnoreCase("delete")) {
+                        String name = args[1];
+                        SupremeTags.getInstance().getTagManager().deleteTag(sender, name);
+                    } else if (args[0].equalsIgnoreCase("reset")) {
+                        OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+
+                        UserData.setActive(target, "None");
+                        msgPlayer(sender, "&8[&b&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
+                    } else {
+                        msgPlayer(sender, "",
+                                "&eSupremeTags Admin Help:",
+                                "",
+                                "&6/tags &7- will open the tag menu.",
+                                "&6/tags create <identifier> <tag> &7- creates a new tag.",
+                                "&6/tags delete <identifier> &7- creates a new tag.",
+                                "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
+                                "&6/tags reset <player> &7- resets the players tag to None.",
+                                "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                                "&6/tags help &7- displays this help message.",
+                                "");
+                    }
+                }
+            }
             return true;
         }
 
@@ -68,7 +135,6 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
 
-                        SupremeTags.getInstance().saveConfig();
                         SupremeTags.getInstance().reloadConfig();
                         msgPlayer(player, "&6[TAG] &7Reloaded plugin.");
                     } else {

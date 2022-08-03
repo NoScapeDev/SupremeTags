@@ -29,7 +29,7 @@ public final class SupremeTags extends JavaPlugin {
         connectionURL = "jdbc:h2:" + getDataFolder().getAbsolutePath() + "/database";
         data = new Database(connectionURL);
 
-        saveDefaultConfig();
+        reloadConfig();
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PAPI(this).register();
@@ -73,5 +73,14 @@ public final class SupremeTags extends JavaPlugin {
     public UserData getUserData() { return userData; }
 
     public static Database getDatabase() { return data; }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+
+        saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+    }
 
 }

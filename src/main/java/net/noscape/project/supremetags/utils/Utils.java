@@ -2,6 +2,7 @@ package net.noscape.project.supremetags.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
+import org.bukkit.command.*;
 import org.bukkit.entity.*;
 
 import java.util.regex.*;
@@ -27,6 +28,12 @@ public class Utils {
     }
 
     public static void msgPlayer(Player player, String... str) {
+        for (String msg : str) {
+            player.sendMessage(format(msg));
+        }
+    }
+
+    public static void msgPlayer(CommandSender player, String... str) {
         for (String msg : str) {
             player.sendMessage(format(msg));
         }
