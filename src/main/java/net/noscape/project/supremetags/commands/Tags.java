@@ -5,8 +5,12 @@ import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.storage.*;
 import org.bukkit.*;
 import org.bukkit.command.*;
+import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.*;
+
+import java.io.*;
+import java.util.*;
 
 import static net.noscape.project.supremetags.utils.Utils.*;
 
@@ -20,10 +24,10 @@ public class Tags implements CommandExecutor {
                 if (args.length == 0) {
                 } else if (args.length == 3) {
                     if (args[0].equalsIgnoreCase("create")) {
-                            String name = args[1];
-                            String tag = args[2];
+                        String name = args[1];
+                        String tag = args[2];
 
-                            SupremeTags.getInstance().getTagManager().createTag(sender, name, tag);
+                        SupremeTags.getInstance().getTagManager().createTag(sender, name, tag, "&7My tag is " + name, "supremetags.tag." + name);
                     } else if (args[0].equalsIgnoreCase("settag")) {
                         String name = args[1];
                         String tag = args[2];
@@ -92,7 +96,11 @@ public class Tags implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("tags")) {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
-                    new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                    if (hasTags(player)) {
+                        new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                    } else {
+                        msgPlayer(player, "&cYou have no tags yet.");
+                    }
                 } else {
                     msgPlayer(player, "&cNo Permission, required permission: &7'supremetags.menu'");
                 }
@@ -102,7 +110,7 @@ public class Tags implements CommandExecutor {
                         String name = args[1];
                         String tag = args[2];
 
-                        SupremeTags.getInstance().getTagManager().createTag(player, name, tag);
+                        SupremeTags.getInstance().getTagManager().createTag(player, name, tag, "&7My tag is " + name, "supremetags.tag." + name);
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
@@ -149,11 +157,44 @@ public class Tags implements CommandExecutor {
                                 "&6/tags &7- will open the tag menu.",
                                 "&6/tags create <identifier> <tag> &7- creates a new tag.",
                                 "&6/tags delete <identifier> &7- creates a new tag.",
+                                "&6/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
                                 "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
                                 "&6/tags reset <player> &7- resets the players tag to None.",
+                                "&6/tags merge &7- merges deluxetags into supremetags.",
                                 "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
                                 "&6/tags help &7- displays this help message.",
                                 "");
+                    } else {
+                        msgPlayer(player, "&cNo Permission.");
+                    }
+                } else if (args[0].equalsIgnoreCase("merge")) {
+                    if (player.hasPermission("supremetags.admin")) {
+                        File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/DeluxeTags/config.yml"); // First we will load the file.
+                        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile); // Now we will load the file into a FileConfiguration.
+
+                        //deluxetags:
+                        //example:
+                        //order: 1
+                        //tag: '&8[&bDeluxeTags&8]'
+                        //description: '&cAwarded for using DeluxeTags!'
+                        //permission: deluxetags.tag.example
+
+                        if (config.getConfigurationSection("deluxetags") != null) {
+                            for (String identifier : Objects.requireNonNull(config.getConfigurationSection("deluxetags")).getKeys(false)) {
+                                if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
+
+                                    String tag = config.getString("deluxetags." + identifier + ".tag");
+                                    String description = config.getString("deluxetags." + identifier + ".description");
+                                    String permission = config.getString("deluxetags." + identifier + ".permission");
+
+                                    SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission);
+                                }
+
+                                msgPlayer(player, "&6Merger: &7Added all new tags from &6DeluxeTags&7 were added, any existing tags with the same name won't be added.");
+                            }
+                        } else {
+                            msgPlayer(player, "&6Error: &7DeluxeTags tag config area is empty.");
+                        }
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
@@ -195,6 +236,14 @@ public class Tags implements CommandExecutor {
                 msgPlayer(player, "&7Your tag: &e" + UserData.getActive(player));
             }
         }
+        return false;
+    }
+
+    public boolean hasTags(Player player) {
+        for (String tag : SupremeTags.getInstance().getTagManager().getTags().keySet())
+
+            if (player.hasPermission(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag + ".permission"))))
+                return true;
         return false;
     }
 }

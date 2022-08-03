@@ -16,12 +16,14 @@ public class TagManager {
     private final Map<String, Tag> tags = new HashMap<>();
     private final Map<Integer, String> dataItem = new HashMap<>();
 
-    public void createTag(Player player, String identifier, String tag_string) {
+    public void createTag(Player player, String identifier, String tag_string, String description, String permission) {
         if (!tags.containsKey(identifier)) {
             Tag tag = new Tag(identifier, tag_string);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
@@ -31,12 +33,14 @@ public class TagManager {
         }
     }
 
-    public void createTag(CommandSender player, String identifier, String tag_string) {
+    public void createTag(CommandSender player, String identifier, String tag_string, String description, String permission) {
         if (!tags.containsKey(identifier)) {
             Tag tag = new Tag(identifier, tag_string);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
