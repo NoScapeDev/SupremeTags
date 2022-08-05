@@ -1,3 +1,7 @@
+settings:
+  default-tag: 'none' # set 'none' players start with no tag.
+  forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
+
 gui:
   style:
     title: '&8Tag Menu'

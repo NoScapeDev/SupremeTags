@@ -52,17 +52,19 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().loadTags();
                         msgPlayer(sender, "&6[TAG] &7Reloaded plugin.");
                     } else if (args[0].equalsIgnoreCase("help")) {
-                            msgPlayer(sender, "",
-                                    "&eSupremeTags Admin Help:",
-                                    "",
-                                    "&6/tags &7- will open the tag menu.",
-                                    "&6/tags create <identifier> <tag> &7- creates a new tag.",
-                                    "&6/tags delete <identifier> &7- creates a new tag.",
-                                    "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
-                                    "&6/tags reset <player> &7- resets the players tag to None.",
-                                    "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
-                                    "&6/tags help &7- displays this help message.",
-                                    "");
+                        msgPlayer(sender, "",
+                                "&eSupremeTags Admin Help:",
+                                "",
+                                "&6/tags &7- will open the tag menu.",
+                                "&6/tags create <identifier> <tag> &7- creates a new tag.",
+                                "&6/tags delete <identifier> &7- creates a new tag.",
+                                "&6/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
+                                "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
+                                "&6/tags reset <player> &7- resets the players tag to None.",
+                                "&6/tags merge &7- merges deluxetags into supremetags.",
+                                "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                                "&6/tags help &7- displays this help message.",
+                                "");
                     }
                 } else if (args.length == 2) {
                     if (args[0].equalsIgnoreCase("delete")) {
@@ -80,8 +82,10 @@ public class Tags implements CommandExecutor {
                                 "&6/tags &7- will open the tag menu.",
                                 "&6/tags create <identifier> <tag> &7- creates a new tag.",
                                 "&6/tags delete <identifier> &7- creates a new tag.",
+                                "&6/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
                                 "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
                                 "&6/tags reset <player> &7- resets the players tag to None.",
+                                "&6/tags merge &7- merges deluxetags into supremetags.",
                                 "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
                                 "&6/tags help &7- displays this help message.",
                                 "");
@@ -224,8 +228,10 @@ public class Tags implements CommandExecutor {
                             "&6/tags &7- will open the tag menu.",
                             "&6/tags create <identifier> <tag> &7- creates a new tag.",
                             "&6/tags delete <identifier> &7- creates a new tag.",
+                            "&6/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
                             "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
                             "&6/tags reset <player> &7- resets the players tag to None.",
+                            "&6/tags merge &7- merges deluxetags into supremetags.",
                             "&6/tags reload &7- reloads the config.yml & unloads/loads tags.",
                             "&6/tags help &7- displays this help message.",
                             "");
@@ -234,6 +240,8 @@ public class Tags implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("mytag")) {
             if (args.length == 0) {
                 msgPlayer(player, "&7Your tag: &e" + UserData.getActive(player));
+
+                
             }
         }
         return false;

@@ -33,7 +33,7 @@ public class UserData {
                                 "(?,?,?)");
                 statement.setString(1, player.getName());
                 statement.setString(2, player.getUniqueId().toString());
-                statement.setString(3, "None");
+                statement.setString(3, SupremeTags.getInstance().getConfig().getString("settings.default-tag"));
                 statement.executeUpdate();
             }
         } catch (SQLException e) {

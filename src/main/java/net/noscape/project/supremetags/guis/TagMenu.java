@@ -55,10 +55,12 @@ public class TagMenu extends Paged {
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
             player.closeInventory();
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()))) {
-            UserData.setActive(player, "None");
-            player.closeInventory();
-            super.open();
-            menuUtil.setIdentifier("None");
+            if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+                UserData.setActive(player, "None");
+                player.closeInventory();
+                super.open();
+                menuUtil.setIdentifier("None");
+            }
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
                 if (page != 0) {

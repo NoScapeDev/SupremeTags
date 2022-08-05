@@ -16,6 +16,10 @@ public class TagManager {
     private final Map<String, Tag> tags = new HashMap<>();
     private final Map<Integer, String> dataItem = new HashMap<>();
 
+    public TagManager() {
+        this.sort();
+    }
+
     public void createTag(Player player, String identifier, String tag_string, String description, String permission) {
         if (!tags.containsKey(identifier)) {
             Tag tag = new Tag(identifier, tag_string);
@@ -147,6 +151,23 @@ public class TagManager {
         } else {
             msgPlayer(player, "&6[TAG] &7This tag doesn't exist!");
         }
+    }
+
+    public void sort() {
+        SortedSet<Map.Entry<String, Tag>> sortedSet = new TreeSet<>((o1, o2) -> {
+
+            int result = o1.getValue().getIdentifier().compareTo(o2.getValue().getIdentifier());
+            result*=-1;
+            if(result==0)
+                result = o1.getKey().compareTo(o2.getKey());
+
+            return result;
+        });
+
+        sortedSet.addAll(tags.entrySet());
+
+        for(Map.Entry<String, Tag> entry:sortedSet)
+            System.out.println(entry.getKey() + "=" + entry.getValue());
     }
 
 }
