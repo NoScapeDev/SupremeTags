@@ -27,7 +27,7 @@ public class TagMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return format(SupremeTags.getInstance().getConfig().getString("gui.style.title"));
+        return format(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.title"));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
-                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
+                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -106,7 +106,7 @@ public class TagMenu extends Paged {
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
 
                         // set lore
-                        ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.style.tag-item.lore");
+                        ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".description")))));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", tags.get(tag.get(index)).getTag()));
@@ -122,7 +122,7 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
-                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.style.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
+                        String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -130,7 +130,7 @@ public class TagMenu extends Paged {
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
 
                         // set lore
-                        ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.style.tag-item.lore");
+                        ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".description")))));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", tags.get(tag.get(index)).getTag()));

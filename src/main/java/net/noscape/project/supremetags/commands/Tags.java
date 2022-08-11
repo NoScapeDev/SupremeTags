@@ -50,6 +50,8 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
+
+                        SupremeTags.getInstance().getCategoryManager().loadCategories();
                         msgPlayer(sender, "&6[TAG] &7Reloaded plugin.");
                     } else if (args[0].equalsIgnoreCase("help")) {
                         msgPlayer(sender, "",
@@ -101,6 +103,9 @@ public class Tags implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
                     if (hasTags(player)) {
+
+                        // categories menu to be added.
+
                         new TagMenu(SupremeTags.getMenuUtil(player)).open();
                     } else {
                         msgPlayer(player, "&cYou have no tags yet.");
@@ -149,6 +154,8 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
+
+                        SupremeTags.getInstance().getCategoryManager().loadCategories();
                         msgPlayer(player, "&6[TAG] &7Reloaded plugin.");
                     } else {
                         msgPlayer(player, "&cNo Permission.");
@@ -236,12 +243,6 @@ public class Tags implements CommandExecutor {
                             "&6/tags help &7- displays this help message.",
                             "");
                 }
-            }
-        } else if (cmd.getName().equalsIgnoreCase("mytag")) {
-            if (args.length == 0) {
-                msgPlayer(player, "&7Your tag: &e" + UserData.getActive(player));
-
-                
             }
         }
         return false;

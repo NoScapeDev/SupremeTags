@@ -34,7 +34,7 @@ public class Database {
         PreparedStatement preparedStatement;
 
         String userTable = "CREATE TABLE IF NOT EXISTS `users` " +
-                "(`Name` VARCHAR(100), `UUID` VARCHAR(100), `Active` VARCHAR(100))";
+                "(`Name` VARCHAR(100), `UUID` VARCHAR(100) primary key, `Active` VARCHAR(100))";
 
         try {
             preparedStatement = getConnection().prepareStatement(userTable);

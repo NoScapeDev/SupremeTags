@@ -1,9 +1,25 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                     Settings                         | #
+# +------------------------------------------------------+ #
+############################################################
+
 settings:
   default-tag: 'none' # set 'none' players start with no tag.
   forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
+  categories: false # !! THIS IS NOT YET BEEN IMPLEMENTED !!
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Gui                            | #
+# +------------------------------------------------------+ #
+############################################################
 
 gui:
-  style:
+  main-menu:
+    title: '&8Main Menu'
+    size: 27
+  tag-menu-none-categories:
     title: '&8Tag Menu'
     tag-item:
       displayname: '&7Tag: %tag%'
@@ -24,100 +40,180 @@ gui:
     close-menu-material: 'BARRIER'
     create-tag-material: 'NAME_TAG'
 
+############################################################
+# +------------------------------------------------------+ #
+# |                     Categories                       | #
+# |        !! THIS IS NOT YET BEEN IMPLEMENTED !!        | #
+# |                                                      | #
+# | This can still be pre-edited...                      | #
+# +------------------------------------------------------+ #
+############################################################
+
+categories:
+  default:
+    title: '&8Default Tags' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&7&lDefault Tags' # item displayname.
+    slot: 12 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&7Default tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.default' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  rank:
+    title: '&8Rank Tags' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&6&lRank Tags' # item displayname.
+    slot: 14 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&6Rank tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.rank' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  xmas:
+    title: '&8Christmas Tags' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&c&lChristmas Tags' # item displayname.
+    slot: 16 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&cDefault tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.xmas' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+
+############################################################
+# +------------------------------------------------------+ #
+# |                     Tags                             | #
+# +------------------------------------------------------+ #
+############################################################
+
 tags:
   love:
     tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.love'
     description: '&7Love all around you!'
+    category: 'default' # << !! THIS IS NOT YET BEEN IMPLEMENTED !!
   legend:
     tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.legend'
     description: '&7Legends never die!'
+    category: 'rank'
   pro:
     tag: '&8[&cPro&8]'
     permission: 'supremetags.tag.pro'
     description: '&7Professional Minecrafter!'
+    category: 'rank'
   yolo:
     tag: '&8[&eYolo&8]'
     permission: 'supremetags.tag.yolo'
     description: '&7Just yolo it!'
+    category: 'default'
   bear:
     tag: '&8[&6Bear&8]'
     permission: 'supremetags.tag.bear'
     description: '&7Bears are cute, i guess!'
+    category: 'default'
   noob:
     tag: '&8[&dNoob&8]'
     permission: 'supremetags.tag.noob'
     description: '&7You noob!'
+    category: 'default'
   bae:
     tag: '&8[&cBae&8]'
     permission: 'supremetags.tag.bae'
     description: '&7What a bae you are!'
+    category: 'default'
   '420':
     tag: '&8[&a420&8]'
     permission: 'supremetags.tag.420'
     description: '&7420 smoke!'
+    category: 'default'
   lol:
     tag: '&8[&eLoL&8]'
     permission: 'supremetags.tag.lol'
     description: '&7LOL, that was soooo funny...'
+    category: 'default'
   savage:
     tag: '&8[&4Savage&8]'
     permission: 'supremetags.tag.savage'
     description: '&7What a savage!'
+    category: 'default'
   babyrage:
     tag: '&8[&eBabyRage&8]'
     permission: 'supremetags.tag.babyrage'
     description: '&7Don''t rage like a baby'
+    category: 'default'
   og:
     tag: '&8[&2OG&8]'
     permission: 'supremetags.tag.og'
     description: '&7OG Player!'
+    category: 'default'
   nerd:
     tag: '&8[&dNerd&8]'
     permission: 'supremetags.tag.nerd'
     description: '&7YOU''RE A NERD!'
+    category: 'default'
   troll:
     tag: '&8[&aTroll&8]'
     permission: 'supremetags.tag.troll'
     description: '&7Trolling is fun sometimes!'
+    category: 'default'
   minecraft:
     tag: '&8[&fMinecraft&8]'
     permission: 'supremetags.tag.minecraft'
     description: '&7Best game ever! Right?'
+    category: 'default'
   rudolph:
     tag: '&8[&6Rudolph&8]'
     permission: 'supremetags.tag.rudolph'
     description: '&7Christmas time tag!'
+    category: 'xmas'
   ninja:
     tag: '&8[&bNinja&8]'
     permission: 'supremetags.tag.ninja'
     description: '&7The first rule of being a ninja is, ''Do no harm.'' Unless you mean to do harm. Then do lots of harm!'
+    category: 'default'
   elmo:
     tag: '&8[&dElmo&8]'
     permission: 'supremetags.tag.elmo'
     description: '&7Be kind like elmo.'
+    category: 'default'
   memes:
     tag: '&8[&5Memes&8]'
     permission: 'supremetags.tag.memes'
     description: '&7The best memer ever...'
+    category: 'default'
   notch:
     tag: '&8[&6Notch&8]'
     permission: 'supremetags.tag.notch'
     description: '&7The creator of minecraft!'
+    category: 'default'
   master:
     tag: '&8[&cMaster&8]'
     permission: 'supremetags.tag.master'
     description: '&7People will bow down to you, master!'
+    category: 'default'
   halloween:
     tag: '&7[&cHall&4oween&7]'
     permission: 'supremetags.tag.halloween'
     description: '&7ooooh, scary. The ghosts are upon you...'
+    category: 'default'
   snowman:
     tag: '&7[&fSnow&bMan&7]'
     permission: 'supremetags.tag.snowman'
     description: '&7Wanna build a snowman man...'
+    category: 'xmas'
   santa:
     tag: '&f[&cSanta&f]'
     permission: 'supremetags.tag.santa'
     description: '&7ho ho hooo, merry christmas!'
+    category: 'xmas'

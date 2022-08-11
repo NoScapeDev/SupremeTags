@@ -6,6 +6,13 @@ public class MenuUtil {
 
     private Player owner;
     private String identifier;
+    private String category;
+
+    public MenuUtil(Player owner, String identifier, String category) {
+        this.owner = owner;
+        this.identifier = identifier;
+        this.category = category;
+    }
 
     public MenuUtil(Player owner, String identifier) {
         this.owner = owner;
@@ -26,5 +33,13 @@ public class MenuUtil {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

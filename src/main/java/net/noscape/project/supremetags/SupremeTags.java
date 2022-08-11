@@ -15,6 +15,7 @@ public final class SupremeTags extends JavaPlugin {
 
     private static SupremeTags instance;
     private final TagManager tagManager = new TagManager();
+    private final CategoryManager categoryManager = new CategoryManager();
 
     private static String connectionURL;
     private static Database data;
@@ -36,12 +37,12 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
-        Objects.requireNonNull(getCommand("mytag")).setExecutor(new Tags());
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 
         tagManager.loadTags();
+        categoryManager.loadCategories();
     }
 
     @Override
@@ -53,6 +54,8 @@ public final class SupremeTags extends JavaPlugin {
 
     public TagManager getTagManager() { return tagManager; }
 
+    public CategoryManager getCategoryManager() { return categoryManager; }
+
     public static MenuUtil getMenuUtil(Player player) {
         MenuUtil menuUtil;
 
@@ -60,6 +63,19 @@ public final class SupremeTags extends JavaPlugin {
             return menuUtilMap.get(player);
         } else {
             menuUtil = new MenuUtil(player, UserData.getActive(player));
+            menuUtilMap.put(player, menuUtil);
+        }
+
+        return menuUtil;
+    }
+ 
+    public static MenuUtil getMenuUtil(Player player, String category) {
+        MenuUtil menuUtil;
+
+        if (menuUtilMap.containsKey(player)) {
+            return menuUtilMap.get(player);
+        } else {
+            menuUtil = new MenuUtil(player, UserData.getActive(player), category);
             menuUtilMap.put(player, menuUtil);
         }
 
