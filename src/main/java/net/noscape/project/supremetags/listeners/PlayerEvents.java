@@ -31,12 +31,13 @@ public class PlayerEvents implements Listener {
 
         String format = e.getFormat();
 
+        final String replace = format.replace("{tag}", "").replace("{supremetags_tag}", "").replace("{TAG}", "");
         if (UserData.getActive(player).equalsIgnoreCase("None")) {
-            e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
+            e.setFormat(replace);
         } else if (UserData.getActive(player) == null) {
-            e.setFormat(format.replace("{tag}", "").replace("{supremetags_tag}", ""));
+            e.setFormat(replace);
         } else {
-            e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())));
+            e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{TAG}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())));
         }
     }
 
