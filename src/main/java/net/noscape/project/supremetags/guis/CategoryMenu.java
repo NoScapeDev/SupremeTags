@@ -17,14 +17,6 @@ import static net.noscape.project.supremetags.utils.Utils.format;
 
 public class CategoryMenu extends Paged {
 
-
-
-    // ==============================================
-    //  !! THIS IS NOT YET BEEN IMPLEMENTED !!
-    // ==============================================
-
-
-
     private final Map<String, Tag> tags;
     private final Map<Integer, String> dataItem;
 
@@ -36,12 +28,12 @@ public class CategoryMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return format(SupremeTags.getInstance().getConfig().getString("categories." + menuUtil.getCategory() + ".title"));
+        return format("&8Category Tag Menu");
     }
 
     @Override
     public int getSlots() {
-        return 56;
+        return 54;
     }
 
     @Override
@@ -54,7 +46,7 @@ public class CategoryMenu extends Paged {
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
                 String identifier = dataItem.get(e.getSlot());
-                if (!UserData.getActive(player).equalsIgnoreCase(identifier) && identifier != null) {
+                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
                     super.open();
@@ -70,6 +62,9 @@ public class CategoryMenu extends Paged {
                 super.open();
                 menuUtil.setIdentifier("None");
             }
+        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()))) {
+                player.closeInventory();
+                super.open();
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
                 if (page != 0) {
@@ -88,8 +83,6 @@ public class CategoryMenu extends Paged {
     @Override
     public void setMenuItems() {
 
-        addBottom();
-
         // add all category tags.
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
@@ -100,13 +93,11 @@ public class CategoryMenu extends Paged {
                 if (tag.get(index) != null) {
 
                     String permission = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".permission");
-
                     String cat = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".category");
 
                     assert permission != null;
-                    if (menuUtil.getCategory().equalsIgnoreCase(cat)) {
+                    if (menuUtil.getCategory() != null && menuUtil.getCategory().equalsIgnoreCase(cat)) {
                         if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
-
                             ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                             ItemMeta tagMeta = tagItem.getItemMeta();
                             assert tagMeta != null;
@@ -159,5 +150,7 @@ public class CategoryMenu extends Paged {
                 }
             }
         }
+
+        addBottom();
     }
 }

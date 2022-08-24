@@ -45,7 +45,7 @@ public class TagMenu extends Paged {
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
                 String identifier = dataItem.get(e.getSlot());
-                if (!UserData.getActive(player).equalsIgnoreCase(identifier) && identifier != null) {
+                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
                     super.open();
@@ -87,7 +87,7 @@ public class TagMenu extends Paged {
             for(int i = 0; i < getMaxItems(); i++) {
                 index = getMaxItems() * page + i;
                 if(index >= tag.size()) break;
-                if (tag.get(index) != null){
+                if (tag.get(index) != null) {
 
                     String permission = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".permission");
 

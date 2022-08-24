@@ -36,6 +36,11 @@ public abstract class Menu implements InventoryHolder {
         menuUtil.getOwner().openInventory(inventory);
     }
 
+    public void refresh() {
+        menuUtil.getOwner().updateInventory();
+    }
+
+
     @Override
     public Inventory getInventory() {
         return inventory;

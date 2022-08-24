@@ -7,7 +7,35 @@
 settings:
   default-tag: 'none' # set 'none' players start with no tag.
   forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
-  categories: false # !! THIS IS NOT YET BEEN IMPLEMENTED !!
+  categories: false # should supremetags use the category system?
+  default-category: 'default' # used to set the tags category value when creating a new tag with the '/tag create' command
+  update-check: true # the plugin will check if there is an update available.
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Data                           | #
+# +------------------------------------------------------+ #
+############################################################
+
+# mysql data settings.
+# make sure you can check your panel database info to make sure everything is correct.
+data:
+  # types: [H2 OR MYSQL]
+  type: 'H2'
+
+  # The address for the database server.
+  # - to enable this part, change type to 'MYSQL'
+  # - some hosts can use your domain or server ip.
+  address: 'host'
+  # The standard DB engine port is used by default
+  port: 3306
+  # The name of the database to store tag data in.
+  database: 'database'
+  # Credentials for the database.
+  username: 'user'
+  password: 'pass'
+  # leave this, if you don't know how to use options.
+  options: 'useSSL=false&autoReconnect=true'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -39,13 +67,11 @@ gui:
     reset-tag-material: 'RED_DYE'
     close-menu-material: 'BARRIER'
     create-tag-material: 'NAME_TAG'
+    refresh-material: 'GREEN_DYE'
 
 ############################################################
 # +------------------------------------------------------+ #
-# |                     Categories                       | #
-# |        !! THIS IS NOT YET BEEN IMPLEMENTED !!        | #
-# |                                                      | #
-# | This can still be pre-edited...                      | #
+# |                    Categories                        | #
 # +------------------------------------------------------+ #
 ############################################################
 
@@ -54,7 +80,7 @@ categories:
     title: '&8Default Tags' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&7&lDefault Tags' # item displayname.
-    slot: 12 # slot this item will be in the main menu.
+    slot: 11 # slot this item will be in the main menu.
     lore:
       - '&8&m-----------------------------'
       - ''
@@ -67,7 +93,7 @@ categories:
     title: '&8Rank Tags' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&6&lRank Tags' # item displayname.
-    slot: 14 # slot this item will be in the main menu.
+    slot: 13 # slot this item will be in the main menu.
     lore:
       - '&8&m-----------------------------'
       - ''
@@ -80,19 +106,18 @@ categories:
     title: '&8Christmas Tags' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&c&lChristmas Tags' # item displayname.
-    slot: 16 # slot this item will be in the main menu.
+    slot: 15 # slot this item will be in the main menu.
     lore:
       - '&8&m-----------------------------'
       - ''
-      - '&cDefault tags: &7%tags_amount%'
+      - '&cChristmas tags: &7%tags_amount%'
       - ''
       - '&8&m-----------------------------'
     permission: 'supremetags.category.xmas' # permission players will need to open this menu
     permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
-
 ############################################################
 # +------------------------------------------------------+ #
-# |                     Tags                             | #
+# |                       Tags                           | #
 # +------------------------------------------------------+ #
 ############################################################
 
@@ -101,7 +126,7 @@ tags:
     tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.love'
     description: '&7Love all around you!'
-    category: 'default' # << !! THIS IS NOT YET BEEN IMPLEMENTED !!
+    category: 'default' # << category the tag will be placed inside, if catorgies at the top is enabled.
   legend:
     tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
     permission: 'supremetags.tag.legend'

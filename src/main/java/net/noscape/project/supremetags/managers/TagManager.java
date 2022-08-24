@@ -22,12 +22,16 @@ public class TagManager {
 
     public void createTag(Player player, String identifier, String tag_string, String description, String permission) {
         if (!tags.containsKey(identifier)) {
-            Tag tag = new Tag(identifier, tag_string);
+
+            String default_category = SupremeTags.getInstance().getConfig().getString("settings.default-category");
+
+            Tag tag = new Tag(identifier, tag_string, default_category, permission);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", default_category);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
@@ -39,12 +43,16 @@ public class TagManager {
 
     public void createTag(CommandSender player, String identifier, String tag_string, String description, String permission) {
         if (!tags.containsKey(identifier)) {
-            Tag tag = new Tag(identifier, tag_string);
+
+            String default_category = SupremeTags.getInstance().getConfig().getString("settings.default-category");
+
+            Tag tag = new Tag(identifier, tag_string, default_category, permission);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", default_category);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
@@ -94,8 +102,10 @@ public class TagManager {
         int count = 0;
         for (String identifier : Objects.requireNonNull(SupremeTags.getInstance().getConfig().getConfigurationSection("tags")).getKeys(false)) {
             String tag = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".tag");
+            String category = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".category");
+            String permission = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".permission");
 
-            Tag t = new Tag(identifier, tag);
+            Tag t = new Tag(identifier, tag, category, permission);
             tags.put(identifier, t);
 
             count++;
@@ -131,6 +141,25 @@ public class TagManager {
             msgPlayer(player, "&6[TAG] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
         } else {
             msgPlayer(player, "&6[TAG] &7This tag doesn't exist!");
+        }
+    }
+
+    public void setCategory(Player player, String identifier, String category) {
+        if (tags.containsKey(identifier)) {
+            Tag t = tags.get(identifier);
+            t.setCategory(category);
+
+            try {
+                SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", t.getCategory());
+                SupremeTags.getInstance().saveConfig();
+                SupremeTags.getInstance().reloadConfig();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            msgPlayer(player, "&6[TAG] &6" + t.getIdentifier() + "'s category &7changed to " + t.getCategory());
+        } else {
+            msgPlayer(player, "&6[TAG] &7This category doesn't exist!");
         }
     }
 

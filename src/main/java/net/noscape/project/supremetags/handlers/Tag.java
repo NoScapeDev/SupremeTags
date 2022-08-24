@@ -4,10 +4,14 @@ public class Tag {
 
     private String identifier;
     private String tag;
+    private String category;
+    private String permission;
 
-    public Tag(String identifier, String tag) {
+    public Tag(String identifier, String tag, String category, String permission) {
         this.identifier = identifier;
         this.tag = tag;
+        this.category = category;
+        this.permission = permission;
     }
 
     public String getIdentifier() {
@@ -26,4 +30,19 @@ public class Tag {
         this.tag = tag;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
 }

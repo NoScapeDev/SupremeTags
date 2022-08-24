@@ -22,7 +22,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        SupremeTags.getInstance().getUserData().createPlayer(player);
+        UserData.createPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -32,12 +32,12 @@ public class PlayerEvents implements Listener {
         String format = e.getFormat();
 
         final String replace = format.replace("{tag}", "").replace("{supremetags_tag}", "").replace("{TAG}", "");
-        if (UserData.getActive(player).equalsIgnoreCase("None")) {
+        if (UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
             e.setFormat(replace);
-        } else if (UserData.getActive(player) == null) {
+        } else if (UserData.getActive(player.getUniqueId()) == null) {
             e.setFormat(replace);
         } else {
-            e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())).replace("{TAG}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player)).getTag())));
+            e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{TAG}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())));
         }
     }
 

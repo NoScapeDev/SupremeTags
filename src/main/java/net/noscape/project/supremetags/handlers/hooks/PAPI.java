@@ -43,10 +43,10 @@ public class PAPI extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("tag")) {
             String text;
 
-            if (UserData.getActive(Objects.requireNonNull(player.getPlayer())).equalsIgnoreCase("None")) {
+            if (UserData.getActive(Objects.requireNonNull(player.getUniqueId())).equalsIgnoreCase("None")) {
                 text = "";
             } else {
-                text = tags.get(UserData.getActive(player.getPlayer())).getTag();
+                text = tags.get(UserData.getActive(player.getUniqueId())).getTag();
             }
 
             return text;
@@ -55,10 +55,10 @@ public class PAPI extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("identifier")) {
             String text;
 
-            if (UserData.getActive(Objects.requireNonNull(player.getPlayer())).equalsIgnoreCase("None")) {
+            if (UserData.getActive(Objects.requireNonNull(player.getUniqueId())).equalsIgnoreCase("None")) {
                 text = "";
             } else {
-                text = UserData.getActive(player.getPlayer());
+                text = UserData.getActive(player.getUniqueId());
             }
 
             return text;

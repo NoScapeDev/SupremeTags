@@ -75,7 +75,7 @@ public class Tags implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("reset")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
-                        UserData.setActive(target, "None");
+                        H2UserData.setActive(target, "None");
                         msgPlayer(sender, "&8[&b&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
                     } else {
                         msgPlayer(sender, "",
@@ -103,10 +103,11 @@ public class Tags implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
                     if (hasTags(player)) {
-
-                        // categories menu to be added.
-
-                        new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                            new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                        } else {
+                            new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                        }
                     } else {
                         msgPlayer(player, "&cYou have no tags yet.");
                     }
@@ -132,6 +133,15 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
+                } else if (args[0].equalsIgnoreCase("setcategory")) {
+                        if (player.hasPermission("supremetags.admin")) {
+                            String name = args[1];
+                            String category = args[2];
+
+                            SupremeTags.getInstance().getTagManager().setCategory(player, name, category);
+                        } else {
+                            msgPlayer(player, "&cNo Permission.");
+                        }
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (player.hasPermission("supremetags.admin")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
@@ -169,6 +179,7 @@ public class Tags implements CommandExecutor {
                                 "&6/tags create <identifier> <tag> &7- creates a new tag.",
                                 "&6/tags delete <identifier> &7- creates a new tag.",
                                 "&6/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
+                                "&6/tags setcategory <identifier> <category> &7- sets the category of the tag.",
                                 "&6/tags set <player> <identifier> &7- sets a new tag for that player.",
                                 "&6/tags reset <player> &7- resets the players tag to None.",
                                 "&6/tags merge &7- merges deluxetags into supremetags.",
@@ -223,7 +234,7 @@ public class Tags implements CommandExecutor {
                     if (player.hasPermission("supremetags.admin")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
-                        UserData.setActive(target, "None");
+                        H2UserData.setActive(target, "None");
                         msgPlayer(player, "&8[&b&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
                     } else {
                         msgPlayer(player, "&cNo Permission.");
