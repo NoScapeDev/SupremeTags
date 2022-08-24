@@ -83,6 +83,7 @@ public final class SupremeTags extends JavaPlugin {
 
         tagManager.loadTags();
         categoryManager.loadCategories();
+        categoryManager.loadCategoriesTags();
     }
 
     @Override

@@ -1,14 +1,12 @@
 package net.noscape.project.supremetags.guis;
 
 import net.noscape.project.supremetags.*;
-import net.noscape.project.supremetags.handlers.*;
 import net.noscape.project.supremetags.handlers.menu.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
-import org.bukkit.scheduler.*;
 
 import java.util.*;
 
@@ -18,10 +16,12 @@ public class MainMenu extends Menu {
 
     private final List<String> catorgies;
     private final Map<Integer, String> dataItem = new HashMap<>();
+    private final Map<String, Integer> categoriesTags;
 
     public MainMenu(MenuUtil menuUtil) {
         super(menuUtil);
         this.catorgies = SupremeTags.getInstance().getCategoryManager().getCatorgies();
+        this.categoriesTags = SupremeTags.getInstance().getCategoryManager().getCatorgiesTags();
     }
 
     @Override
@@ -47,8 +47,9 @@ public class MainMenu extends Menu {
         if (category != null) {
             if (material != null && Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(material.toUpperCase()))) {
                 if (permission != null && player.hasPermission(permission)) {
-                    new CategoryMenu(SupremeTags.getMenuUtil(player, category)).open();
                     menuUtil.setCategory(category);
+                    new CategoryMenu(SupremeTags.getMenuUtil(player, category)).open();
+                    menuUtil.getOwner().updateInventory();
                 } else {
                     msgPlayer(player, "&cYou don't have permission to access these tags.");
                 }
@@ -83,7 +84,7 @@ public class MainMenu extends Menu {
 
                     // set lore
                     ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("categories." + cats + ".lore");
-                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(catorgies.size())));
+                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);
@@ -106,7 +107,7 @@ public class MainMenu extends Menu {
 
                     // set lore
                     ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("categories." + cats + ".lore");
-                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(catorgies.size())));
+                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);
@@ -129,7 +130,7 @@ public class MainMenu extends Menu {
 
                     // set lore
                     ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("categories." + cats + ".lore");
-                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(catorgies.size())));
+                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);

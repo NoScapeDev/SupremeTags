@@ -28,7 +28,7 @@ public class CategoryMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return format("&8Category Tag Menu");
+        return format(SupremeTags.getInstance().getConfig().getString("categories." + menuUtil.getCategory() + ".title"));
     }
 
     @Override
