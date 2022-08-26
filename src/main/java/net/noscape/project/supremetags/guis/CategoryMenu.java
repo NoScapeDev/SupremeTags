@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.guis;
 
+import de.tr7zw.nbtapi.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
@@ -28,7 +29,7 @@ public class CategoryMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return format(SupremeTags.getInstance().getConfig().getString("categories." + menuUtil.getCategory() + ".title"));
+        return format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("categories." + menuUtil.getCategory() + ".title")).replaceAll("%page%", String.valueOf(this.getPage())));
     }
 
     @Override
@@ -45,12 +46,15 @@ public class CategoryMenu extends Paged {
 
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
-                String identifier = dataItem.get(e.getSlot());
-                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
+                NBTItem nbt = new NBTItem(e.getCurrentItem());
+                String identifier = nbt.getString("identifier");
+                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier)) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
                     super.open();
                     menuUtil.setIdentifier(identifier);
+                } else if (identifier.isEmpty()) {
+                    menuUtil.getOwner().sendMessage("that identifier is empty");
                 }
             }
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
@@ -83,6 +87,8 @@ public class CategoryMenu extends Paged {
     @Override
     public void setMenuItems() {
 
+        applyLayout();
+
         // add all category tags.
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
@@ -92,17 +98,23 @@ public class CategoryMenu extends Paged {
                 if(index >= tag.size()) break;
                 if (tag.get(index) != null) {
 
-                    String permission = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".permission");
-                    String cat = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".category");
+                    Tag t = tags.get(tag.get(index));
+
+                    String permission = t.getPermission();
+                    String category = t.getCategory();
 
                     assert permission != null;
-                    if (menuUtil.getCategory() != null && menuUtil.getCategory().equalsIgnoreCase(cat)) {
+                    if (menuUtil.getCategory() != null && menuUtil.getCategory().equalsIgnoreCase(category)) {
                         if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
                             ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                             ItemMeta tagMeta = tagItem.getItemMeta();
                             assert tagMeta != null;
 
-                            String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
+                            NBTItem nbt = new NBTItem(tagItem);
+
+                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
+                            String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", t.getTag()).replaceAll("%identifier%", t.getIdentifier());
 
                             tagMeta.setDisplayName(format(displayname));
                             tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -117,16 +129,21 @@ public class CategoryMenu extends Paged {
 
                             tagMeta.setLore(color(lore));
 
-                            tagItem.setItemMeta(tagMeta);
+                            nbt.getItem().setItemMeta(tagMeta);
 
-                            inventory.addItem(tagItem);
-                            dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
+                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
+                            inventory.addItem(nbt.getItem());
                         } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                             ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                             ItemMeta tagMeta = tagItem.getItemMeta();
                             assert tagMeta != null;
 
-                            String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
+                            NBTItem nbt = new NBTItem(tagItem);
+
+                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
+                            String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", t.getTag()).replaceAll("%identifier%", t.getIdentifier());
 
                             tagMeta.setDisplayName(format(displayname));
                             tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -141,16 +158,15 @@ public class CategoryMenu extends Paged {
 
                             tagMeta.setLore(color(lore));
 
-                            tagItem.setItemMeta(tagMeta);
+                            nbt.getItem().setItemMeta(tagMeta);
 
-                            inventory.addItem(tagItem);
-                            dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
+                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
+                            inventory.addItem(nbt.getItem());
                         }
                     }
                 }
             }
         }
-
-        addBottom();
     }
 }

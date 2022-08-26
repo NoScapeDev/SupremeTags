@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.guis;
 
+import de.tr7zw.nbtapi.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
@@ -27,7 +28,7 @@ public class TagMenu extends Paged {
 
     @Override
     public String getMenuName() {
-        return format(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.title"));
+        return format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.title")).replaceAll("%page%", String.valueOf(this.getPage())));
     }
 
     @Override
@@ -44,7 +45,8 @@ public class TagMenu extends Paged {
 
         if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
-                String identifier = dataItem.get(e.getSlot());
+                NBTItem nbt = new NBTItem(e.getCurrentItem());
+                String identifier = nbt.getString("identifier");
                 if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
                     UserData.setActive(player, identifier);
                     player.closeInventory();
@@ -79,7 +81,7 @@ public class TagMenu extends Paged {
     @Override
     public void setMenuItems() {
 
-        addBottom();
+        applyLayout();
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
@@ -98,6 +100,10 @@ public class TagMenu extends Paged {
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
+                        NBTItem nbt = new NBTItem(tagItem);
+
+                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
                         String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
@@ -113,15 +119,19 @@ public class TagMenu extends Paged {
 
                         tagMeta.setLore(color(lore));
 
-                        tagItem.setItemMeta(tagMeta);
+                        nbt.getItem().setItemMeta(tagMeta);
 
-                        inventory.addItem(tagItem);
-                        dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
+                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+                        inventory.addItem(nbt.getItem());
                     } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                         ItemStack tagItem = new ItemStack(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), 1);
                         ItemMeta tagMeta = tagItem.getItemMeta();
                         assert tagMeta != null;
 
+                        NBTItem nbt = new NBTItem(tagItem);
+
+                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+
                         String displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.tag-menu-none-categories.tag-item.displayname")).replaceAll("%tag%", tags.get(tag.get(index)).getTag()).replaceAll("%identifier%", tags.get(tag.get(index)).getIdentifier());
 
                         tagMeta.setDisplayName(format(displayname));
@@ -137,10 +147,10 @@ public class TagMenu extends Paged {
 
                         tagMeta.setLore(color(lore));
 
-                        tagItem.setItemMeta(tagMeta);
+                        nbt.getItem().setItemMeta(tagMeta);
 
-                        inventory.addItem(tagItem);
-                        dataItem.put(index, tags.get(tag.get(index)).getIdentifier());
+                        nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+                        inventory.addItem(nbt.getItem());
                     }
                 }
             }

@@ -9,6 +9,7 @@ settings:
   forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
   categories: false # should supremetags use the category system?
   default-category: 'default' # used to set the tags category value when creating a new tag with the '/tag create' command
+  layout: 'layout1' # layouts: [layout1(default), layout2(new)]
   update-check: true # the plugin will check if there is an update available.
 
 ############################################################

@@ -22,14 +22,17 @@ public class CategoryManager {
         catorgiesTags.clear();
 
         int value = 0;
+        String c = null;
         for (String cats : getCatorgies()) {
             for (String tags : Objects.requireNonNull(SupremeTags.getInstance().getConfig().getConfigurationSection("tags")).getKeys(false)) {
-                if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tags + ".category")).equalsIgnoreCase(cats)) {
+                String cat = SupremeTags.getInstance().getConfig().getString("tags." + tags + ".category");
+                if (cats.contains(cat) && !catorgiesTags.containsKey(cat)) {
                     value++;
+                    c = cat;
                 }
-
-                catorgiesTags.put(cats, value);
             }
+            catorgiesTags.put(c, value);
+            value = 0;
         }
     }
 

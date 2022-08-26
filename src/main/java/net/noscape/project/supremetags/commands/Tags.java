@@ -51,7 +51,16 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
 
+                        SupremeTags.getInstance().getTagManager().getDataItem().clear();
+
+                        if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
+                            SupremeTags.setLayout("layout1");
+                        } else if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
+                            SupremeTags.setLayout("layout2");
+                        }
+
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
+                        SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
                         msgPlayer(sender, "&6[TAG] &7Reloaded plugin.");
                     } else if (args[0].equalsIgnoreCase("help")) {
                         msgPlayer(sender, "",
@@ -165,7 +174,16 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().unloadTags();
                         SupremeTags.getInstance().getTagManager().loadTags();
 
+                        SupremeTags.getInstance().getTagManager().getDataItem().clear();
+
+                        if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
+                            SupremeTags.setLayout("layout1");
+                        } else if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
+                            SupremeTags.setLayout("layout2");
+                        }
+
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
+                        SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
                         msgPlayer(player, "&6[TAG] &7Reloaded plugin.");
                     } else {
                         msgPlayer(player, "&cNo Permission.");

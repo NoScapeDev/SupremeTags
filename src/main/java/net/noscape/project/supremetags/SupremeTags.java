@@ -11,6 +11,7 @@ import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.logging.*;
 
 public final class SupremeTags extends JavaPlugin {
 
@@ -22,6 +23,7 @@ public final class SupremeTags extends JavaPlugin {
     private static H2Database h2;
     private final H2UserData h2user = new H2UserData();
     private static String connectionURL;
+    private static String layout;
     private final MySQLUserData user = new MySQLUserData();
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
@@ -36,6 +38,19 @@ public final class SupremeTags extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        Logger log = getLogger();
+
+        if (getServer().getPluginManager().getPlugin("NBTAPI") == null) {
+            log.warning("------------------------------");
+            log.warning("[NBTAPI] NBTAPI is required for SupremeTags-" + getDescription().getVersion() + " to work!");
+            log.warning("------------------------------");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            log.fine("------------------------------");
+            log.fine("[NBTAPI] NBTAPI has been found for SupremeTags-" + getDescription().getVersion() + "!");
+            log.fine("------------------------------");
+        }
 
         this.saveDefaultConfig();
         this.callMetrics();
@@ -53,27 +68,27 @@ public final class SupremeTags extends JavaPlugin {
             UpdateChecker updater = new UpdateChecker(this);
             updater.fetch();
             if (updater.hasUpdateAvailable()) {
-                getLogger().info("------------------------------");
-                getLogger().info("SupremeTags-Checker");
-                getLogger().info(" ");
-                getLogger().info("An update for SupremeTags has been found!");
-                getLogger().info("SupremeTags-" + updater.getSpigotVersion());
-                getLogger().info("You are running " + getDescription().getVersion());
-                getLogger().info(" ");
-                getLogger().info("Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
-                getLogger().info("------------------------------");
+                log.warning("------------------------------");
+                log.warning("SupremeTags-Checker");
+                log.warning(" ");
+                log.warning("An update for SupremeTags has been found!");
+                log.warning("SupremeTags-" + updater.getSpigotVersion());
+                log.warning("You are running " + getDescription().getVersion());
+                log.warning(" ");
+                log.warning("Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
+                log.warning("------------------------------");
             } else {
-                getLogger().info("------------------------------");
-                getLogger().info("Running latest version of SupremeTags-" + getDescription().getVersion());
-                getLogger().info("------------------------------");
+                log.fine("------------------------------");
+                log.fine("Running latest version of SupremeTags-" + getDescription().getVersion());
+                log.fine("------------------------------");
             }
         }
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PAPI(this).register();
-            getLogger().info("------------------------------");
-            getLogger().info("PlaceholderAPI found SupremeTags! Automatically downloaded cloud.");
-            getLogger().info("------------------------------");
+            log.fine("------------------------------");
+            log.fine("PlaceholderAPI found SupremeTags! Automatically downloaded cloud.");
+            log.fine("------------------------------");
         }
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
@@ -81,9 +96,16 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 
+        if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
+            layout = "layout1";
+        } else if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
+            layout = "layout2";
+        }
+
         tagManager.loadTags();
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
+        tagManager.getDataItem().clear();
     }
 
     @Override
@@ -125,6 +147,14 @@ public final class SupremeTags extends JavaPlugin {
 
     public static String getConnectionURL() {
         return connectionURL;
+    }
+
+    public static String getLayout() {
+        return layout;
+    }
+
+    public static void setLayout(String layout) {
+        SupremeTags.layout = layout;
     }
 
     public H2UserData getUserData() { return h2user; }
