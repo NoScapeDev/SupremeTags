@@ -11,6 +11,9 @@ settings:
   default-category: 'default' # used to set the tags category value when creating a new tag with the '/tag create' command
   layout: 'layout1' # layouts: [layout1(default), layout2(new)]
   update-check: true # the plugin will check if there is an update available.
+  legacy-hex-format: true # should the plugin use the legacy hex colors? (&#d5b47 instead of #d5b47)
+  auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
+  active-tag-glow: true # adds an hidden enchantment to the tag item that is active for the player.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -123,123 +126,24 @@ categories:
 ############################################################
 
 tags:
-  love:
-    tag: '&8[&c&lLove&8]' # the tag that will be display for 'legend'
-    permission: 'supremetags.tag.love'
-    description: '&7Love all around you!'
-    category: 'default' # << category the tag will be placed inside, if catorgies at the top is enabled.
-  legend:
-    tag: '&8[&6&lLegend&8]' # the tag that will be display for 'legend'
-    permission: 'supremetags.tag.legend'
-    description: '&7Legends never die!'
-    category: 'rank'
-  pro:
-    tag: '&8[&cPro&8]'
-    permission: 'supremetags.tag.pro'
-    description: '&7Professional Minecrafter!'
-    category: 'rank'
-  yolo:
-    tag: '&8[&eYolo&8]'
-    permission: 'supremetags.tag.yolo'
-    description: '&7Just yolo it!'
+  hexsupport: # 1.16+ server is required for hex colors to work.
+    tag: '&8[&#afe4a4&lH&#b1cdb1&le&#b3b6bd&lx&#b59fca&lC&#b688d7&lo&#b871e3&ll&#ba5af0&lo&#bc43fd&lr&8]'
+    permission: 'supremetags.tag.hex'
+    description: '&7This plugin supports normal color codes(&a-f/&0-9) and hex color codes(&#123456)'
     category: 'default'
-  bear:
-    tag: '&8[&6Bear&8]'
-    permission: 'supremetags.tag.bear'
-    description: '&7Bears are cute, i guess!'
+    displayname: '&7Tag: %tag%'
+    display-item: 'NAME_TAG'
+  headdatabasesupport: # HeadDatabase is required for this to work.
+    tag: '&8[&c&lHeadDatabase&8]'
+    permission: 'supremetags.tag.headdb'
+    description: '&7This plugin supports head database!'
     category: 'default'
-  noob:
-    tag: '&8[&dNoob&8]'
-    permission: 'supremetags.tag.noob'
-    description: '&7You noob!'
-    category: 'default'
-  bae:
-    tag: '&8[&cBae&8]'
-    permission: 'supremetags.tag.bae'
-    description: '&7What a bae you are!'
-    category: 'default'
-  '420':
-    tag: '&8[&a420&8]'
-    permission: 'supremetags.tag.420'
-    description: '&7420 smoke!'
-    category: 'default'
-  lol:
-    tag: '&8[&eLoL&8]'
-    permission: 'supremetags.tag.lol'
-    description: '&7LOL, that was soooo funny...'
-    category: 'default'
-  savage:
-    tag: '&8[&4Savage&8]'
-    permission: 'supremetags.tag.savage'
-    description: '&7What a savage!'
-    category: 'default'
-  babyrage:
-    tag: '&8[&eBabyRage&8]'
-    permission: 'supremetags.tag.babyrage'
-    description: '&7Don''t rage like a baby'
-    category: 'default'
-  og:
-    tag: '&8[&2OG&8]'
-    permission: 'supremetags.tag.og'
-    description: '&7OG Player!'
-    category: 'default'
-  nerd:
-    tag: '&8[&dNerd&8]'
-    permission: 'supremetags.tag.nerd'
-    description: '&7YOU''RE A NERD!'
-    category: 'default'
-  troll:
-    tag: '&8[&aTroll&8]'
-    permission: 'supremetags.tag.troll'
-    description: '&7Trolling is fun sometimes!'
-    category: 'default'
-  minecraft:
-    tag: '&8[&fMinecraft&8]'
-    permission: 'supremetags.tag.minecraft'
-    description: '&7Best game ever! Right?'
-    category: 'default'
-  rudolph:
-    tag: '&8[&6Rudolph&8]'
-    permission: 'supremetags.tag.rudolph'
-    description: '&7Christmas time tag!'
-    category: 'xmas'
-  ninja:
-    tag: '&8[&bNinja&8]'
-    permission: 'supremetags.tag.ninja'
-    description: '&7The first rule of being a ninja is, ''Do no harm.'' Unless you mean to do harm. Then do lots of harm!'
-    category: 'default'
-  elmo:
-    tag: '&8[&dElmo&8]'
-    permission: 'supremetags.tag.elmo'
-    description: '&7Be kind like elmo.'
-    category: 'default'
-  memes:
-    tag: '&8[&5Memes&8]'
-    permission: 'supremetags.tag.memes'
-    description: '&7The best memer ever...'
-    category: 'default'
-  notch:
-    tag: '&8[&6Notch&8]'
-    permission: 'supremetags.tag.notch'
-    description: '&7The creator of minecraft!'
-    category: 'default'
-  master:
-    tag: '&8[&cMaster&8]'
-    permission: 'supremetags.tag.master'
-    description: '&7People will bow down to you, master!'
-    category: 'default'
-  halloween:
-    tag: '&7[&cHall&4oween&7]'
-    permission: 'supremetags.tag.halloween'
-    description: '&7ooooh, scary. The ghosts are upon you...'
-    category: 'default'
-  snowman:
-    tag: '&7[&fSnow&bMan&7]'
-    permission: 'supremetags.tag.snowman'
-    description: '&7Wanna build a snowman man...'
-    category: 'xmas'
-  santa:
-    tag: '&f[&cSanta&f]'
+    displayname: '&7Tag: %tag%'
+    display-item: 'hdb-7129'
+  santa: # christmas themed tag, shows in the xmas category.
+    tag: '&8[&c&lSanta&8]'
     permission: 'supremetags.tag.santa'
-    description: '&7ho ho hooo, merry christmas!'
+    description: '&7ho ho hooooooo!'
     category: 'xmas'
+    displayname: '&7Tag: %tag%'
+    display-item: 'NAME_TAG'

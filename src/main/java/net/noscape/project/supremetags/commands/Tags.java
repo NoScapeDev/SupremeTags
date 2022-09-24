@@ -219,21 +219,25 @@ public class Tags implements CommandExecutor {
                         //description: '&cAwarded for using DeluxeTags!'
                         //permission: deluxetags.tag.example
 
-                        if (config.getConfigurationSection("deluxetags") != null) {
-                            for (String identifier : Objects.requireNonNull(config.getConfigurationSection("deluxetags")).getKeys(false)) {
-                                if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
+                        if (configFile.exists()) {
+                            if (config.getConfigurationSection("deluxetags") != null) {
+                                for (String identifier : Objects.requireNonNull(config.getConfigurationSection("deluxetags")).getKeys(false)) {
+                                    if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
 
-                                    String tag = config.getString("deluxetags." + identifier + ".tag");
-                                    String description = config.getString("deluxetags." + identifier + ".description");
-                                    String permission = config.getString("deluxetags." + identifier + ".permission");
+                                        String tag = config.getString("deluxetags." + identifier + ".tag");
+                                        String description = config.getString("deluxetags." + identifier + ".description");
+                                        String permission = config.getString("deluxetags." + identifier + ".permission");
 
-                                    SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission);
+                                        SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission);
+                                    }
+
+                                    msgPlayer(player, "&6Merger: &7Added all new tags from &6DeluxeTags&7 were added, any existing tags with the same name won't be added.");
                                 }
-
-                                msgPlayer(player, "&6Merger: &7Added all new tags from &6DeluxeTags&7 were added, any existing tags with the same name won't be added.");
+                            } else {
+                                msgPlayer(player, "&6Error: &7DeluxeTags tag config area is empty.");
                             }
                         } else {
-                            msgPlayer(player, "&6Error: &7DeluxeTags tag config area is empty.");
+                            msgPlayer(player, "&6Error: &7DeluxeTags can not be found.");
                         }
                     } else {
                         msgPlayer(player, "&cNo Permission.");

@@ -7,9 +7,12 @@ import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.listeners.*;
 import net.noscape.project.supremetags.managers.*;
 import net.noscape.project.supremetags.storage.*;
+import org.bukkit.*;
+import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.*;
 import java.util.*;
 import java.util.logging.*;
 
@@ -27,6 +30,8 @@ public final class SupremeTags extends JavaPlugin {
     private final MySQLUserData user = new MySQLUserData();
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
+
+    private boolean legacy_format;
 
     private final String host = getConfig().getString("data.address");
     private final int port = getConfig().getInt("data.port");
@@ -102,6 +107,10 @@ public final class SupremeTags extends JavaPlugin {
             layout = "layout2";
         }
 
+        legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
+
+        merge(log);
+
         tagManager.loadTags();
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
@@ -172,6 +181,45 @@ public final class SupremeTags extends JavaPlugin {
     @Override
     public void reloadConfig() {
         super.reloadConfig();
+    }
+
+    public boolean isLegacyFormat() {
+        return legacy_format;
+    }
+
+    public void merge(Logger log) {
+        if (getConfig().getBoolean("settings.auto-merge")) {
+            File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/DeluxeTags/config.yml"); // First we will load the file.
+            FileConfiguration config = YamlConfiguration.loadConfiguration(configFile); // Now we will load the file into a FileConfiguration.
+
+            //deluxetags:
+            //example:
+            //order: 1
+            //tag: '&8[&bDeluxeTags&8]'
+            //description: '&cAwarded for using DeluxeTags!'
+            //permission: deluxetags.tag.example
+
+            if (configFile.exists()) {
+                if (config.getConfigurationSection("deluxetags") != null) {
+                    for (String identifier : Objects.requireNonNull(config.getConfigurationSection("deluxetags")).getKeys(false)) {
+                        if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
+
+                            String tag = config.getString("deluxetags." + identifier + ".tag");
+                            String description = config.getString("deluxetags." + identifier + ".description");
+                            String permission = config.getString("deluxetags." + identifier + ".permission");
+
+                            SupremeTags.getInstance().getTagManager().createTag(identifier, tag, description, permission);
+                        }
+
+                        log.fine("Merger: &7Added all new tags from DeluxeTags were added, any existing tags with the same name won't be added.");
+                    }
+                } else {
+                    log.warning("Error: DeluxeTags tag config area is empty.");
+                }
+            } else {
+                log.warning("Error: DeluxeTags can not be found.");
+            }
+        }
     }
 
     public Boolean isH2() {

@@ -84,7 +84,14 @@ public class MainMenu extends Menu {
 
                     // set lore
                     ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("categories." + cats + ".lore");
-                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
+
+                    if (categoriesTags.get(cats) != null) {
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
+                    } else {
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(0)));
+                    }
+
+
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);
@@ -107,7 +114,11 @@ public class MainMenu extends Menu {
 
                     // set lore
                     ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("categories." + cats + ".lore");
-                    lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
+                    if (categoriesTags.get(cats) != null) {
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(categoriesTags.get(cats))));
+                    } else {
+                        lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(0)));
+                    }
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);

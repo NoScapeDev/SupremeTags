@@ -3,7 +3,7 @@ version: '${project.version}'
 main: net.noscape.project.supremetags.SupremeTags
 api-version: 1.13
 depend: [NBTAPI]
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, HeadDatabase]
 authors: [NoScape]
 description: Allow players to show of their supreme tags!
 

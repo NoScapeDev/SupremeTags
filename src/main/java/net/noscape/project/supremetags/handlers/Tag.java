@@ -45,4 +45,5 @@ public class Tag {
     public void setPermission(String permission) {
         this.permission = permission;
     }
+
 }
