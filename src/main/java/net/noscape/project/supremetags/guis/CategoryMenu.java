@@ -102,13 +102,25 @@ public class CategoryMenu extends Paged {
 
                     String permission = t.getPermission();
 
-                    String displayname = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname").replaceAll("%tag%", tags.get(tag.get(index)).getTag());
-                    String material = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".display-item");
+                    String displayname;
+
+                    if (SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname") != null) {
+                        displayname = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname").replaceAll("%tag%", tags.get(tag.get(index)).getTag());
+                    } else {
+                        displayname = format("&7Tag: " + tags.get(tag.get(index)).getTag());
+                    }
+
+                    String material;
+
+                    if (SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".display-item") != null) {
+                        material = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".display-item");
+                    } else {
+                        material = "NAME_TAG";
+                    }
 
                     HeadDatabaseAPI api = new HeadDatabaseAPI();
 
                     assert permission != null;
-                    assert material != null;
 
                     if (t.getCategory().equalsIgnoreCase(menuUtil.getCategory())) {
 
