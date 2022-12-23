@@ -93,12 +93,14 @@ public class TagMenu extends Paged {
                 if (index >= tag.size()) break;
                 if (tag.get(index) != null) {
 
+                    Tag t = tags.get(tag.get(index));
+
                     String permission = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".permission");
 
                     String displayname;
 
                     if (SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname") != null) {
-                        displayname = SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname").replaceAll("%tag%", tags.get(tag.get(index)).getTag());
+                        displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag.get(index) + ".displayname")).replace("%tag%", t.getTag());
                     } else {
                         displayname = format("&7Tag: " + tags.get(tag.get(index)).getTag());
                     }
@@ -111,8 +113,6 @@ public class TagMenu extends Paged {
                         material = "NAME_TAG";
                     }
 
-                    HeadDatabaseAPI api = new HeadDatabaseAPI();
-
                     assert permission != null;
 
                     // toggle if they don't have permission
@@ -120,6 +120,8 @@ public class TagMenu extends Paged {
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(tag.get(index))) {
 
                             if (material.contains("hdb-")) {
+
+                                HeadDatabaseAPI api = new HeadDatabaseAPI();
 
                                 int id = Integer.parseInt(material.replaceAll("hdb-", ""));
 
@@ -186,6 +188,8 @@ public class TagMenu extends Paged {
                             if (material.contains("hdb-")) {
 
                                 int id = Integer.parseInt(material.replaceAll("hdb-", ""));
+
+                                HeadDatabaseAPI api = new HeadDatabaseAPI();
 
                                 ItemStack tagItem = api.getItemHead(String.valueOf(id));
                                 ItemMeta tagMeta = tagItem.getItemMeta();
@@ -253,6 +257,8 @@ public class TagMenu extends Paged {
 
                                 int id = Integer.parseInt(material.replaceAll("hdb-", ""));
 
+                                HeadDatabaseAPI api = new HeadDatabaseAPI();
+
                                 ItemStack tagItem = api.getItemHead(String.valueOf(id));
                                 ItemMeta tagMeta = tagItem.getItemMeta();
                                 assert tagMeta != null;
@@ -316,6 +322,8 @@ public class TagMenu extends Paged {
                             if (material.contains("hdb-")) {
 
                                 int id = Integer.parseInt(material.replaceAll("hdb-", ""));
+
+                                HeadDatabaseAPI api = new HeadDatabaseAPI();
 
                                 ItemStack tagItem = api.getItemHead(String.valueOf(id));
                                 ItemMeta tagMeta = tagItem.getItemMeta();

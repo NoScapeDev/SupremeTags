@@ -36,6 +36,8 @@ public class PlayerEvents implements Listener {
             e.setFormat(replace);
         } else if (UserData.getActive(player.getUniqueId()) == null) {
             e.setFormat(replace);
+        } else if(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag() == null) {
+            e.setFormat(replace);
         } else {
             e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{TAG}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())));
         }
