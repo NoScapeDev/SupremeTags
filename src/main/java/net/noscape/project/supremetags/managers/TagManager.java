@@ -202,20 +202,13 @@ public class TagManager {
     }
 
     public void sort() {
-        SortedSet<Map.Entry<String, Tag>> sortedSet = new TreeSet<>((o1, o2) -> {
+        // Create a comparator that compares Map.Entry objects by their key in ascending order
+        Comparator<Map.Entry<String, Tag>> comparator = Map.Entry.comparingByKey();
 
-            int result = o1.getValue().getIdentifier().compareTo(o2.getValue().getIdentifier());
-            result*=-1;
-            if(result==0)
-                result = o1.getKey().compareTo(o2.getKey());
+        // Create a sorted set with the comparator
+        SortedSet<Map.Entry<String, Tag>> sortedSet = new TreeSet<>(comparator);
 
-            return result;
-        });
-
+        // Add all the entries from the tags map to the sorted set
         sortedSet.addAll(tags.entrySet());
-
-        for(Map.Entry<String, Tag> entry:sortedSet)
-            System.out.println(entry.getKey() + "=" + entry.getValue());
     }
-
 }

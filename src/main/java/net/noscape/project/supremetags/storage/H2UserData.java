@@ -25,26 +25,26 @@ public class H2UserData {
     }
 
     public void createPlayer(Player player) {
-        try {
-            if (!exists(player)) {
-                PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement(
-                        "INSERT INTO `users` " +
-                                "(Name, UUID, Active) " +
-                                "VALUES " +
-                                "(?,?,?)");
-                statement.setString(1, player.getName());
-                statement.setString(2, player.getUniqueId().toString());
-                statement.setString(3, SupremeTags.getInstance().getConfig().getString("settings.default-tag"));
-                statement.executeUpdate();
-            }
+        if (exists(player)) {
+            return;
+        }
+
+        String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+
+        try (PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement(
+                "INSERT INTO `users` (Name, UUID, Active) VALUES (?,?,?)")) {
+            statement.setString(1, player.getName());
+            statement.setString(2, player.getUniqueId().toString());
+            statement.setString(3, defaultTag);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void setActive(OfflinePlayer player, String identifier) {
-        try {
-            PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement("UPDATE `users` SET Active=? WHERE (UUID=?)");
+        String sql = "UPDATE `users` SET Active=? WHERE (UUID=?)";
+        try (PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement(sql)) {
             statement.setString(1, identifier);
             statement.setString(2, player.getUniqueId().toString());
             statement.executeUpdate();
@@ -54,20 +54,19 @@ public class H2UserData {
     }
 
     public static String getActive(UUID uuid) {
-        try {
-            PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
+        String value = "";
+        String query = "SELECT * FROM `users` WHERE (UUID=?)";
+        try (PreparedStatement statement = SupremeTags.getDatabase().getConnection().prepareStatement(query)) {
             statement.setString(1, uuid.toString());
-            ResultSet resultSet = statement.executeQuery();
-
-            String value;
-            if (resultSet.next()) {
-                value = resultSet.getString("Active");
-                return value;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    value = resultSet.getString("Active");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "";
+        return value;
     }
 
 }

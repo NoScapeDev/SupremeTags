@@ -38,33 +38,17 @@ public class PAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String params) {
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
 
-        if (params.equalsIgnoreCase("tag")) {
-            String text;
-
-            if (UserData.getActive(Objects.requireNonNull(player.getUniqueId())).equalsIgnoreCase("None")) {
-                text = "";
-            } else {
+        String text = "";
+        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
+            if (params.equalsIgnoreCase("tag")) {
                 text = tags.get(UserData.getActive(player.getUniqueId())).getTag();
-            }
-
-            return text;
-        }
-
-        if (params.equalsIgnoreCase("identifier")) {
-            String text;
-
-            if (UserData.getActive(Objects.requireNonNull(player.getUniqueId())).equalsIgnoreCase("None")) {
-                text = "";
-            } else {
+            } else if (params.equalsIgnoreCase("identifier")) {
                 text = UserData.getActive(player.getUniqueId());
             }
-
-            return text;
         }
-
-        return null;
+        return text;
     }
 
 }

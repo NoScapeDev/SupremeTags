@@ -7,7 +7,6 @@ import java.util.*;
 public class CategoryManager {
 
     private final List<String> catorgies = new ArrayList<>();
-
     private final Map<String, Integer> catorgiesTags = new HashMap<>();
 
     public CategoryManager() {}
@@ -17,24 +16,22 @@ public class CategoryManager {
         catorgies.addAll(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getConfigurationSection("categories")).getKeys(false));
     }
 
-    public void loadCategoriesTags() {
 
+    public void loadCategoriesTags() {
         catorgiesTags.clear();
 
-        int value = 0;
-        String c = null;
         for (String cats : getCatorgies()) {
+            int value = 0;
             for (String tags : Objects.requireNonNull(SupremeTags.getInstance().getConfig().getConfigurationSection("tags")).getKeys(false)) {
                 String cat = SupremeTags.getInstance().getConfig().getString("tags." + tags + ".category");
-                if (cats.contains(cat) && !catorgiesTags.containsKey(cat)) {
+                if (cats.equals(cat)) {
                     value++;
-                    c = cat;
                 }
             }
-            catorgiesTags.put(c, value);
-            value = 0;
+            catorgiesTags.put(cats, value);
         }
     }
+
 
     public List<String> getCatorgies() {
         return catorgies;

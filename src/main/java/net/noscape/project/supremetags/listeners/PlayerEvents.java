@@ -28,18 +28,23 @@ public class PlayerEvents implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
-
         String format = e.getFormat();
 
-        final String replace = format.replace("{tag}", "").replace("{supremetags_tag}", "").replace("{TAG}", "");
-        if (UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
-            e.setFormat(replace);
-        } else if (UserData.getActive(player.getUniqueId()) == null) {
-            e.setFormat(replace);
-        } else if(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag() == null) {
+        // Store the value of UserData.getActive(player.getUniqueId()) in a local variable
+        String activeTag = UserData.getActive(player.getUniqueId());
+        String replace = format.replace("{tag}", "").replace("{supremetags_tag}", "").replace("{TAG}", "");
+        if (activeTag == null || activeTag.equalsIgnoreCase("None")) {
             e.setFormat(replace);
         } else {
-            e.setFormat(format.replace("{tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{supremetags_tag}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())).replace("{TAG}", format(SupremeTags.getInstance().getTagManager().getTags().get(UserData.getActive(player.getUniqueId())).getTag())));
+            // Store the value of SupremeTags.getInstance().getTagManager().getTags().get(activeTag) in a local variable
+            Tag tag = SupremeTags.getInstance().getTagManager().getTags().get(activeTag);
+            if (tag == null) {
+                e.setFormat(replace);
+            } else {
+                // Store the value of format(twag.getTag()) in a local variable
+                String formattedTag = format(tag.getTag());
+                e.setFormat(format.replace("{tag}", formattedTag).replace("{supremetags_tag}", formattedTag).replace("{TAG}", formattedTag));
+            }
         }
     }
 
