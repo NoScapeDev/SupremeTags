@@ -43,6 +43,15 @@ public final class SupremeTags extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        init();
+    }
+
+    @Override
+    public void onDisable() {
+        tagManager.unloadTags();
+    }
+
+    public void init() {
         instance = this;
 
         Logger log = getLogger();
@@ -116,11 +125,6 @@ public final class SupremeTags extends JavaPlugin {
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
-    }
-
-    @Override
-    public void onDisable() {
-        tagManager.unloadTags();
     }
 
     public static SupremeTags getInstance() { return instance; }

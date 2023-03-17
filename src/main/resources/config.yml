@@ -13,7 +13,7 @@ settings:
   update-check: true # the plugin will check if there is an update available.
   legacy-hex-format: true # should the plugin use the legacy hex colors? (&#d5b47 instead of #d5b47)
   auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
-  active-tag-glow: true # adds an hidden enchantment to the tag item that is active for the player.
+  active-tag-glow: true # adds a hidden enchantment to the tag item that is active for the player.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -81,7 +81,7 @@ gui:
 
 categories:
   default:
-    title: '&8Default Tags' # title of the category gui.
+    title: '&8Default Tags (Page %page%)' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&7&lDefault Tags' # item displayname.
     slot: 11 # slot this item will be in the main menu.
@@ -94,7 +94,7 @@ categories:
     permission: 'supremetags.category.default' # permission players will need to open this menu
     permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
   rank:
-    title: '&8Rank Tags' # title of the category gui.
+    title: '&8Rank Tags (Page %page%)' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&6&lRank Tags' # item displayname.
     slot: 13 # slot this item will be in the main menu.
@@ -107,7 +107,7 @@ categories:
     permission: 'supremetags.category.rank' # permission players will need to open this menu
     permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
   xmas:
-    title: '&8Christmas Tags' # title of the category gui.
+    title: '&8Christmas Tags (Page %page%)' # title of the category gui.
     material: 'NAME_TAG' # item material.
     id_display: '&c&lChristmas Tags' # item displayname.
     slot: 15 # slot this item will be in the main menu.
@@ -129,18 +129,11 @@ tags:
   hexsupport: # 1.16+ server is required for hex colors to work.
     tag: '&8[&#afe4a4&lH&#b1cdb1&le&#b3b6bd&lx&#b59fca&lC&#b688d7&lo&#b871e3&ll&#ba5af0&lo&#bc43fd&lr&8]'
     permission: 'supremetags.tag.hex'
-    description: '&7This plugin supports normal color codes(&a-f/&0-9) and hex color codes(&#123456)'
+    description: '&7This plugin supports normal/hex colors'
     category: 'default'
     displayname: '&7Tag: %tag%'
     display-item: 'NAME_TAG'
-  headdatabasesupport: # HeadDatabase is required for this to work.
-    tag: '&8[&c&lHeadDatabase&8]'
-    permission: 'supremetags.tag.headdb'
-    description: '&7This plugin supports head database!'
-    category: 'default'
-    displayname: '&7Tag: %tag%'
-    display-item: 'hdb-7129'
-  santa: # christmas themed tag, shows in the xmas category.
+  santa: # Christmas themed tag, shows in the Xmas category.
     tag: '&8[&c&lSanta&8]'
     permission: 'supremetags.tag.santa'
     description: '&7ho ho hooooooo!'

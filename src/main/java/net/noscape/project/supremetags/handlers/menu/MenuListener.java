@@ -9,8 +9,6 @@ import java.util.*;
 
 public class MenuListener implements Listener {
 
-
-
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();

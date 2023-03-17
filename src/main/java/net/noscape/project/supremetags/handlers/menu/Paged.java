@@ -11,7 +11,7 @@ import static net.noscape.project.supremetags.utils.Utils.format;
 public abstract class Paged extends Menu {
 
     protected int page = 0;
-    protected int maxItems = 36;
+    protected int maxItems = 35;
     protected int index = 0;
 
     public Paged(MenuUtil menuUtil) {

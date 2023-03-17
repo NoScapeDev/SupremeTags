@@ -37,9 +37,9 @@ public class TagManager {
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
-            msgPlayer(player, "&6[TAG] &7New tag created &6" + identifier + " &f- " + tag_string);
+            msgPlayer(player, "&8[&6&lTAG&8] &7New tag created &6" + identifier + " &f- " + tag_string);
         } else {
-            msgPlayer(player, "&c[&l!&c] &7This tag already exists.");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag already exists.");
         }
     }
 
@@ -58,9 +58,9 @@ public class TagManager {
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
-            msgPlayer(player, "&6[TAG] &7New tag created &6" + identifier + " &f- " + tag_string);
+            msgPlayer(player, "&8[&6&lTAG&8] &7New tag created &6" + identifier + " &f- " + tag_string);
         } else {
-            msgPlayer(player, "&c[&l!&c] &7This tag already exists.");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag already exists.");
         }
     }
 
@@ -93,9 +93,9 @@ public class TagManager {
                 e.printStackTrace();
             }
 
-            msgPlayer(player, "&6[TAG] &7Tag &6" + identifier + " &7is now deleted!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7Tag &6" + identifier + " &7is now deleted!");
         } else {
-            msgPlayer(player, "&c[&l!&c] &7This tag doesn't exist!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
         }
     }
 
@@ -111,9 +111,9 @@ public class TagManager {
                 e.printStackTrace();
             }
 
-            msgPlayer(player, "&6[TAG] &7Tag &6" + identifier + " &7is now deleted!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7Tag &6" + identifier + " &7is now deleted!");
         } else {
-            msgPlayer(player, "&c[&l!&c] &7This tag doesn't exist!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
         }
     }
 
@@ -131,6 +131,17 @@ public class TagManager {
         }
 
         Bukkit.getConsoleSender().sendMessage("[TAGS] loaded " + count + " tag(s) successfully.");
+    }
+
+    public Tag getTag(String tag) {
+        Tag t = null;
+        for (Tag tg : tags.values()) {
+            if (tg.getIdentifier().equalsIgnoreCase(tag)) {
+                t = tg;
+            }
+        }
+
+        return t;
     }
 
     public void unloadTags() {
@@ -157,9 +168,9 @@ public class TagManager {
                 e.printStackTrace();
             }
 
-            msgPlayer(player, "&6[TAG] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
+            msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
         } else {
-            msgPlayer(player, "&6[TAG] &7This tag doesn't exist!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
         }
     }
 
@@ -176,9 +187,9 @@ public class TagManager {
                 e.printStackTrace();
             }
 
-            msgPlayer(player, "&6[TAG] &6" + t.getIdentifier() + "'s category &7changed to " + t.getCategory());
+            msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s category &7changed to " + t.getCategory());
         } else {
-            msgPlayer(player, "&6[TAG] &7This category doesn't exist!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This category doesn't exist!");
         }
     }
 
@@ -195,9 +206,9 @@ public class TagManager {
                 e.printStackTrace();
             }
 
-            msgPlayer(player, "&6[TAG] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
+            msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
         } else {
-            msgPlayer(player, "&6[TAG] &7This tag doesn't exist!");
+            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
         }
     }
 
