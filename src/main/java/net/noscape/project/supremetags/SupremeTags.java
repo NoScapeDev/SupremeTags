@@ -2,6 +2,7 @@ package net.noscape.project.supremetags;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import net.noscape.project.supremetags.api.SupremeTagsAPI;
 import net.noscape.project.supremetags.checkers.*;
 import net.noscape.project.supremetags.commands.*;
 import net.noscape.project.supremetags.handlers.hooks.*;
@@ -25,6 +26,8 @@ public final class SupremeTags extends JavaPlugin {
     private static SupremeTags instance;
     private TagManager tagManager;
     private CategoryManager categoryManager;
+
+    private SupremeTagsAPI api;
 
     private static Economy econ = null;
     private static Permission perms = null;
@@ -137,6 +140,9 @@ public final class SupremeTags extends JavaPlugin {
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
+
+
+        api = new SupremeTagsAPI();
     }
 
     public static SupremeTags getInstance() { return instance; }
@@ -237,7 +243,7 @@ public final class SupremeTags extends JavaPlugin {
     }
 
     private void callMetrics() {
-        int pluginId = 103140;
+        int pluginId = 18038;
         Metrics metrics = new Metrics(this, pluginId);
 
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("language", "en")));
@@ -284,6 +290,10 @@ public final class SupremeTags extends JavaPlugin {
 
     public static Permission getPermissions() {
         return perms;
+    }
+
+    public SupremeTagsAPI getTagAPI() {
+        return api;
     }
 
 }
