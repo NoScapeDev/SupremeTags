@@ -233,4 +233,8 @@ public class TagManager {
     public boolean isCost() {
         return isCost;
     }
+
+    public void setCost(boolean isCost) {
+        this.isCost = isCost;
+    }
 }

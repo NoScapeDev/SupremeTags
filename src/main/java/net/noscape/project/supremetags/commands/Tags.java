@@ -53,6 +53,8 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().getDataItem().clear();
 
+                        SupremeTags.getInstance().getTagManager().setCost(SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system"));
+
                         if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
                             SupremeTags.setLayout("layout1");
                         } else if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
@@ -183,6 +185,8 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().loadTags();
 
                         SupremeTags.getInstance().getTagManager().getDataItem().clear();
+
+                        SupremeTags.getInstance().getTagManager().setCost(SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system"));
 
                         if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
                             SupremeTags.setLayout("layout1");
