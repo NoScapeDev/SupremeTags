@@ -40,6 +40,18 @@ public class Utils {
         }
     }
 
+    public static void addPerm(Player player, String permission) {
+        SupremeTags.getPermissions().playerAdd(player, permission);
+    }
+
+    public static boolean hasAmount(Player player, double cost) {
+        return SupremeTags.getEconomy().has(player, cost);
+    }
+
+    public static void take(Player player, double cost) {
+        SupremeTags.getEconomy().withdrawPlayer(player, cost);
+    }
+
     public static String deformat(String str) {
         return ChatColor.stripColor(format(str));
     }

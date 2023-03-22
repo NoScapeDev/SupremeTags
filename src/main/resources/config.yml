@@ -14,6 +14,7 @@ settings:
   legacy-hex-format: true # should the plugin use the legacy hex colors? (&#d5b47 instead of #d5b47)
   auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
   active-tag-glow: true # adds a hidden enchantment to the tag item that is active for the player.
+  cost-system: false # should your players be able to buy tags?
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -63,6 +64,25 @@ gui:
         - '&dDescription:'
         - '&7%description%'
         - ''
+        - '&eClick to Assign!'
+        - '&7&m-----------------------------'
+      locked-lore:
+        - '&c&m-----------------------------'
+        - ''
+        - '&7Buy &8&l> &fRight-Click'
+        - '&7Cost &8&l> &f$%cost%'
+        - ''
+        - '&cThis tag is locked!'
+        - '&c&m-----------------------------'
+      unlocked-lore:
+        - '&7&m-----------------------------'
+        - ''
+        - '&bIdentifier: &7%identifier%'
+        - ''
+        - '&dDescription:'
+        - '&7%description%'
+        - ''
+        - '&eClick to Assign!'
         - '&7&m-----------------------------'
   layout:
     glass-material: 'GRAY_STAINED_GLASS_PANE'
@@ -133,6 +153,7 @@ tags:
     category: 'default'
     displayname: '&7Tag: %tag%'
     display-item: 'NAME_TAG'
+    cost: 200 # this is only implemented when 'cost-system' is enabled.
   santa: # Christmas themed tag, shows in the Xmas category.
     tag: '&8[&c&lSanta&8]'
     permission: 'supremetags.tag.santa'
@@ -140,3 +161,4 @@ tags:
     category: 'xmas'
     displayname: '&7Tag: %tag%'
     display-item: 'NAME_TAG'
+    cost: 100 # setting this to 0 when 'cost-system' is enabled, will make this tag free.

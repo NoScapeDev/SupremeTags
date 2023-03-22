@@ -16,16 +16,19 @@ public class TagManager {
     private final Map<String, Tag> tags = new HashMap<>();
     private final Map<Integer, String> dataItem = new HashMap<>();
 
-    public TagManager() {
+    private boolean isCost;
+
+    public TagManager(boolean isCost) {
         this.sort();
+        this.isCost = isCost;
     }
 
-    public void createTag(Player player, String identifier, String tag_string, String description, String permission) {
+    public void createTag(Player player, String identifier, String tag_string, String description, String permission, double cost) {
         if (!tags.containsKey(identifier)) {
 
             String default_category = SupremeTags.getInstance().getConfig().getString("settings.default-category");
 
-            Tag tag = new Tag(identifier, tag_string, default_category, permission);
+            Tag tag = new Tag(identifier, tag_string, default_category, permission, cost);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
@@ -34,6 +37,7 @@ public class TagManager {
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", default_category);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".display-item", "NAME_TAG");
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".displayname", "&7Tag: %tag%");
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".cost", cost);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
@@ -43,18 +47,19 @@ public class TagManager {
         }
     }
 
-    public void createTag(CommandSender player, String identifier, String tag_string, String description, String permission) {
+    public void createTag(CommandSender player, String identifier, String tag_string, String description, String permission, double cost) {
         if (!tags.containsKey(identifier)) {
 
             String default_category = SupremeTags.getInstance().getConfig().getString("settings.default-category");
 
-            Tag tag = new Tag(identifier, tag_string, default_category, permission);
+            Tag tag = new Tag(identifier, tag_string, default_category, permission, cost);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", default_category);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".cost", cost);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
 
@@ -64,18 +69,19 @@ public class TagManager {
         }
     }
 
-    public void createTag(String identifier, String tag_string, String description, String permission) {
+    public void createTag(String identifier, String tag_string, String description, String permission, double cost) {
         if (!tags.containsKey(identifier)) {
 
             String default_category = SupremeTags.getInstance().getConfig().getString("settings.default-category");
 
-            Tag tag = new Tag(identifier, tag_string, default_category, permission);
+            Tag tag = new Tag(identifier, tag_string, default_category, permission, cost);
             tags.put(identifier, tag);
 
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".tag", tag_string);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".permission", permission);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".description", description);
             SupremeTags.getInstance().getConfig().set("tags." + identifier + ".category", default_category);
+            SupremeTags.getInstance().getConfig().set("tags." + identifier + ".cost", cost);
             SupremeTags.getInstance().saveConfig();
             SupremeTags.getInstance().reloadConfig();
         }
@@ -123,8 +129,9 @@ public class TagManager {
             String tag = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".tag");
             String category = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".category");
             String permission = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".permission");
+            double cost = SupremeTags.getInstance().getConfig().getDouble("tags." + identifier + ".cost");
 
-            Tag t = new Tag(identifier, tag, category, permission);
+            Tag t = new Tag(identifier, tag, category, permission, cost);
             tags.put(identifier, t);
 
             count++;
@@ -221,5 +228,9 @@ public class TagManager {
 
         // Add all the entries from the tags map to the sorted set
         sortedSet.addAll(tags.entrySet());
+    }
+
+    public boolean isCost() {
+        return isCost;
     }
 }

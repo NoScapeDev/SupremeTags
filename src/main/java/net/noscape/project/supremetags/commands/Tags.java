@@ -27,7 +27,7 @@ public class Tags implements CommandExecutor {
                         String name = args[1];
                         String tag = args[2];
 
-                        SupremeTags.getInstance().getTagManager().createTag(sender, name, tag, "&7My tag is " + name, "supremetags.tag." + name);
+                        SupremeTags.getInstance().getTagManager().createTag(sender, name, tag, "&7My tag is " + name, "supremetags.tag." + name, 0);
                     } else if (args[0].equalsIgnoreCase("settag")) {
                         String name = args[1];
                         String tag = args[2];
@@ -111,14 +111,22 @@ public class Tags implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("tags")) {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
-                    if (hasTags(player)) {
+                    if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                        if (hasTags(player)) {
+                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                            } else {
+                                new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                            }
+                        } else {
+                            msgPlayer(player, "&cYou have no tags yet.");
+                        }
+                    } else {
                         if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
                             new MainMenu(SupremeTags.getMenuUtil(player)).open();
                         } else {
                             new TagMenu(SupremeTags.getMenuUtil(player)).open();
                         }
-                    } else {
-                        msgPlayer(player, "&cYou have no tags yet.");
                     }
                 } else {
                     msgPlayer(player, "&cNo Permission, required permission: &7'supremetags.menu'");
@@ -129,7 +137,7 @@ public class Tags implements CommandExecutor {
                         String name = args[1];
                         String tag = args[2];
 
-                        SupremeTags.getInstance().getTagManager().createTag(player, name, tag, "&7My tag is " + name, "supremetags.tag." + name);
+                        SupremeTags.getInstance().getTagManager().createTag(player, name, tag, "&7My tag is " + name, "supremetags.tag." + name, 0);
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
@@ -221,7 +229,7 @@ public class Tags implements CommandExecutor {
                                         String description = config.getString("deluxetags." + identifier + ".description");
                                         String permission = config.getString("deluxetags." + identifier + ".permission");
 
-                                        SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission);
+                                        SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission, 0);
                                     }
 
                                     msgPlayer(player, "&6Merger: &7Added all new tags from &6DeluxeTags&7 were added, any existing tags with the same name won't be added.");

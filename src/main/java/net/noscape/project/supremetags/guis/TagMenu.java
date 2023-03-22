@@ -49,11 +49,39 @@ public class TagMenu extends Paged {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
                 NBTItem nbt = new NBTItem(e.getCurrentItem());
                 String identifier = nbt.getString("identifier");
-                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                    UserData.setActive(player, identifier);
-                    player.closeInventory();
-                    super.open();
-                    menuUtil.setIdentifier(identifier);
+
+                Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
+
+                if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                    if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
+                        UserData.setActive(player, identifier);
+                        player.closeInventory();
+                        super.open();
+                        menuUtil.setIdentifier(identifier);
+                    }
+                } else {
+                    if (player.hasPermission(t.getPermission())) {
+                        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
+                            UserData.setActive(player, identifier);
+                            player.closeInventory();
+                            super.open();
+                            menuUtil.setIdentifier(identifier);
+                        }
+                    } else {
+                        double cost = t.getCost();
+
+                        // check if they have the right amount of money to buy etc....
+                        if (hasAmount(player, cost)) {
+                            // give them the tag
+                            take(player, cost);
+                            addPerm(player, t.getPermission());
+                            msgPlayer(player, "&8[&6Tags&8] &7You have unlocked the tag: &6" + t.getIdentifier());
+                            player.closeInventory();
+                            super.open();
+                        } else {
+                            msgPlayer(player, "&cInsufficient funds. &7You need &c$" + t.getCost() + " &7to get this tag.");
+                        }
+                    }
                 }
             }
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
@@ -85,299 +113,10 @@ public class TagMenu extends Paged {
 
         applyLayout();
 
-        ArrayList<Tag> tag = new ArrayList<>(tags.values());
-
-        if (!tag.isEmpty()) {
-            int maxItemsPerPage = 36;
-            int startIndex = page * maxItemsPerPage;
-            int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
-
-            for (int i = startIndex; i < endIndex; i++) {
-                Tag t = tag.get(i);
-                if (t == null) continue;
-
-                String permission = SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".permission");
-
-                String displayname;
-
-                if (SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname") != null) {
-                    displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
-                } else {
-                    displayname = format("&7Tag: " + t.getTag());
-                }
-
-                String material;
-
-                if (SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".display-item") != null) {
-                    material = SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".display-item");
-                } else {
-                    material = "NAME_TAG";
-                }
-
-                assert permission != null;
-
-                // toggle if they don't have permission
-                if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
-                    if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
-
-                        if (material.contains("hdb-")) {
-
-                            HeadDatabaseAPI api = new HeadDatabaseAPI();
-
-                            int id = Integer.parseInt(material.replaceAll("hdb-", ""));
-
-                            ItemStack tagItem = api.getItemHead(String.valueOf(id));
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-
-                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-                            }
-
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        } else {
-                            ItemStack tagItem = new ItemStack(Material.valueOf(material.toUpperCase()), 1);
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());;
-                            inventory.addItem(nbt.getItem());
-                        }
-                    } else {
-                        if (material.contains("hdb-")) {
-
-                            int id = Integer.parseInt(material.replaceAll("hdb-", ""));
-
-                            HeadDatabaseAPI api = new HeadDatabaseAPI();
-
-                            ItemStack tagItem = api.getItemHead(String.valueOf(id));
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        } else {
-                            ItemStack tagItem = new ItemStack(Material.valueOf(material.toUpperCase()), 1);
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        }
-                    }
-
-
-                    // if permission == none
-                } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
-                    if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
-
-                        if (material.contains("hdb-")) {
-
-                            int id = Integer.parseInt(material.replaceAll("hdb-", ""));
-
-                            HeadDatabaseAPI api = new HeadDatabaseAPI();
-
-                            ItemStack tagItem = api.getItemHead(String.valueOf(id));
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-
-                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-                            }
-
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        } else {
-                            ItemStack tagItem = new ItemStack(Material.valueOf(material.toUpperCase()), 1);
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        }
-                    } else {
-                        if (material.contains("hdb-")) {
-
-                            int id = Integer.parseInt(material.replaceAll("hdb-", ""));
-
-                            HeadDatabaseAPI api = new HeadDatabaseAPI();
-
-                            ItemStack tagItem = api.getItemHead(String.valueOf(id));
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        } else {
-                            ItemStack tagItem = new ItemStack(Material.valueOf(material.toUpperCase()), 1);
-                            ItemMeta tagMeta = tagItem.getItemMeta();
-                            assert tagMeta != null;
-
-                            NBTItem nbt = new NBTItem(tagItem);
-
-                            nbt.setString("identifier", t.getIdentifier());
-
-                            tagMeta.setDisplayName(format(displayname));
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-                            tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-                            // set lore
-                            ArrayList<String> lore = (ArrayList<String>) SupremeTags.getInstance().getConfig().getStringList("gui.tag-menu-none-categories.tag-item.lore");
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%description%", format(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".description")))));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
-                            lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
-
-                            tagMeta.setLore(color(lore));
-
-                            nbt.getItem().setItemMeta(tagMeta);
-
-                            nbt.setString("identifier", t.getIdentifier());
-                            inventory.addItem(nbt.getItem());
-                        }
-                    }
-                }
-            }
+        if (SupremeTags.getInstance().getTagManager().isCost()) {
+            getTagItemsCost();
+        } else {
+            getTagItemsNoneCost();
         }
     }
 }

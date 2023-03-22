@@ -1,5 +1,7 @@
 package net.noscape.project.supremetags;
 
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import net.noscape.project.supremetags.checkers.*;
 import net.noscape.project.supremetags.commands.*;
 import net.noscape.project.supremetags.handlers.hooks.*;
@@ -11,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.*;
 import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -20,8 +23,11 @@ import java.util.logging.*;
 public final class SupremeTags extends JavaPlugin {
 
     private static SupremeTags instance;
-    private final TagManager tagManager = new TagManager();
-    private final CategoryManager categoryManager = new CategoryManager();
+    private TagManager tagManager;
+    private CategoryManager categoryManager;
+
+    private static Economy econ = null;
+    private static Permission perms = null;
 
     private static MySQL mysql;
     private static H2Database h2;
@@ -75,6 +81,9 @@ public final class SupremeTags extends JavaPlugin {
             h2 = new H2Database(connectionURL);
         }
 
+        tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
+        categoryManager = new CategoryManager();
+
         if (isMySQL()) {
             mysql = new MySQL(host, port, database, username, password, options);
         }
@@ -118,6 +127,9 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
+
+        setupEconomy();
+        setupPermissions();
 
         merge(log);
 
@@ -205,7 +217,7 @@ public final class SupremeTags extends JavaPlugin {
                         String description = config.getString(String.format("deluxetags.%s.description", identifier));
                         String permission = config.getString(String.format("deluxetags.%s.permission", identifier));
 
-                        SupremeTags.getInstance().getTagManager().createTag(identifier, tag, description, permission);
+                        SupremeTags.getInstance().getTagManager().createTag(identifier, tag, description, permission, 0);
                     }
                 }
                 log.info("Merger: Added all new tags from DeluxeTags, any existing tags with the same name were not added.");
@@ -246,6 +258,32 @@ public final class SupremeTags extends JavaPlugin {
             }
             return map;
         }));
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
+    }
+
+    public static Permission getPermissions() {
+        return perms;
     }
 
 }
