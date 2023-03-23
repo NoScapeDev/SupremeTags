@@ -128,7 +128,15 @@ public class TagManager {
         for (String identifier : Objects.requireNonNull(SupremeTags.getInstance().getConfig().getConfigurationSection("tags")).getKeys(false)) {
             String tag = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".tag");
             String category = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".category");
-            String permission = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".permission");
+
+            String permission;
+
+            if (SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".permission") != null) {
+                permission = SupremeTags.getInstance().getConfig().getString("tags." + identifier + ".permission");
+            } else {
+                permission = "none";
+            }
+
             double cost = SupremeTags.getInstance().getConfig().getDouble("tags." + identifier + ".cost");
 
             Tag t = new Tag(identifier, tag, category, permission, cost);

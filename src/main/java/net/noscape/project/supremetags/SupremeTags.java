@@ -18,6 +18,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.*;
 
@@ -42,6 +46,9 @@ public final class SupremeTags extends JavaPlugin {
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
 
     private boolean legacy_format;
+
+    public static File latestConfigFile;
+    public static FileConfiguration latestConfigConfig;
 
     private final String host = getConfig().getString("data.address");
     private final int port = getConfig().getInt("data.port");
@@ -141,6 +148,31 @@ public final class SupremeTags extends JavaPlugin {
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
 
+        if (latestConfigFile != null) {
+            if (deleteConfig()) {
+                latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
+                if (!latestConfigFile.exists())
+                    saveResource("DEFAULT-CONFIG-LATEST.yml", true);
+                latestConfigConfig = new YamlConfiguration();
+                try {
+                    latestConfigConfig.load(latestConfigFile);
+                } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (deleteConfig()) {
+                latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
+                if (!latestConfigFile.exists())
+                    saveResource("DEFAULT-CONFIG-LATEST.yml", true);
+                latestConfigConfig = new YamlConfiguration();
+                try {
+                    latestConfigConfig.load(latestConfigFile);
+                } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         api = new SupremeTagsAPI();
     }
@@ -294,6 +326,24 @@ public final class SupremeTags extends JavaPlugin {
 
     public SupremeTagsAPI getTagAPI() {
         return api;
+    }
+
+    private boolean deleteConfig() {
+        latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
+        Path path = latestConfigFile.toPath();
+        try {
+            Files.delete(path);
+            return true;
+        } catch (NoSuchFileException x) {
+            System.err.format("%s: no such" + " file or directory%n", path);
+            return false;
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("%s not empty%n", path);
+            return false;
+        } catch (IOException x) {
+            System.err.println(x);
+            return false;
+        }
     }
 
 }

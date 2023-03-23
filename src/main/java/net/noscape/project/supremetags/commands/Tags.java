@@ -2,8 +2,10 @@ package net.noscape.project.supremetags.commands;
 
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
+import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.storage.*;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;
 import org.bukkit.configuration.file.*;
 import org.bukkit.entity.*;
@@ -287,10 +289,11 @@ public class Tags implements CommandExecutor {
     }
 
     public boolean hasTags(Player player) {
-        for (String tag : SupremeTags.getInstance().getTagManager().getTags().keySet())
-
-            if (player.hasPermission(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + tag + ".permission"))))
+        for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
+            if (player.hasPermission(tag.getPermission())) {
                 return true;
+            }
+        }
         return false;
     }
 }
