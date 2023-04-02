@@ -13,6 +13,8 @@ public class TagBuyEvent extends Event implements Cancellable {
     private double getCost;
     private boolean isCancelled;
 
+    private static final HandlerList handlers = new HandlerList();
+
     public TagBuyEvent(Player player, String tag, double getCost, boolean isCancelled) {
         this.player = player;
         this.tag = tag;
@@ -20,10 +22,13 @@ public class TagBuyEvent extends Event implements Cancellable {
         this.isCancelled = isCancelled;
     }
 
-    @NotNull
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public String getTag() {
