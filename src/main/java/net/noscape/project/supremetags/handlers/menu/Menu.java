@@ -1,12 +1,16 @@
 package net.noscape.project.supremetags.handlers.menu;
 
 import net.noscape.project.supremetags.*;
+import net.noscape.project.supremetags.storage.UserData;
 import org.bukkit.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 
 import java.util.*;
+
+import static net.noscape.project.supremetags.utils.Utils.color;
+import static net.noscape.project.supremetags.utils.Utils.format;
 
 public abstract class Menu implements InventoryHolder {
 
@@ -59,4 +63,24 @@ public abstract class Menu implements InventoryHolder {
         return item;
     }
 
+    public ItemStack makeItem(Material material, String displayName, List<String> lore) {
+
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName(displayName);
+
+        itemMeta.setLore(color(lore));
+        item.setItemMeta(itemMeta);
+
+        return item;
+    }
+
+    public void fillEmpty() {
+        for (int i = 0; i <inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) {
+                inventory.setItem(i, GLASS);
+            }
+        }
+    }
 }

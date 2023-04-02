@@ -5,6 +5,8 @@ import net.milkbowl.vault.permission.Permission;
 import net.noscape.project.supremetags.api.SupremeTagsAPI;
 import net.noscape.project.supremetags.checkers.*;
 import net.noscape.project.supremetags.commands.*;
+import net.noscape.project.supremetags.guis.tageditor.EditorListener;
+import net.noscape.project.supremetags.handlers.Editor;
 import net.noscape.project.supremetags.handlers.hooks.*;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.listeners.*;
@@ -44,6 +46,7 @@ public final class SupremeTags extends JavaPlugin {
     private final MySQLUserData user = new MySQLUserData();
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
+    private final HashMap<Player, Editor> EditorList = new HashMap<>();
 
     private boolean legacy_format;
 
@@ -129,6 +132,7 @@ public final class SupremeTags extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+        getServer().getPluginManager().registerEvents(new EditorListener(), this);
 
         if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
             layout = "layout1";
@@ -190,6 +194,19 @@ public final class SupremeTags extends JavaPlugin {
             return menuUtilMap.get(player);
         } else {
             menuUtil = new MenuUtil(player, UserData.getActive(player.getUniqueId()));
+            menuUtilMap.put(player, menuUtil);
+        }
+
+        return menuUtil;
+    }
+
+    public static MenuUtil getMenuUtilIdentifier(Player player, String identifier) {
+        MenuUtil menuUtil;
+
+        if (menuUtilMap.containsKey(player)) {
+            return menuUtilMap.get(player);
+        } else {
+            menuUtil = new MenuUtil(player, identifier);
             menuUtilMap.put(player, menuUtil);
         }
 
@@ -346,4 +363,7 @@ public final class SupremeTags extends JavaPlugin {
         }
     }
 
+    public HashMap<Player, Editor> getEditorList() {
+        return EditorList;
+    }
 }

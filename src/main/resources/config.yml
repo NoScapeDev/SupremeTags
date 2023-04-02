@@ -84,6 +84,20 @@ gui:
         - ''
         - '&eClick to Assign!'
         - '&7&m-----------------------------'
+  tag-editor-menu:
+    title: '&8Tag Editor'
+    tag-item:
+      displayname: '&7Tag: %tag%'
+      lore:
+        - '&7&m-----------------------------'
+        - ''
+        - '&bIdentifier: &7%identifier%'
+        - ''
+        - '&dDescription:'
+        - '&7%description%'
+        - ''
+        - '&eClick to Edit!'
+        - '&7&m-----------------------------'
   layout:
     glass-material: 'GRAY_STAINED_GLASS_PANE'
     tag-material: 'NAME_TAG'

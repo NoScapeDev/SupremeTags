@@ -3,6 +3,8 @@ package net.noscape.project.supremetags.guis;
 import de.tr7zw.nbtapi.*;
 import me.arcaniax.hdb.api.*;
 import net.noscape.project.supremetags.*;
+import net.noscape.project.supremetags.api.events.TagAssignEvent;
+import net.noscape.project.supremetags.api.events.TagBuyEvent;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.storage.*;
@@ -54,18 +56,30 @@ public class TagMenu extends Paged {
 
                 if (!SupremeTags.getInstance().getTagManager().isCost()) {
                     if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                        UserData.setActive(player, identifier);
+
+                        TagAssignEvent tagevent = new TagAssignEvent(player, identifier,false);
+                        Bukkit.getPluginManager().callEvent(tagevent);
+
+                        if (tagevent.isCancelled()) return;
+
+                        UserData.setActive(player, tagevent.getTag());
                         player.closeInventory();
                         super.open();
-                        menuUtil.setIdentifier(identifier);
+                        menuUtil.setIdentifier(tagevent.getTag());
                     }
                 } else {
                     if (player.hasPermission(t.getPermission())) {
                         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                            UserData.setActive(player, identifier);
+                            TagAssignEvent tagevent = new TagAssignEvent(player, identifier,false);
+                            Bukkit.getPluginManager().callEvent(tagevent);
+
+                            if (tagevent.isCancelled()) return;
+
+
+                            UserData.setActive(player, tagevent.getTag());
                             player.closeInventory();
                             super.open();
-                            menuUtil.setIdentifier(identifier);
+                            menuUtil.setIdentifier(tagevent.getTag());
                         }
                     } else {
                         double cost = t.getCost();
@@ -73,6 +87,12 @@ public class TagMenu extends Paged {
                         // check if they have the right amount of money to buy etc....
                         if (hasAmount(player, cost)) {
                             // give them the tag
+
+                            TagBuyEvent tagevent = new TagBuyEvent(player, identifier, cost, false);
+                            Bukkit.getPluginManager().callEvent(tagevent);
+
+                            if (tagevent.isCancelled()) return;
+
                             take(player, cost);
                             addPerm(player, t.getPermission());
                             msgPlayer(player, "&8[&6Tags&8] &7You have unlocked the tag: &6" + t.getIdentifier());

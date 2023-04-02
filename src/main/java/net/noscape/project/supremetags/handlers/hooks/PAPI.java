@@ -24,7 +24,7 @@ public class PAPI extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "NoScape";
+        return "DevScape";
     }
 
     @Override

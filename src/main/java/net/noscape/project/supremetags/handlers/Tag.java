@@ -6,13 +6,15 @@ public class Tag {
     private String tag;
     private String category;
     private String permission;
+    private String description;
     private double cost;
 
-    public Tag(String identifier, String tag, String category, String permission, double cost) {
+    public Tag(String identifier, String tag, String category, String permission, String description, double cost) {
         this.identifier = identifier;
         this.tag = tag;
         this.category = category;
         this.permission = permission;
+        this.description = description;
         this.cost = cost;
     }
 
@@ -54,5 +56,13 @@ public class Tag {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

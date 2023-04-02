@@ -2,6 +2,7 @@ package net.noscape.project.supremetags.commands;
 
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
+import net.noscape.project.supremetags.guis.tageditor.TagEditorMenu;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.storage.*;
 import org.bukkit.Bukkit;
@@ -221,6 +222,12 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
+                } else if (args[0].equalsIgnoreCase("editor")) {
+                        if (player.hasPermission("supremetags.admin")) {
+                            new TagEditorMenu(SupremeTags.getMenuUtil(player)).open();
+                        } else {
+                            msgPlayer(player, "&cNo Permission.");
+                        }
                 } else if (args[0].equalsIgnoreCase("merge")) {
                     if (player.hasPermission("supremetags.admin")) {
                         File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/DeluxeTags/config.yml"); // First we will load the file.
