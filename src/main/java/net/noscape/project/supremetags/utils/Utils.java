@@ -1,43 +1,59 @@
 package net.noscape.project.supremetags.utils;
 
 import net.md_5.bungee.api.ChatColor;
-import net.noscape.project.supremetags.*;
-import org.bukkit.*;
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
+import net.noscape.project.supremetags.SupremeTags;
+import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.*;
-import java.util.regex.*;
-import java.util.stream.*;
+import java.awt.*;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Utils {
 
+    private static Pattern p1 = Pattern.compile("\\{#([0-9A-Fa-f]{6})\\}");
+    private static Pattern p2 = Pattern.compile("&#[0-9A-Fa-f]{6}");
+    private static Pattern p3 = Pattern.compile("&#[0-9A-Fa-f]{6}");
+
     public static String format(String message) {
-        if (SupremeTags.getInstance().isLegacyFormat()) {
-            message = message.replace(">>", "").replace("<<", "");
-            Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]){6}");
-            Matcher matcher = hexPattern.matcher(message);
-            while (matcher.find()) {
-                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-                String before = message.substring(0, matcher.start());
-                String after = message.substring(matcher.end());
-                message = before + hexColor + after;
-                matcher = hexPattern.matcher(message);
+        if (SupremeTags.getInstance().isCMIHex()) {
+            Matcher match = p1.matcher(message);
+            while (match.find()) {
+                getRGB(message);
             }
             return ChatColor.translateAlternateColorCodes('&', message);
+        } else if (SupremeTags.getInstance().isLegacyFormat()) {
+            Matcher match = p2.matcher(message);
+            while (match.find()) { // Searches the message for something that matches the pattern
+                String color = message.substring(match.start(), match.end());
+                message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+                match = p2.matcher(message);
+            }
         } else {
-            message = message.replace(">>", "").replace("<<", "");
-            Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
-            Matcher matcher = hexPattern.matcher(message);
-            while (matcher.find()) {
-                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-                String before = message.substring(0, matcher.start());
-                String after = message.substring(matcher.end());
-                message = before + hexColor + after;
-                matcher = hexPattern.matcher(message);
+            Matcher match = p3.matcher(message);
+            while (match.find()) { // Searches the message for something that matches the pattern
+                String color = message.substring(match.start(), match.end());
+                message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+                match = p3.matcher(message);
             }
-            return ChatColor.translateAlternateColorCodes('&', message);
         }
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static String colorizeRGB(String input) {
+        Matcher matcher = p1.matcher(input);
+        String color;
+        while (matcher.find()) {
+            color = matcher.group(1);
+            if (color == null) {
+                color = matcher.group(2);
+            }
+            input = input.replace(matcher.group(), ChatColor.of(color) + "");
+        }
+        return input;
     }
 
     public static void addPerm(Player player, String permission) {
@@ -78,6 +94,67 @@ public class Utils {
 
     public static List<String> color(List<String> lore){
         return lore.stream().map(Utils::format).collect(Collectors.toList());
+    }
+
+
+
+    private static Pattern rgbPat = Pattern.compile("(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\\b|(?:rgb|hsl)a?\\([^\\)]*\\)");
+    public static String getRGB(String msg) {
+        String temp = msg;
+        try {
+
+            String status = "none";
+            String r = "";
+            String g = "";
+            String b = "";
+            Matcher match = rgbPat.matcher(msg);
+            while (match.find()) {
+                String color = msg.substring(match.start(), match.end());
+                for (char character : msg.substring(match.start(), match.end()).toCharArray()) {
+                    switch (character) {
+                        case '(':
+                            status = "r";
+                            continue;
+                        case ',':
+                            switch (status) {
+                                case "r":
+                                    status = "g";
+                                    continue;
+                                case "g":
+                                    status = "b";
+                                    continue;
+                                default:
+                                    break;
+                            }
+                        default:
+                            switch (status) {
+                                case "r":
+                                    r = r + character;
+                                    continue;
+                                case "g":
+                                    g = g + character;
+                                    continue;
+                                case "b":
+                                    b = b + character;
+                                    continue;
+                            }
+                            break;
+                    }
+
+
+                }
+                b = b.replace(")", "");
+                Color col = new Color(Integer.parseInt(r), Integer.parseInt(g), Integer.parseInt(b));
+                temp = temp.replaceFirst("(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\\b|(?:rgb|hsl)a?\\([^\\)]*\\)", ChatColor.of(col) + "");
+                r = "";
+                g = "";
+                b = "";
+                status = "none";
+            }
+        } catch (Exception e) {
+            return msg;
+        }
+        return temp;
     }
 
 }

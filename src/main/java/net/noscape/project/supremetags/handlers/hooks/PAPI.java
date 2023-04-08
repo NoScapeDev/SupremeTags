@@ -9,6 +9,8 @@ import org.jetbrains.annotations.*;
 
 import java.util.*;
 
+import static net.noscape.project.supremetags.utils.Utils.msgPlayer;
+
 public class PAPI extends PlaceholderExpansion {
 
     private final Map<String, Tag> tags;
@@ -39,16 +41,23 @@ public class PAPI extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-
         String text = "";
         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
             if (params.equalsIgnoreCase("tag")) {
-                text = tags.get(UserData.getActive(player.getUniqueId())).getTag();
+
+                for (String world : SupremeTags.getInstance().getConfig().getStringList("settings.disabled-worlds")) {
+                    if (player.getPlayer().getWorld().getName().equalsIgnoreCase(world)) {
+                        text = "";
+                    } else {
+                        text = tags.get(UserData.getActive(player.getUniqueId())).getTag();
+                    }
+                    break;
+                }
+
             } else if (params.equalsIgnoreCase("identifier")) {
                 text = UserData.getActive(player.getUniqueId());
             }
         }
         return text;
     }
-
 }

@@ -49,6 +49,8 @@ public final class SupremeTags extends JavaPlugin {
     private final HashMap<Player, Editor> EditorList = new HashMap<>();
 
     private boolean legacy_format;
+    private boolean cmi_hex;
+    private boolean disabledWorldsTag;
 
     public static File latestConfigFile;
     public static FileConfiguration latestConfigConfig;
@@ -141,6 +143,8 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
+        cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
+        disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
 
         setupEconomy();
         setupPermissions();
@@ -226,6 +230,10 @@ public final class SupremeTags extends JavaPlugin {
         return menuUtil;
     }
 
+    public HashMap<Player, MenuUtil> getMenuUtil() {
+        return menuUtilMap;
+    }
+
     public static String getConnectionURL() {
         return connectionURL;
     }
@@ -253,6 +261,10 @@ public final class SupremeTags extends JavaPlugin {
     @Override
     public void reloadConfig() {
         super.reloadConfig();
+
+        legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
+        cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
+        disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
     }
 
     public boolean isLegacyFormat() {
@@ -365,5 +377,13 @@ public final class SupremeTags extends JavaPlugin {
 
     public HashMap<Player, Editor> getEditorList() {
         return EditorList;
+    }
+
+    public boolean isCMIHex() {
+        return cmi_hex;
+    }
+
+    public boolean isDisabledWorldsTag() {
+        return disabledWorldsTag;
     }
 }

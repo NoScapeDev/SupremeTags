@@ -91,7 +91,6 @@ public class MainMenu extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tags_amount%", String.valueOf(0)));
                     }
 
-
                     cat_itemMeta.setLore(color(lore));
 
                     cat_item.setItemMeta(cat_itemMeta);

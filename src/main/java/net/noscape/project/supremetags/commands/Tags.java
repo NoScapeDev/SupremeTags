@@ -116,21 +116,30 @@ public class Tags implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("tags")) {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
-                    if (!SupremeTags.getInstance().getTagManager().isCost()) {
-                        if (hasTags(player)) {
+                    if (!SupremeTags.getInstance().isDisabledWorldsTag()) {
+                        if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                            if (hasTags(player)) {
+                                if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                    new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                                } else {
+                                    new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                                }
+                            } else {
+                                msgPlayer(player, "&cYou have no tags yet.");
+                            }
+                        } else {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
                                 new MainMenu(SupremeTags.getMenuUtil(player)).open();
                             } else {
                                 new TagMenu(SupremeTags.getMenuUtil(player)).open();
                             }
-                        } else {
-                            msgPlayer(player, "&cYou have no tags yet.");
                         }
                     } else {
-                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
-                            new MainMenu(SupremeTags.getMenuUtil(player)).open();
-                        } else {
-                            new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                        for (String world : SupremeTags.getInstance().getConfig().getStringList("settings.disabled-worlds")) {
+                            if (player.getWorld().getName().equalsIgnoreCase(world)) {
+                                msgPlayer(player, "&cTag command is disabled in this world.");
+                                break;
+                            }
                         }
                     }
                 } else {

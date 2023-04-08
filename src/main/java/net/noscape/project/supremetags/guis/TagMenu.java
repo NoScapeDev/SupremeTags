@@ -5,6 +5,7 @@ import me.arcaniax.hdb.api.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.api.events.TagAssignEvent;
 import net.noscape.project.supremetags.api.events.TagBuyEvent;
+import net.noscape.project.supremetags.api.events.TagResetEvent;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.storage.*;
@@ -75,7 +76,6 @@ public class TagMenu extends Paged {
 
                             if (tagevent.isCancelled()) return;
 
-
                             UserData.setActive(player, tagevent.getTag());
                             player.closeInventory();
                             super.open();
@@ -108,6 +108,11 @@ public class TagMenu extends Paged {
             player.closeInventory();
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()))) {
             if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+                TagResetEvent tagEvent = new TagResetEvent(player, false);
+                Bukkit.getPluginManager().callEvent(tagEvent);
+
+                if (tagEvent.isCancelled()) return;
+
                 UserData.setActive(player, "None");
                 player.closeInventory();
                 super.open();

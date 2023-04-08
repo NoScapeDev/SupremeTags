@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.handlers.menu;
 
+import net.noscape.project.supremetags.SupremeTags;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.inventory.*;
@@ -29,4 +30,14 @@ public class MenuListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onClose(InventoryCloseEvent e) {
+        Player p = (Player) e.getPlayer();
+
+        InventoryHolder holder = Objects.requireNonNull(e.getInventory().getHolder());
+
+        if (holder instanceof Menu) {
+            SupremeTags.getInstance().getMenuUtil().remove(p);
+        }
+    }
 }
