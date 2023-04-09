@@ -15,7 +15,7 @@ public class MenuListener implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() != null) {
-            InventoryHolder holder = Objects.requireNonNull(e.getClickedInventory()).getHolder();
+            InventoryHolder holder = e.getClickedInventory().getHolder();
 
             if (holder instanceof Menu) {
                 e.setCancelled(true);
@@ -34,10 +34,12 @@ public class MenuListener implements Listener {
     public void onClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
 
-        InventoryHolder holder = Objects.requireNonNull(e.getInventory().getHolder());
+        if (e.getInventory().getHolder() != null) {
+            InventoryHolder holder = e.getInventory().getHolder();
 
-        if (holder instanceof Menu) {
-            SupremeTags.getInstance().getMenuUtil().remove(p);
+            if (holder instanceof Menu) {
+                SupremeTags.getInstance().getMenuUtil().remove(p);
+            }
         }
     }
 }

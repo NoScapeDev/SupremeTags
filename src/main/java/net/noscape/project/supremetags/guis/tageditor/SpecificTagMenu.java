@@ -30,7 +30,7 @@ public class SpecificTagMenu extends Menu {
 
     @Override
     public int getSlots() {
-        return 27;
+        return 36;
     }
 
     @Override
@@ -49,6 +49,21 @@ public class SpecificTagMenu extends Menu {
             SupremeTags.getInstance().getEditorList().put(player, editor);
             player.closeInventory();
             msgPlayer(player, "&8[&6&lTags&8] &7You are setting a new tag. &6Type it in chat.");
+        } else if (displayname.equalsIgnoreCase("Change Description")) {
+            Editor editor = new Editor(menuUtil.getIdentifier(), EditingType.CHANGING_DESCRIPTION);
+            SupremeTags.getInstance().getEditorList().put(player, editor);
+            player.closeInventory();
+            msgPlayer(player, "&8[&6&lTags&8] &7You are setting a new description. &6Type it in chat.");
+        } else if (displayname.equalsIgnoreCase("Change Category")) {
+            Editor editor = new Editor(menuUtil.getIdentifier(), EditingType.CHANGING_CATEGORY);
+            SupremeTags.getInstance().getEditorList().put(player, editor);
+            player.closeInventory();
+            msgPlayer(player, "&8[&6&lTags&8] &7You are setting a new category. &6Type it in chat.");
+        } else if (displayname.equalsIgnoreCase("Change Permission")) {
+            Editor editor = new Editor(menuUtil.getIdentifier(), EditingType.CHANGING_PERMISSION);
+            SupremeTags.getInstance().getEditorList().put(player, editor);
+            player.closeInventory();
+            msgPlayer(player, "&8[&6&lTags&8] &7You are setting a new permission. &6Type it in chat.");
         }
     }
 
@@ -76,12 +91,27 @@ public class SpecificTagMenu extends Menu {
                     displayname = format("&7Tag: " + t.getTag());
                 }
 
-                getInventory().setItem(4, makeItem(Material.NAME_TAG, displayname, lore));
+                getInventory().setItem(4, makeItem(Material.NAME_TAG, format(displayname), lore));
+
+                List<String> c_tag = new ArrayList<>();
+                lore.add("&7Current: &6" + t.getTag());
+
+                getInventory().setItem(19, makeItem(Material.NAME_TAG, format("&e&lChange Tag"), c_tag));
+
+                List<String> c_desc = new ArrayList<>();
+                lore.add("&7Current: &6" + t.getDescription());
+
+                getInventory().setItem(21, makeItem(Material.OAK_SIGN, format("&e&lChange Description"), c_desc));
+
+                List<String> c_cat = new ArrayList<>();
+                lore.add("&7Current: &6" + t.getCategory());
+                getInventory().setItem(23, makeItem(Material.BOOK, format("&e&lChange Category"), c_cat));
+
+                List<String> c_perm = new ArrayList<>();
+                lore.add("&7Current: &6" + t.getPermission());
+                getInventory().setItem(25, makeItem(Material.REDSTONE_TORCH, format("&e&lChange Permission"), c_perm));
             }
         }
-
-        getInventory().setItem(13, makeItem(Material.PAPER, format("&e&lChange Tag")));
-
         fillEmpty();
     }
 }

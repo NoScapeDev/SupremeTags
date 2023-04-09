@@ -55,7 +55,7 @@ public abstract class Menu implements InventoryHolder {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName(displayName);
+        itemMeta.setDisplayName(format(displayName));
 
         itemMeta.setLore(Arrays.asList(lore));
         item.setItemMeta(itemMeta);
@@ -68,7 +68,7 @@ public abstract class Menu implements InventoryHolder {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        itemMeta.setDisplayName(displayName);
+        itemMeta.setDisplayName(format(displayName));
 
         itemMeta.setLore(color(lore));
         item.setItemMeta(itemMeta);

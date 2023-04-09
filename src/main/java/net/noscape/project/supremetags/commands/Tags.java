@@ -138,8 +138,26 @@ public class Tags implements CommandExecutor {
                         for (String world : SupremeTags.getInstance().getConfig().getStringList("settings.disabled-worlds")) {
                             if (player.getWorld().getName().equalsIgnoreCase(world)) {
                                 msgPlayer(player, "&cTag command is disabled in this world.");
-                                break;
+                            } else {
+                                if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                                    if (hasTags(player)) {
+                                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                            new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                                        } else {
+                                            new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                                        }
+                                    } else {
+                                        msgPlayer(player, "&cYou have no tags yet.");
+                                    }
+                                } else {
+                                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                        new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                                    } else {
+                                        new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                                    }
+                                }
                             }
+                            break;
                         }
                     }
                 } else {

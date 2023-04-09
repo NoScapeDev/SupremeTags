@@ -31,7 +31,32 @@ public class EditorListener implements Listener {
             tag.setTag(message);
             SupremeTags.getInstance().getTagManager().saveTag(tag);
 
-            new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, editor.getIdentifier())).open();
+            SupremeTags.getInstance().getEditorList().remove(player);
+            msgPlayer(player, "&8[&6&lTags&8] &7Data Updated.");
+        } else if (editor.getType() == EditingType.CHANGING_CATEGORY) {
+            e.setCancelled(true);
+
+            Tag tag = SupremeTags.getInstance().getTagManager().getTag(editor.getIdentifier());
+            tag.setCategory(message);
+            SupremeTags.getInstance().getTagManager().saveTag(tag);
+
+            SupremeTags.getInstance().getEditorList().remove(player);
+            msgPlayer(player, "&8[&6&lTags&8] &7Data Updated.");
+        } else if (editor.getType() == EditingType.CHANGING_DESCRIPTION) {
+            e.setCancelled(true);
+
+            Tag tag = SupremeTags.getInstance().getTagManager().getTag(editor.getIdentifier());
+            tag.setDescription(message);
+            SupremeTags.getInstance().getTagManager().saveTag(tag);
+
+            SupremeTags.getInstance().getEditorList().remove(player);
+            msgPlayer(player, "&8[&6&lTags&8] &7Data Updated.");
+        } else if (editor.getType() == EditingType.CHANGING_PERMISSION) {
+            e.setCancelled(true);
+
+            Tag tag = SupremeTags.getInstance().getTagManager().getTag(editor.getIdentifier());
+            tag.setPermission(message);
+            SupremeTags.getInstance().getTagManager().saveTag(tag);
 
             SupremeTags.getInstance().getEditorList().remove(player);
             msgPlayer(player, "&8[&6&lTags&8] &7Data Updated.");

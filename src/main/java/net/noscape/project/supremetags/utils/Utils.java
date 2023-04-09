@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 public class Utils {
 
     private static Pattern p1 = Pattern.compile("\\{#([0-9A-Fa-f]{6})\\}");
-    private static Pattern p2 = Pattern.compile("&#[0-9A-Fa-f]{6}");
-    private static Pattern p3 = Pattern.compile("&#[0-9A-Fa-f]{6}");
+    private static Pattern p2 = Pattern.compile("&#([A-Fa-f0-9]){6}");
+    private static Pattern p3 = Pattern.compile("#([A-Fa-f0-9]){6}");
 
     public static String format(String message) {
         if (SupremeTags.getInstance().isCMIHex()) {
@@ -26,21 +26,28 @@ public class Utils {
             }
             return ChatColor.translateAlternateColorCodes('&', message);
         } else if (SupremeTags.getInstance().isLegacyFormat()) {
-            Matcher match = p2.matcher(message);
-            while (match.find()) { // Searches the message for something that matches the pattern
-                String color = message.substring(match.start(), match.end());
-                message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
-                match = p2.matcher(message);
+            message = message.replace(">>", "").replace("<<", "");
+            Matcher matcher = p2.matcher(message);
+            while (matcher.find()) {
+                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
+                String before = message.substring(0, matcher.start());
+                String after = message.substring(matcher.end());
+                message = before + hexColor + after;
+                matcher = p2.matcher(message);
             }
+            return ChatColor.translateAlternateColorCodes('&', message);
         } else {
-            Matcher match = p3.matcher(message);
-            while (match.find()) { // Searches the message for something that matches the pattern
-                String color = message.substring(match.start(), match.end());
-                message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
-                match = p3.matcher(message);
+            message = message.replace(">>", "").replace("<<", "");
+            Matcher matcher = p3.matcher(message);
+            while (matcher.find()) {
+                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
+                String before = message.substring(0, matcher.start());
+                String after = message.substring(matcher.end());
+                message = before + hexColor + after;
+                matcher = p3.matcher(message);
             }
+            return ChatColor.translateAlternateColorCodes('&', message);
         }
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static String colorizeRGB(String input) {

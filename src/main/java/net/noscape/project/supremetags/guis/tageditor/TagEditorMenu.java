@@ -46,7 +46,7 @@ public class TagEditorMenu extends Paged {
             if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
                 NBTItem nbt = new NBTItem(e.getCurrentItem());
                 String identifier = nbt.getString("identifier");
-                player.closeInventory();
+                menuUtil.setIdentifier(identifier);
                 new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();
             }
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
