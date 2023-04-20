@@ -70,6 +70,10 @@ public final class SupremeTags extends JavaPlugin {
     @Override
     public void onDisable() {
         tagManager.unloadTags();
+
+        if (isMySQL()) {
+            mysql.disconnected();
+        }
     }
 
     public void init() {
@@ -135,6 +139,7 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         getServer().getPluginManager().registerEvents(new EditorListener(), this);
+        getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
 
         if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
             layout = "layout1";
@@ -169,16 +174,14 @@ public final class SupremeTags extends JavaPlugin {
                 }
             }
         } else {
-            if (deleteConfig()) {
-                latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
-                if (!latestConfigFile.exists())
-                    saveResource("DEFAULT-CONFIG-LATEST.yml", true);
-                latestConfigConfig = new YamlConfiguration();
-                try {
-                    latestConfigConfig.load(latestConfigFile);
-                } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
-                    e.printStackTrace();
-                }
+            latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
+            if (!latestConfigFile.exists())
+                saveResource("DEFAULT-CONFIG-LATEST.yml", true);
+            latestConfigConfig = new YamlConfiguration();
+            try {
+                latestConfigConfig.load(latestConfigFile);
+            } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
+                e.printStackTrace();
             }
         }
 

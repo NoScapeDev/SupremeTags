@@ -59,8 +59,7 @@ gui:
     size: 27
   tag-menu-none-categories:
     title: '&8Tag Menu'
-    tag-item:
-      displayname: '&7Tag: %tag%'
+    tag-item: # to edit the tags display name, please proceed below to 'tags.<identifier>.displayname'
       lore:
         - '&7&m-----------------------------'
         - ''
@@ -103,11 +102,9 @@ gui:
         - ''
         - '&eClick to Edit!'
         - '&7&m-----------------------------'
-  my-tags:
-    title: ''
+  # edit the material of all items inside the gui.
   layout:
     glass-material: 'GRAY_STAINED_GLASS_PANE'
-    tag-material: 'NAME_TAG'
     back-next-material: 'DARK_OAK_BUTTON'
     reset-tag-material: 'RED_DYE'
     close-menu-material: 'BARRIER'
@@ -160,6 +157,7 @@ categories:
       - '&8&m-----------------------------'
     permission: 'supremetags.category.xmas' # permission players will need to open this menu
     permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                       Tags                           | #
@@ -174,7 +172,7 @@ tags:
     category: 'default'
     displayname: '&7Tag: %tag%'
     display-item: 'NAME_TAG'
-    cost: 200 # this is only implemented when 'cost-system' is enabled.
+    cost: 200 # this is only implemented when 'cost-system' is enabled
   santa: # Christmas themed tag, shows in the Xmas category.
     tag: '&8[&c&lSanta&8]'
     permission: 'supremetags.tag.santa'

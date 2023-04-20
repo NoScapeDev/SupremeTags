@@ -44,14 +44,32 @@ public class MainMenu extends Menu {
         String material = SupremeTags.getInstance().getConfig().getString("categories." + category + ".material");
         String permission = SupremeTags.getInstance().getConfig().getString("categories." + category + ".permission");
 
+        boolean hasMinTags = false;
+
+        for (String cats : getCatorgies()) {
+            if (cats != null) {
+                if (categoriesTags.get(cats) != null) {
+                    hasMinTags = true;
+                } else {
+                    hasMinTags = false;
+                }
+                break;
+            }
+        }
+
         if (category != null) {
             if (material != null && Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(material.toUpperCase()))) {
-                if (permission != null && player.hasPermission(permission)) {
-                    menuUtil.setCategory(category);
-                    new CategoryMenu(SupremeTags.getMenuUtil(player, category)).open();
-                    menuUtil.getOwner().updateInventory();
+                if (hasMinTags) {
+                    if (permission != null && player.hasPermission(permission)) {
+                        menuUtil.setCategory(category);
+                        new CategoryMenu(SupremeTags.getMenuUtil(player, category)).open();
+                        menuUtil.getOwner().updateInventory();
+                    } else {
+                        msgPlayer(player, "&cYou don't have permission to access these tags.");
+                    }
                 } else {
-                    msgPlayer(player, "&cYou don't have permission to access these tags.");
+                    e.setCancelled(true);
+                    msgPlayer(player, "&cThere are no tags in this category.");
                 }
             }
         }

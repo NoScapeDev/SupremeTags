@@ -94,21 +94,21 @@ public class SpecificTagMenu extends Menu {
                 getInventory().setItem(4, makeItem(Material.NAME_TAG, format(displayname), lore));
 
                 List<String> c_tag = new ArrayList<>();
-                lore.add("&7Current: &6" + t.getTag());
+                c_tag.add("&7Current: &6" + t.getTag());
 
                 getInventory().setItem(19, makeItem(Material.NAME_TAG, format("&e&lChange Tag"), c_tag));
 
                 List<String> c_desc = new ArrayList<>();
-                lore.add("&7Current: &6" + t.getDescription());
+                c_desc.add("&7Current: &6" + t.getDescription());
 
                 getInventory().setItem(21, makeItem(Material.OAK_SIGN, format("&e&lChange Description"), c_desc));
 
                 List<String> c_cat = new ArrayList<>();
-                lore.add("&7Current: &6" + t.getCategory());
+                c_cat.add("&7Current: &6" + t.getCategory());
                 getInventory().setItem(23, makeItem(Material.BOOK, format("&e&lChange Category"), c_cat));
 
                 List<String> c_perm = new ArrayList<>();
-                lore.add("&7Current: &6" + t.getPermission());
+                c_perm.add("&7Current: &6" + t.getPermission());
                 getInventory().setItem(25, makeItem(Material.REDSTONE_TORCH, format("&e&lChange Permission"), c_perm));
             }
         }

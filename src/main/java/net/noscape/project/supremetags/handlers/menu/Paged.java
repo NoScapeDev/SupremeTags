@@ -876,11 +876,9 @@ public abstract class Paged extends Menu {
         ArrayList<Tag> tag = new ArrayList<>(tags.values());
 
         if (!tag.isEmpty()) {
-            int maxItemsPerPage = 43;
-            int startIndex = page * maxItemsPerPage;
-            int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
-
-            for (int i = startIndex; i < endIndex; i++) {
+            for (int i = 0; i < getMaxItems(); i++) {
+                index = getMaxItems() * page + i;
+                if (index >= tag.size()) break;
                 Tag t = tag.get(i);
                 if (t == null) continue;
 
@@ -1338,11 +1336,9 @@ public abstract class Paged extends Menu {
         ArrayList<Tag> tag = new ArrayList<>(tags.values());
 
         if (!tag.isEmpty()) {
-            int maxItemsPerPage = 43;
-            int startIndex = page * maxItemsPerPage;
-            int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
-
-            for (int i = startIndex; i < endIndex; i++) {
+            for(int i = 0; i < getMaxItems(); i++) {
+                index = getMaxItems() * page + i;
+                if(index >= tag.size()) break;
                 Tag t = tag.get(i);
                 if (t == null) continue;
 

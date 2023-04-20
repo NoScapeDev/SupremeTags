@@ -23,6 +23,14 @@ public class PlayerEvents implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         UserData.createPlayer(player);
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+            String activeTag = UserData.getActive(player.getUniqueId());
+            if (activeTag.equalsIgnoreCase("None")) {
+                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+                UserData.setActive(player, defaultTag);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

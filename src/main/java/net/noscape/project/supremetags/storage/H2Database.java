@@ -34,8 +34,7 @@ public class H2Database {
     public void initialiseDatabase() {
         PreparedStatement preparedStatement;
 
-        String userTable = "CREATE TABLE IF NOT EXISTS `users` " +
-                "(`Name` VARCHAR(100), `UUID` VARCHAR(100) primary key, `Active` VARCHAR(100))";
+        String userTable = "CREATE TABLE IF NOT EXISTS `users` (Name VARCHAR(255) NOT NULL, UUID VARCHAR(255) NOT NULL, Active VARCHAR(255) NOT NULL, PRIMARY KEY (UUID))";
 
         try {
             preparedStatement = getConnection().prepareStatement(userTable);
