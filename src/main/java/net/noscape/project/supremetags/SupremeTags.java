@@ -7,6 +7,7 @@ import net.noscape.project.supremetags.checkers.*;
 import net.noscape.project.supremetags.commands.*;
 import net.noscape.project.supremetags.guis.tageditor.EditorListener;
 import net.noscape.project.supremetags.handlers.Editor;
+import net.noscape.project.supremetags.handlers.SetupTag;
 import net.noscape.project.supremetags.handlers.hooks.*;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.listeners.*;
@@ -33,7 +34,7 @@ public final class SupremeTags extends JavaPlugin {
     private TagManager tagManager;
     private CategoryManager categoryManager;
 
-    private SupremeTagsAPI api;
+    private static SupremeTagsAPI api;
 
     private static Economy econ = null;
     private static Permission perms = null;
@@ -46,11 +47,15 @@ public final class SupremeTags extends JavaPlugin {
     private final MySQLUserData user = new MySQLUserData();
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
-    private final HashMap<Player, Editor> EditorList = new HashMap<>();
+    private final HashMap<Player, Editor> editorList = new HashMap<>();
+    private final HashMap<Player, SetupTag> setupList = new HashMap<>();
 
     private boolean legacy_format;
     private boolean cmi_hex;
     private boolean disabledWorldsTag;
+
+    private PlayerManager playerManager;
+    private PlayerConfig playerConfig;
 
     public static File latestConfigFile;
     public static FileConfiguration latestConfigConfig;
@@ -70,13 +75,15 @@ public final class SupremeTags extends JavaPlugin {
     @Override
     public void onDisable() {
         tagManager.unloadTags();
+        editorList.clear();
+        //setupList.clear();
 
         if (isMySQL()) {
             mysql.disconnected();
         }
     }
 
-    public void init() {
+    private void init() {
         instance = this;
 
         Logger log = getLogger();
@@ -102,6 +109,8 @@ public final class SupremeTags extends JavaPlugin {
 
         tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
         categoryManager = new CategoryManager();
+        playerManager = new PlayerManager();
+        //playerConfig = new PlayerConfig();
 
         if (isMySQL()) {
             mysql = new MySQL(host, port, database, username, password, options);
@@ -140,6 +149,7 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         getServer().getPluginManager().registerEvents(new EditorListener(), this);
         getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
+        getServer().getPluginManager().registerEvents(new SetupListener(), this);
 
         if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
             layout = "layout1";
@@ -161,28 +171,20 @@ public final class SupremeTags extends JavaPlugin {
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
 
-        if (latestConfigFile != null) {
-            if (deleteConfig()) {
-                latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
-                if (!latestConfigFile.exists())
-                    saveResource("DEFAULT-CONFIG-LATEST.yml", true);
-                latestConfigConfig = new YamlConfiguration();
-                try {
-                    latestConfigConfig.load(latestConfigFile);
-                } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
-            if (!latestConfigFile.exists())
-                saveResource("DEFAULT-CONFIG-LATEST.yml", true);
-            latestConfigConfig = new YamlConfiguration();
-            try {
-                latestConfigConfig.load(latestConfigFile);
-            } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
+
+        deleteCurrentLatestConfig();
+
+        latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
+
+        if (!latestConfigFile.exists()) {
+            saveResource("DEFAULT-CONFIG-LATEST.yml", true);
+        }
+
+        latestConfigConfig = new YamlConfiguration();
+        try {
+            latestConfigConfig.load(latestConfigFile);
+        } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
+            e.printStackTrace();
         }
 
         api = new SupremeTagsAPI();
@@ -356,30 +358,20 @@ public final class SupremeTags extends JavaPlugin {
         return perms;
     }
 
-    public SupremeTagsAPI getTagAPI() {
+    public static SupremeTagsAPI getTagAPI() {
         return api;
     }
 
-    private boolean deleteConfig() {
+    private void deleteCurrentLatestConfig() {
         latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
-        Path path = latestConfigFile.toPath();
-        try {
-            Files.delete(path);
-            return true;
-        } catch (NoSuchFileException x) {
-            System.err.format("%s: no such" + " file or directory%n", path);
-            return false;
-        } catch (DirectoryNotEmptyException x) {
-            System.err.format("%s not empty%n", path);
-            return false;
-        } catch (IOException x) {
-            System.err.println(x);
-            return false;
+
+        if (latestConfigFile.exists()) {
+            latestConfigFile.delete();
         }
     }
 
     public HashMap<Player, Editor> getEditorList() {
-        return EditorList;
+        return editorList;
     }
 
     public boolean isCMIHex() {
@@ -388,5 +380,17 @@ public final class SupremeTags extends JavaPlugin {
 
     public boolean isDisabledWorldsTag() {
         return disabledWorldsTag;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public PlayerConfig getPlayerConfig() {
+        return playerConfig;
+    }
+
+    public HashMap<Player, SetupTag> getSetupList() {
+        return setupList;
     }
 }

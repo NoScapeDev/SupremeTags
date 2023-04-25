@@ -1,0 +1,4 @@
+tags:
+  custom:
+    tag: '&8[&b&lMyCustomTag&8]'
+    description: '&7You can change this description by &e/mytags setdesc <tag> <string>'

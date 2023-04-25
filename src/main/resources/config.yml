@@ -107,9 +107,17 @@ gui:
     glass-material: 'GRAY_STAINED_GLASS_PANE'
     back-next-material: 'DARK_OAK_BUTTON'
     reset-tag-material: 'RED_DYE'
+    active-tag-material: 'NAME_TAG'
     close-menu-material: 'BARRIER'
-    create-tag-material: 'NAME_TAG'
     refresh-material: 'GREEN_DYE'
+  # disable items in the gui.
+  # setting these values to false will not display the item in tag gui.
+  items:
+    close-item: true
+    refresh-item: true
+    reset-item: true
+    glass-item: true # this only applies to 'layout1'
+    active-item: true
 
 ############################################################
 # +------------------------------------------------------+ #

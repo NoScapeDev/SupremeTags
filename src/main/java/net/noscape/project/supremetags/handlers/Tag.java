@@ -18,6 +18,12 @@ public class Tag {
         this.cost = cost;
     }
 
+    public Tag(String identifier, String tag, String description) {
+        this.identifier = identifier;
+        this.tag = tag;;
+        this.description = description;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

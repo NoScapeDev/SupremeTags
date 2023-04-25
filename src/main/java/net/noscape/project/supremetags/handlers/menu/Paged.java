@@ -70,47 +70,82 @@ public abstract class Paged extends Menu {
         if (SupremeTags.getLayout().equalsIgnoreCase("layout1")) {
             inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
 
-            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.close-item")) {
+                inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            }
 
             inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
 
-            if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+            if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
                 inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
             }
 
-            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
+                if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
+                    inventory.setItem(53, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.AQUA + "Personal Tags"));
+                }
+            }
 
-            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
+                inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            }
 
-            inventory.setItem(36, super.GLASS);
-            inventory.setItem(37, super.GLASS);
-            inventory.setItem(38, super.GLASS);
-            inventory.setItem(39, super.GLASS);
-            inventory.setItem(40, super.GLASS);
-            inventory.setItem(41, super.GLASS);
-            inventory.setItem(42, super.GLASS);
-            inventory.setItem(43, super.GLASS);
-            inventory.setItem(44, super.GLASS);
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
+                inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            }
+
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
+                inventory.setItem(36, super.GLASS);
+                inventory.setItem(37, super.GLASS);
+                inventory.setItem(38, super.GLASS);
+                inventory.setItem(39, super.GLASS);
+                inventory.setItem(40, super.GLASS);
+                inventory.setItem(41, super.GLASS);
+                inventory.setItem(42, super.GLASS);
+                inventory.setItem(43, super.GLASS);
+                inventory.setItem(44, super.GLASS);
+            }
         } else if (SupremeTags.getLayout().equalsIgnoreCase("layout2")) {
             inventory.setItem(3, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
 
-            inventory.setItem(4, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.close-item")) {
+                inventory.setItem(4, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            } else {
+                inventory.setItem(4, super.GLASS);
+            }
 
             inventory.setItem(5, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
 
-            if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+            if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
+                if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
+                    inventory.setItem(8, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
+                } else {
+                    inventory.setItem(8, super.GLASS);
+                }
+            } else {
+                inventory.setItem(8, super.GLASS);
+            }
+
+            if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
                 inventory.setItem(1, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
             } else {
                 inventory.setItem(1, super.GLASS);
             }
 
-            inventory.setItem(0, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
+                inventory.setItem(0, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            } else {
+                inventory.setItem(0, super.GLASS);
+            }
 
-            inventory.setItem(7, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
+                inventory.setItem(7, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            } else {
+                inventory.setItem(7, super.GLASS);
+            }
 
             inventory.setItem(2, super.GLASS);
             inventory.setItem(6, super.GLASS);
-            inventory.setItem(8, super.GLASS);
             inventory.setItem(9, super.GLASS);
             inventory.setItem(10, super.GLASS);
             inventory.setItem(11, super.GLASS);
@@ -122,6 +157,43 @@ public abstract class Paged extends Menu {
             inventory.setItem(17, super.GLASS);
         }
     }
+
+    public void applyPTLayout() {
+        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.close-item")) {
+            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+        }
+
+        inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
+
+        if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
+            inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
+        }
+
+        inventory.setItem(53, makeItem(Material.BOOK, ChatColor.AQUA + "Create a Tag"));
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
+            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+        }
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
+            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+        }
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
+            inventory.setItem(36, super.GLASS);
+            inventory.setItem(37, super.GLASS);
+            inventory.setItem(38, super.GLASS);
+            inventory.setItem(39, super.GLASS);
+            inventory.setItem(40, super.GLASS);
+            inventory.setItem(41, super.GLASS);
+            inventory.setItem(42, super.GLASS);
+            inventory.setItem(43, super.GLASS);
+            inventory.setItem(44, super.GLASS);
+        }
+    }
+
 
     protected int getPage() {
         return page + 1;
@@ -167,7 +239,7 @@ public abstract class Paged extends Menu {
                 assert permission != null;
 
                 // toggle if they don't have permission
-                if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none") || t.getCost() == 0) {
+                if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none") || t.getCost() == 0) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -182,7 +254,7 @@ public abstract class Paged extends Menu {
 
                             NBTItem nbt = new NBTItem(tagItem);
 
-                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+                            nbt.setString("identifier", t.getIdentifier());
 
                             tagMeta.setDisplayName(format(displayname));
 
@@ -304,7 +376,7 @@ public abstract class Paged extends Menu {
 
 
                     // if permission == none
-                } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
+                } else if (!menuUtil.getOwner().hasPermission("supremetags.tag.*") && !menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -432,7 +504,7 @@ public abstract class Paged extends Menu {
                             inventory.addItem(nbt.getItem());
                         }
                     }
-                } else if (!menuUtil.getOwner().hasPermission(permission)) {
+                } else if (!menuUtil.getOwner().hasPermission("supremetags.tag.*") && !menuUtil.getOwner().hasPermission(permission)) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -603,7 +675,7 @@ public abstract class Paged extends Menu {
                 assert permission != null;
 
                 // toggle if they don't have permission
-                if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
+                if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -618,7 +690,7 @@ public abstract class Paged extends Menu {
 
                             NBTItem nbt = new NBTItem(tagItem);
 
-                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+                            nbt.setString("identifier", t.getIdentifier());
 
                             tagMeta.setDisplayName(format(displayname));
 
@@ -668,7 +740,7 @@ public abstract class Paged extends Menu {
 
                             nbt.getItem().setItemMeta(tagMeta);
 
-                            nbt.setString("identifier", t.getIdentifier());;
+                            nbt.setString("identifier", t.getIdentifier());
                             inventory.addItem(nbt.getItem());
                         }
                     } else {
@@ -737,7 +809,7 @@ public abstract class Paged extends Menu {
 
 
                     // if permission == none
-                } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
+                } else if (!menuUtil.getOwner().hasPermission("supremetags.tag.*") && !menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -905,7 +977,7 @@ public abstract class Paged extends Menu {
                     assert permission != null;
 
                     // toggle if they don't have permission
-                    if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none") || t.getCost() == 0) {
+                    if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none") || t.getCost() == 0) {
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                             if (material.contains("hdb-")) {
@@ -1042,7 +1114,7 @@ public abstract class Paged extends Menu {
 
 
                         // if permission == none
-                    } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
+                    } else if (menuUtil.getOwner().hasPermission("supremetags.tag.*") && !menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                             if (material.contains("hdb-")) {
@@ -1365,7 +1437,7 @@ public abstract class Paged extends Menu {
                     assert permission != null;
 
                     // toggle if they don't have permission
-                    if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
+                    if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none"))) {
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                             if (material.contains("hdb-")) {
@@ -1502,7 +1574,7 @@ public abstract class Paged extends Menu {
 
 
                         // if permission == none
-                    } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
+                    } else if (menuUtil.getOwner().hasPermission("supremetags.tag.*") && !menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                             if (material.contains("hdb-")) {
@@ -1679,7 +1751,7 @@ public abstract class Paged extends Menu {
                 assert permission != null;
 
                 // toggle if they don't have permission
-                if (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
+                if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none")) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -1813,7 +1885,7 @@ public abstract class Paged extends Menu {
 
 
                     // if permission == none
-                } else if (!menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
+                } else if (!menuUtil.getOwner().hasPermission("supremetags.tag.*") || !menuUtil.getOwner().hasPermission(permission) && permission.equalsIgnoreCase("none")) {
                     if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
 
                         if (material.contains("hdb-")) {
@@ -1942,5 +2014,4 @@ public abstract class Paged extends Menu {
             }
         }
     }
-
 }

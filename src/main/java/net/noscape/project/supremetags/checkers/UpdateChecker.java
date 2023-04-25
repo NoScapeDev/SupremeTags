@@ -50,8 +50,7 @@ public class UpdateChecker implements Listener {
             if (this.spigotVersion == null || this.spigotVersion.isEmpty())
                 return;
             this.updateAvailable = spigotIsNewer();
-            if (!this.updateAvailable)
-                return;
+            if (!this.updateAvailable) return;
         });
     }
 
@@ -69,7 +68,7 @@ public class UpdateChecker implements Listener {
         return version.replaceAll("\\.", "");
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e) {
         if (e.getPlayer().hasPermission("supremetags.updates")) {
             if (hasUpdateAvailable()) {

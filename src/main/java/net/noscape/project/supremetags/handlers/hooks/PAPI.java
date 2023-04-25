@@ -42,6 +42,7 @@ public class PAPI extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
         String text = "";
+
         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
             if (params.equalsIgnoreCase("tag")) {
 
@@ -56,7 +57,17 @@ public class PAPI extends PlaceholderExpansion {
 
             } else if (params.equalsIgnoreCase("identifier")) {
                 text = UserData.getActive(player.getUniqueId());
+            } else if (params.equalsIgnoreCase("description")) {
+                text = tags.get(UserData.getActive(player.getUniqueId())).getDescription();
+            } else if (params.equalsIgnoreCase("permission")) {
+                text = tags.get(UserData.getActive(player.getUniqueId())).getPermission();
+            } else if (params.equalsIgnoreCase("cost")) {
+                text = String.valueOf(tags.get(UserData.getActive(player.getUniqueId())).getCost());
+            } else if (params.equalsIgnoreCase("category")) {
+                text = tags.get(UserData.getActive(player.getUniqueId())).getCategory();
             }
+        } else {
+            text = "";
         }
         return text;
     }

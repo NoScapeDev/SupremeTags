@@ -24,6 +24,10 @@ public class PlayerEvents implements Listener {
         Player player = e.getPlayer();
         UserData.createPlayer(player);
 
+        //if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
+            //SupremeTags.getInstance().getPlayerConfig().loadPlayer(player);
+        //}
+
         if (SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
             String activeTag = UserData.getActive(player.getUniqueId());
             if (activeTag.equalsIgnoreCase("None")) {
