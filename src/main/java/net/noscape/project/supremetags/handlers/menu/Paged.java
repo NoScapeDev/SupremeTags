@@ -80,11 +80,11 @@ public abstract class Paged extends Menu {
                 inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
             }
 
-            if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
-                if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
-                    inventory.setItem(53, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.AQUA + "Personal Tags"));
-                }
-            }
+            //if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
+                //if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
+                    //inventory.setItem(53, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.AQUA + "Personal Tags"));
+                //}
+            //}
 
             if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
                 inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
@@ -116,15 +116,15 @@ public abstract class Paged extends Menu {
 
             inventory.setItem(5, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
 
-            if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
-                if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
-                    inventory.setItem(8, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
-                } else {
-                    inventory.setItem(8, super.GLASS);
-                }
-            } else {
-                inventory.setItem(8, super.GLASS);
-            }
+            //if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
+                //if (menuUtil.getOwner().hasPermission("supremetags.personaltags")) {
+                    //inventory.setItem(8, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
+                //} else {
+                    //inventory.setItem(8, super.GLASS);
+                //}
+            //} else {
+                //inventory.setItem(8, super.GLASS);
+            //}
 
             if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
                 inventory.setItem(1, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));

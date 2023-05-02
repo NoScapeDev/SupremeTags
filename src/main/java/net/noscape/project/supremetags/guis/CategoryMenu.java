@@ -129,11 +129,12 @@ public class CategoryMenu extends Paged {
                     super.open();
                 }
             }
-        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()))) {
-            if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")) {
-                new PersonalTagsMenu(SupremeTags.getMenuUtil(player)).open();
-            }
         }
+        //} else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()))) {
+            //if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")) {
+                //new PersonalTagsMenu(SupremeTags.getMenuUtil(player)).open();
+            //}
+        //}
     }
     @Override
     public void setMenuItems() {
