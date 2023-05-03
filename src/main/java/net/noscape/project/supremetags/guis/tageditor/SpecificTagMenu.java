@@ -30,7 +30,7 @@ public class SpecificTagMenu extends Menu {
 
     @Override
     public int getSlots() {
-        return 36;
+        return 54;
     }
 
     @Override
@@ -64,6 +64,12 @@ public class SpecificTagMenu extends Menu {
             SupremeTags.getInstance().getEditorList().put(player, editor);
             player.closeInventory();
             msgPlayer(player, "&8[&6&lTags&8] &7You are setting a new permission. &6Type it in chat.");
+        } else if (displayname.equalsIgnoreCase("Delete Tag")) {
+            SupremeTags.getInstance().getTagManager().deleteTag(player, menuUtil.getIdentifier());
+            player.closeInventory();
+            msgPlayer(player, "&8[&6&lTags&8] &7Tag deleted!");
+        } else {
+            e.setCancelled(true);
         }
     }
 
@@ -91,25 +97,30 @@ public class SpecificTagMenu extends Menu {
                     displayname = format("&7Tag: " + t.getTag());
                 }
 
-                getInventory().setItem(4, makeItem(Material.NAME_TAG, format(displayname), lore));
+                getInventory().setItem(4, makeItem(Material.BOOK, format(displayname), lore));
 
                 List<String> c_tag = new ArrayList<>();
                 c_tag.add("&7Current: &6" + t.getTag());
-
-                getInventory().setItem(19, makeItem(Material.NAME_TAG, format("&e&lChange Tag"), c_tag));
+                getInventory().setItem(20, makeItem(Material.NAME_TAG, format("&e&lChange Tag"), c_tag));
 
                 List<String> c_desc = new ArrayList<>();
                 c_desc.add("&7Current: &6" + t.getDescription());
-
-                getInventory().setItem(21, makeItem(Material.OAK_SIGN, format("&e&lChange Description"), c_desc));
+                getInventory().setItem(29, makeItem(Material.OAK_SIGN, format("&e&lChange Description"), c_desc));
 
                 List<String> c_cat = new ArrayList<>();
                 c_cat.add("&7Current: &6" + t.getCategory());
-                getInventory().setItem(23, makeItem(Material.BOOK, format("&e&lChange Category"), c_cat));
+                getInventory().setItem(22, makeItem(Material.BOOK, format("&e&lChange Category"), c_cat));
 
                 List<String> c_perm = new ArrayList<>();
                 c_perm.add("&7Current: &6" + t.getPermission());
-                getInventory().setItem(25, makeItem(Material.REDSTONE_TORCH, format("&e&lChange Permission"), c_perm));
+                getInventory().setItem(31, makeItem(Material.REDSTONE_TORCH, format("&e&lChange Permission"), c_perm));
+
+                getInventory().setItem(24, makeItem(Material.BARRIER, format("&c&lComing Soon!")));
+                getInventory().setItem(33, makeItem(Material.BARRIER, format("&c&lComing Soon!")));
+
+                List<String> c_delete = new ArrayList<>();
+                c_delete.add("&7This cannot be undone!");
+                getInventory().setItem(49, makeItem(Material.RED_WOOL, format("&c&lDelete Tag"), c_delete));
             }
         }
         fillEmpty();

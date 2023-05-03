@@ -25,6 +25,7 @@ public class Tags implements CommandExecutor {
         if (!(sender instanceof Player)) {
             if (cmd.getName().equalsIgnoreCase("tags")) {
                 if (args.length == 0) {
+                    sendHelp(sender);
                 } else if (args.length == 3) {
                     if (args[0].equalsIgnoreCase("create")) {
                         String name = args[1];
@@ -68,19 +69,7 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
                         msgPlayer(sender, "&8[&6&lTag&8] &7Reloaded plugin.");
                     } else if (args[0].equalsIgnoreCase("help")) {
-                        msgPlayer(sender, "",
-                                "&e&lSupremeTags Help:",
-                                "",
-                                "&e/tags &7- will open the tag menu.",
-                                "&e/tags create <identifier> <tag> &7- creates a new tag.",
-                                "&e/tags delete <identifier> &7- creates a new tag.",
-                                "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
-                                "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
-                                "&e/tags reset <player> &7- resets the players tag to None.",
-                                "&e/tags merge &7- merges deluxetags into supremetags.",
-                                "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
-                                "&e/tags help &7- displays this help message.",
-                                "");
+                        sendHelp(sender);
                     }
                 } else if (args.length == 2) {
                     if (args[0].equalsIgnoreCase("delete")) {
@@ -89,22 +78,17 @@ public class Tags implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("reset")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
-                        H2UserData.setActive(target, "None");
-                        msgPlayer(sender, "&8[&6&lTag&8] &7Reset &6" + target.getName() + "'s &7tag back to None.");
+                        if (SupremeTags.getInstance().getConfig().isBoolean("settings.forced-tag")) {
+                            String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+
+                            UserData.setActive(target, defaultTag);
+                            msgPlayer(sender, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to " + defaultTag);
+                        } else {
+                            UserData.setActive(target, "None");
+                            msgPlayer(sender, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
+                        }
                     } else {
-                        msgPlayer(sender, "",
-                                "&6&lSupremeTags Help:",
-                                "",
-                                "&e/tags &7- will open the tag menu.",
-                                "&e/tags create <identifier> <tag> &7- creates a new tag.",
-                                "&e/tags delete <identifier> &7- creates a new tag.",
-                                "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
-                                "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
-                                "&e/tags reset <player> &7- resets the players tag to None.",
-                                "&e/tags merge &7- merges deluxetags into supremetags.",
-                                "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
-                                "&e/tags help &7- displays this help message.",
-                                "");
+                        sendHelp(sender);
                     }
                 }
             }
@@ -205,6 +189,8 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
+                } else {
+                    sendHelp(sender);
                 }
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
@@ -232,20 +218,7 @@ public class Tags implements CommandExecutor {
                     }
                 } else if (args[0].equalsIgnoreCase("help")) {
                     if (player.hasPermission("supremetags.admin")) {
-                        msgPlayer(player, "",
-                                "&6&lSupremeTags Help:",
-                                "",
-                                "&e/tags &7- will open the tag menu.",
-                                "&e/tags create <identifier> <tag> &7- creates a new tag.",
-                                "&e/tags delete <identifier> &7- creates a new tag.",
-                                "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
-                                "&e/tags setcategory <identifier> <category> &7- sets the category of the tag.",
-                                "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
-                                "&e/tags reset <player> &7- resets the players tag to None.",
-                                "&e/tags merge &7- merges deluxetags into supremetags.",
-                                "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
-                                "&e/tags help &7- displays this help message.",
-                                "");
+                        sendHelp(player);
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
@@ -297,26 +270,23 @@ public class Tags implements CommandExecutor {
                     if (player.hasPermission("supremetags.admin")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
-                        H2UserData.setActive(target, "None");
-                        msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
+                        if (SupremeTags.getInstance().getConfig().isBoolean("settings.forced-tag")) {
+                            String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+
+                            UserData.setActive(target, defaultTag);
+                            msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to " + defaultTag);
+                        } else {
+                            UserData.setActive(target, "None");
+                            msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
+                        }
                     } else {
                         msgPlayer(player, "&cNo Permission.");
                     }
                 } else {
-                    msgPlayer(player, "",
-                            "&6&lSupremeTags Help:",
-                            "",
-                            "&e/tags &7- will open the tag menu.",
-                            "&e/tags create <identifier> <tag> &7- creates a new tag.",
-                            "&e/tags delete <identifier> &7- creates a new tag.",
-                            "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
-                            "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
-                            "&e/tags reset <player> &7- resets the players tag to None.",
-                            "&e/tags merge &7- merges deluxetags into supremetags.",
-                            "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
-                            "&e/tags help &7- displays this help message.",
-                            "");
+                    sendHelp(player);
                 }
+            } else {
+                sendHelp(sender);
             }
         }
         return false;
@@ -329,5 +299,37 @@ public class Tags implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    public void sendHelp(Player player) {
+        msgPlayer(player, "",
+                "&6&lSupremeTags Help:",
+                "",
+                "&e/tags &7- will open the tag menu.",
+                "&e/tags create <identifier> <tag> &7- creates a new tag.",
+                "&e/tags delete <identifier> &7- creates a new tag.",
+                "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
+                "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
+                "&e/tags reset <player> &7- resets the players tag to None.",
+                "&e/tags merge &7- merges deluxetags into supremetags.",
+                "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                "&e/tags help &7- displays this help message.",
+                "");
+    }
+
+    public void sendHelp(CommandSender player) {
+        msgPlayer(player, "",
+                "&6&lSupremeTags Help:",
+                "",
+                "&e/tags &7- will open the tag menu.",
+                "&e/tags create <identifier> <tag> &7- creates a new tag.",
+                "&e/tags delete <identifier> &7- creates a new tag.",
+                "&e/tags settag <identifier> <tag> &7- sets tag style for the existing tag.",
+                "&e/tags set <player> <identifier> &7- sets a new tag for that player.",
+                "&e/tags reset <player> &7- resets the players tag to None.",
+                "&e/tags merge &7- merges deluxetags into supremetags.",
+                "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
+                "&e/tags help &7- displays this help message.",
+                "");
     }
 }

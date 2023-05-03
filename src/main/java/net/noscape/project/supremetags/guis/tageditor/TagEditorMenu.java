@@ -42,13 +42,15 @@ public class TagEditorMenu extends Paged {
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.tag-material")).toUpperCase()))) {
-            if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")) {
-                NBTItem nbt = new NBTItem(e.getCurrentItem());
-                String identifier = nbt.getString("identifier");
-                menuUtil.setIdentifier(identifier);
-                new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();
-            }
+        if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
+                && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Refresh")) {
+            NBTItem nbt = new NBTItem(e.getCurrentItem());
+            String identifier = nbt.getString("identifier");
+            menuUtil.setIdentifier(identifier);
+            new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
             player.closeInventory();
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {

@@ -1766,7 +1766,7 @@ public abstract class Paged extends Menu {
 
                             NBTItem nbt = new NBTItem(tagItem);
 
-                            nbt.setString("identifier", tags.get(tag.get(index)).getIdentifier());
+                            nbt.setString("identifier", t.getIdentifier());
 
                             tagMeta.setDisplayName(format(displayname));
 
