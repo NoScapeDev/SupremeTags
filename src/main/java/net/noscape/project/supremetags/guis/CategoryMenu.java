@@ -70,6 +70,10 @@ public class CategoryMenu extends Paged {
                     UserData.setActive(player, tagevent.getTag());
                     super.open();
                     menuUtil.setIdentifier(tagevent.getTag());
+
+                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                        msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                    }
                 }
             } else {
                 if (player.hasPermission(t.getPermission())) {
@@ -82,6 +86,10 @@ public class CategoryMenu extends Paged {
                         UserData.setActive(player, tagevent.getTag());
                         super.open();
                         menuUtil.setIdentifier(tagevent.getTag());
+
+                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                        }
                     }
                 } else {
                     double cost = t.getCost();
@@ -116,6 +124,25 @@ public class CategoryMenu extends Paged {
                 UserData.setActive(player, "None");
                 super.open();
                 menuUtil.setIdentifier("None");
+
+                if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                    msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.reset-message"));
+                }
+            } else {
+                TagResetEvent tagEvent = new TagResetEvent(player, false);
+                Bukkit.getPluginManager().callEvent(tagEvent);
+
+                if (tagEvent.isCancelled()) return;
+
+                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+
+                UserData.setActive(player, defaultTag);
+                super.open();
+                menuUtil.setIdentifier(defaultTag);
+
+                if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                    msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.reset-message"));
+                }
             }
         } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {

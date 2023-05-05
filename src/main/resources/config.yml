@@ -15,11 +15,22 @@ settings:
   auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
   active-tag-glow: true # adds a hidden enchantment to the tag item that is active for the player.
   cost-system: false # should your players be able to buy tags?
-  cmi-color-support: false # allow the plugin to change color format to lagacy '&x', to support CMI Chat, This will override 'legacy-hex-format'
+  cmi-color-support: false # allow the plugin to change color format to legacy '&x', to support CMI Chat, This will override 'legacy-hex-format'
   tag-command-in-disabled-worlds: true # should /tags command be disabled in 'disabled-worlds'.
   disabled-worlds: # what worlds should tags be allowed in, tags in this world will not be shown.
     - 'lobby'
     - 'world2'
+  gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                    Messages                          | #
+# +------------------------------------------------------+ #
+############################################################
+
+messages:
+  tag-select-message: '&8[&6&lTags&8] &e%identifier% &7tag selected.'
+  reset-message: '&8[&6&lTags&8] &7Reset tag.'
 
 ############################################################
 # +------------------------------------------------------+ #

@@ -167,10 +167,10 @@ public final class SupremeTags extends JavaPlugin {
         merge(log);
 
         tagManager.loadTags();
+
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
-
 
         deleteCurrentLatestConfig();
 
@@ -188,6 +188,10 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         api = new SupremeTagsAPI();
+
+        if (tagManager.getTags().size() == 0) {
+            tagManager.loadTags();
+        }
     }
 
     public static SupremeTags getInstance() { return instance; }
