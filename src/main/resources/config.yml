@@ -9,7 +9,6 @@ settings:
   forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
   categories: false # should supremetags use the category system?
   default-category: 'default' # used to set the tags category value when creating a new tag with the '/tag create' command
-  layout: 'layout1' # layouts: [layout1(default), layout2(new)]
   update-check: true # the plugin will check if there is an update available.
   legacy-hex-format: true # should the plugin use the legacy hex colors? (&#d5b47 instead of #d5b47)
   auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
@@ -18,7 +17,7 @@ settings:
   cmi-color-support: false # allow the plugin to change color format to legacy '&x', to support CMI Chat, This will override 'legacy-hex-format'
   tag-command-in-disabled-worlds: true # should /tags command be disabled in 'disabled-worlds'.
   disabled-worlds: # what worlds should tags be allowed in, tags in this world will not be shown.
-    - 'lobby'
+    - 'example'
     - 'world2'
   gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
 
@@ -127,14 +126,18 @@ gui:
     close-item: true
     refresh-item: true
     reset-item: true
-    glass-item: true # this only applies to 'layout1'
+    glass-item: true
     active-item: true
+    next-item: true # this only applies to tag type guis.
+    back-item: true # this only applies to tag type guis.
 
 ############################################################
 # +------------------------------------------------------+ #
 # |                    Categories                        | #
 # +------------------------------------------------------+ #
 ############################################################
+
+categories-menu-fill-empty: false # set this to true if you want to fill empty slots in main menu of categories.
 
 categories:
   default:

@@ -26,10 +26,13 @@ public class UserData {
     }
 
     public static String getActive(UUID uuid) {
-        if (SupremeTags.getInstance().isH2())
+
+        if (SupremeTags.getInstance().isH2()) {
             return H2UserData.getActive(uuid);
-        else if (SupremeTags.getInstance().isMySQL())
+        } else if (SupremeTags.getInstance().isMySQL()) {
             return MySQLUserData.getActive(uuid);
+        }
+
         return "";
     }
 }

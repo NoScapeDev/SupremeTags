@@ -43,7 +43,6 @@ public final class SupremeTags extends JavaPlugin {
     private static H2Database h2;
     private final H2UserData h2user = new H2UserData();
     private static String connectionURL;
-    private static String layout;
     private final MySQLUserData user = new MySQLUserData();
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
@@ -86,62 +85,26 @@ public final class SupremeTags extends JavaPlugin {
     private void init() {
         instance = this;
 
-        Logger log = getLogger();
-
-        if (getServer().getPluginManager().getPlugin("NBTAPI") == null) {
-            log.warning("------------------------------");
-            log.warning("[NBTAPI] NBTAPI is required for SupremeTags-" + getDescription().getVersion() + " to work!");
-            log.warning("------------------------------");
-            getServer().getPluginManager().disablePlugin(this);
-        } else {
-            log.fine("------------------------------");
-            log.fine("[NBTAPI] NBTAPI has been found for SupremeTags-" + getDescription().getVersion() + "!");
-            log.fine("------------------------------");
-        }
+        Logger logger = Bukkit.getLogger();
 
         this.saveDefaultConfig();
         this.callMetrics();
+
+        sendConsoleLog();
 
         if (isH2()) {
             connectionURL = "jdbc:h2:" + getDataFolder().getAbsolutePath() + "/database";
             h2 = new H2Database(connectionURL);
         }
 
-        tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
-        categoryManager = new CategoryManager();
-        playerManager = new PlayerManager();
-        //playerConfig = new PlayerConfig();
-
         if (isMySQL()) {
             mysql = new MySQL(host, port, database, username, password, options);
         }
 
-        if (getConfig().getBoolean("settings.update-check")) {
-            UpdateChecker updater = new UpdateChecker(this);
-            updater.fetch();
-            if (updater.hasUpdateAvailable()) {
-                log.warning("------------------------------");
-                log.warning("SupremeTags-Checker");
-                log.warning(" ");
-                log.warning("An update for SupremeTags has been found!");
-                log.warning("SupremeTags-" + updater.getSpigotVersion());
-                log.warning("You are running " + getDescription().getVersion());
-                log.warning(" ");
-                log.warning("Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
-                log.warning("------------------------------");
-            } else {
-                log.fine("------------------------------");
-                log.fine("Running latest version of SupremeTags-" + getDescription().getVersion());
-                log.fine("------------------------------");
-            }
-        }
-
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PAPI(this).register();
-            log.fine("------------------------------");
-            log.fine("PlaceholderAPI found SupremeTags! Automatically downloaded cloud.");
-            log.fine("------------------------------");
-        }
+        tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
+        categoryManager = new CategoryManager();
+        playerManager = new PlayerManager();
+        //playerConfig = new PlayerConfig();
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
 
@@ -151,20 +114,19 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
         getServer().getPluginManager().registerEvents(new SetupListener(), this);
 
-        if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
-            layout = "layout1";
-        } else if (Objects.requireNonNull(getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
-            layout = "layout2";
-        }
-
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
         cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
         disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
 
-        setupEconomy();
-        setupPermissions();
+        merge(logger);
 
-        merge(log);
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            logger.info(ChatColor.YELLOW + "> PlaceholderAPI: Found");
+            new PAPI(this).register();
+        } else {
+            logger.info(ChatColor.RED + "> PlaceholderAPI: Not Found!");
+        }
+
 
         tagManager.loadTags();
 
@@ -247,14 +209,6 @@ public final class SupremeTags extends JavaPlugin {
         return connectionURL;
     }
 
-    public static String getLayout() {
-        return layout;
-    }
-
-    public static void setLayout(String layout) {
-        SupremeTags.layout = layout;
-    }
-
     public H2UserData getUserData() { return h2user; }
 
     public static H2Database getDatabase() { return h2; }
@@ -303,6 +257,52 @@ public final class SupremeTags extends JavaPlugin {
         }
     }
 
+    private void sendConsoleLog() {
+        Logger logger = Bukkit.getLogger();
+
+        logger.info("");
+        logger.info(ChatColor.GREEN + "  ____  _   _ ____  ____  _____ __  __ _____ _____  _    ____ ____  ");
+        logger.info(ChatColor.GREEN + " / ___|| | | |  _ \\|  _ \\| ____|  \\/  | ____|_   _|/ \\  / ___/ ___| ");
+        logger.info(ChatColor.GREEN + " \\___ \\| | | | |_) | |_) |  _| | |\\/| |  _|   | | / _ \\| |  _\\___ \\ ");
+        logger.info(ChatColor.GREEN + "  ___) | |_| |  __/|  _ <| |___| |  | | |___  | |/ ___ \\ |_| |___) |");
+        logger.info(ChatColor.GREEN + " |____/ \\___/|_|   |_| \\_\\_____|_|  |_|_____| |_/_/   \\_\\____|____/ ");
+        logger.info(ChatColor.GRAY + " Allow players to show off their supreme tags!");
+        logger.info("");
+        logger.info(ChatColor.YELLOW + "> Version: " + getDescription().getVersion());
+        logger.info(ChatColor.YELLOW + "> Author: DevScape");
+
+        if (getServer().getPluginManager().getPlugin("NBTAPI") == null) {
+            logger.warning(ChatColor.RED + "> NBTAPI: Supremetags requires NBTAPI to run, disabling plugin....");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            logger.info(ChatColor.YELLOW + "> NBTAPI: Found!");
+        }
+
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+            setupEconomy();
+            setupPermissions();
+            logger.info(ChatColor.YELLOW + "> Vault: Found!");
+        } else {
+            logger.info(ChatColor.RED + "> Vault: Not Found!");
+        }
+
+        if (isH2()) {
+            logger.info(ChatColor.YELLOW + "> Database: H2!");
+        } else if (isMySQL()) {
+            logger.info(ChatColor.YELLOW + "> Database: MySQL!");
+        }
+
+        if (getConfig().getBoolean("settings.update-check")) {
+            UpdateChecker updater = new UpdateChecker(this);
+            updater.fetch();
+            if (updater.hasUpdateAvailable()) {
+                logger.info(ChatColor.AQUA + "> An update is available! " + updater.getSpigotVersion());
+                logger.info(ChatColor.AQUA + "Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
+            } else {
+                logger.info(ChatColor.YELLOW + "> Plugin up to date!");
+            }
+        }
+    }
 
     public Boolean isH2() {
         return Objects.requireNonNull(getConfig().getString("data.type")).equalsIgnoreCase("H2");

@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.noscape.project.supremetags.SupremeTags;
 import org.bukkit.Sound;
@@ -162,6 +163,10 @@ public class Utils {
             return msg;
         }
         return temp;
+    }
+
+    public static String replacePlaceholders(Player user, String base) {
+        return PlaceholderAPI.setPlaceholders(user, base);
     }
 
 }

@@ -169,6 +169,10 @@ public class MainMenu extends Menu {
                 }
             }
         }
+
+        if (SupremeTags.getInstance().getConfig().getBoolean("categories-menu-fill-empty")) {
+            fillEmpty();
+        }
     }
 
     public List<String> getCatorgies() {

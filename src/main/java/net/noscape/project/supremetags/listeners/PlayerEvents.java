@@ -37,7 +37,7 @@ public class PlayerEvents implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
         String format = e.getFormat();
@@ -55,6 +55,7 @@ public class PlayerEvents implements Listener {
             } else {
                 // Store the value of format(twag.getTag()) in a local variable
                 String formattedTag = format(tag.getTag());
+                formattedTag = replacePlaceholders(player, formattedTag);
                 e.setFormat(format.replace("{tag}", formattedTag).replace("{supremetags_tag}", formattedTag).replace("{TAG}", formattedTag));
             }
         }

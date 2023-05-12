@@ -59,12 +59,6 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().setCost(SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system"));
 
-                        if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
-                            SupremeTags.setLayout("layout1");
-                        } else if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
-                            SupremeTags.setLayout("layout2");
-                        }
-
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
                         SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
                         msgPlayer(sender, "&8[&6&lTag&8] &7Reloaded plugin.");
@@ -203,12 +197,6 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().getDataItem().clear();
 
                         SupremeTags.getInstance().getTagManager().setCost(SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system"));
-
-                        if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout1")) {
-                            SupremeTags.setLayout("layout1");
-                        } else if (Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("settings.layout")).equalsIgnoreCase("layout2")) {
-                            SupremeTags.setLayout("layout2");
-                        }
 
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
                         SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
