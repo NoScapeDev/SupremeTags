@@ -53,9 +53,15 @@ public class CategoryMenu extends Paged {
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        NBTItem nbt = new NBTItem(e.getCurrentItem());
 
-        if (nbt.hasNBTData()) {
+        if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
+                && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Refresh")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
+            NBTItem nbt = new NBTItem(e.getCurrentItem());
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
@@ -113,9 +119,13 @@ public class CategoryMenu extends Paged {
                     }
                 }
             }
-        } else if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")) {
+        }
+
+        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")) {
             player.closeInventory();
-        } else if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset")) {
+        }
+
+        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
             if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
                 TagResetEvent tagEvent = new TagResetEvent(player, false);
                 Bukkit.getPluginManager().callEvent(tagEvent);
@@ -145,7 +155,9 @@ public class CategoryMenu extends Paged {
                     msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.reset-message"));
                 }
             }
-        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
+        }
+
+        if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
                 if (page != 0) {
                     page = page - 1;

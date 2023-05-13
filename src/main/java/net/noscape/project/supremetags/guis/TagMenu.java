@@ -52,23 +52,44 @@ public class TagMenu extends Paged {
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        NBTItem nbt = new NBTItem(e.getCurrentItem());
+        if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
+                && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Refresh")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")
+                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
+            NBTItem nbt = new NBTItem(e.getCurrentItem());
+            String identifier = nbt.getString("identifier");
 
-        if (nbt.hasNBTData()) {
-                String identifier = nbt.getString("identifier");
+            Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
 
-                Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
+            if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
 
-                if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                    TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
+                    Bukkit.getPluginManager().callEvent(tagevent);
+
+                    if (tagevent.isCancelled()) return;
+
+                    UserData.setActive(player, tagevent.getTag());
+
+                    super.open();
+                    menuUtil.setIdentifier(tagevent.getTag());
+
+                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                        msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                    }
+                }
+            } else {
+                if (player.hasPermission(t.getPermission())) {
                     if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-
                         TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
                         Bukkit.getPluginManager().callEvent(tagevent);
 
                         if (tagevent.isCancelled()) return;
 
                         UserData.setActive(player, tagevent.getTag());
-
                         super.open();
                         menuUtil.setIdentifier(tagevent.getTag());
 
@@ -77,45 +98,33 @@ public class TagMenu extends Paged {
                         }
                     }
                 } else {
-                    if (player.hasPermission(t.getPermission())) {
-                        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                            TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
-                            Bukkit.getPluginManager().callEvent(tagevent);
+                    double cost = t.getCost();
 
-                            if (tagevent.isCancelled()) return;
+                    // check if they have the right amount of money to buy etc....
+                    if (hasAmount(player, cost)) {
+                        // give them the tag
 
-                            UserData.setActive(player, tagevent.getTag());
-                            super.open();
-                            menuUtil.setIdentifier(tagevent.getTag());
+                        TagBuyEvent tagevent = new TagBuyEvent(player, identifier, cost, false);
+                        Bukkit.getPluginManager().callEvent(tagevent);
 
-                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                                msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
-                            }
-                        }
+                        if (tagevent.isCancelled()) return;
+
+                        take(player, cost);
+                        addPerm(player, t.getPermission());
+                        msgPlayer(player, "&8[&6Tags&8] &7You have unlocked the tag: &6" + t.getIdentifier());
+                        super.open();
                     } else {
-                        double cost = t.getCost();
-
-                        // check if they have the right amount of money to buy etc....
-                        if (hasAmount(player, cost)) {
-                            // give them the tag
-
-                            TagBuyEvent tagevent = new TagBuyEvent(player, identifier, cost, false);
-                            Bukkit.getPluginManager().callEvent(tagevent);
-
-                            if (tagevent.isCancelled()) return;
-
-                            take(player, cost);
-                            addPerm(player, t.getPermission());
-                            msgPlayer(player, "&8[&6Tags&8] &7You have unlocked the tag: &6" + t.getIdentifier());
-                            super.open();
-                        } else {
-                            msgPlayer(player, "&cInsufficient funds. &7You need &c$" + t.getCost() + " &7to get this tag.");
-                        }
+                        msgPlayer(player, "&cInsufficient funds. &7You need &c$" + t.getCost() + " &7to get this tag.");
                     }
                 }
-        } else if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")) {
+            }
+        }
+
+        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")) {
             player.closeInventory();
-        } else if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset")) {
+        }
+
+        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
             if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
                 TagResetEvent tagEvent = new TagResetEvent(player, false);
                 Bukkit.getPluginManager().callEvent(tagEvent);
@@ -145,7 +154,9 @@ public class TagMenu extends Paged {
                     msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.reset-message"));
                 }
             }
-        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
+        }
+
+        if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
             if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
                 if (page != 0) {
                     page = page - 1;
