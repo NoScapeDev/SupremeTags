@@ -22,6 +22,12 @@ public class Tags implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
+        String reload = SupremeTags.getInstance().getConfig().getString("messages.reload");
+        String noperm = SupremeTags.getInstance().getConfig().getString("messages.no-permission");
+        String notags = SupremeTags.getInstance().getConfig().getString("messages.no-tags");
+        String commanddisabled = SupremeTags.getInstance().getConfig().getString("messages.tag-command-disabled");
+        String invalidtag = SupremeTags.getInstance().getConfig().getString("messages.invalid-tag");
+
         if (!(sender instanceof Player)) {
             if (cmd.getName().equalsIgnoreCase("tags")) {
                 if (args.length == 0) {
@@ -44,7 +50,7 @@ public class Tags implements CommandExecutor {
                             UserData.setActive(target, identifier);
                             msgPlayer(sender, "&8[&6&lTag&8] &7Set &b" + target.getName() + "'s &7tag to &b" + identifier);
                         } else {
-                            msgPlayer(sender, "&cThis tag does not exist.");
+                            msgPlayer(sender, invalidtag);
                         }
                     }
                 } else if (args.length == 1) {
@@ -61,7 +67,7 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
                         SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
-                        msgPlayer(sender, "&8[&6&lTag&8] &7Reloaded plugin.");
+                        msgPlayer(sender, reload);
                     } else if (args[0].equalsIgnoreCase("help")) {
                         sendHelp(sender);
                     }
@@ -103,7 +109,7 @@ public class Tags implements CommandExecutor {
                                     new TagMenu(SupremeTags.getMenuUtil(player)).open();
                                 }
                             } else {
-                                msgPlayer(player, "&cYou have no tags yet.");
+                                msgPlayer(player, notags);
                             }
                         } else {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
@@ -115,7 +121,7 @@ public class Tags implements CommandExecutor {
                     } else {
                         for (String world : SupremeTags.getInstance().getConfig().getStringList("settings.disabled-worlds")) {
                             if (player.getWorld().getName().equalsIgnoreCase(world)) {
-                                msgPlayer(player, "&cTag command is disabled in this world.");
+                                msgPlayer(player, commanddisabled);
                             } else {
                                 if (!SupremeTags.getInstance().getTagManager().isCost()) {
                                     if (hasTags(player)) {
@@ -125,7 +131,7 @@ public class Tags implements CommandExecutor {
                                             new TagMenu(SupremeTags.getMenuUtil(player)).open();
                                         }
                                     } else {
-                                        msgPlayer(player, "&cYou have no tags yet.");
+                                        msgPlayer(player, notags);
                                     }
                                 } else {
                                     if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
@@ -139,7 +145,7 @@ public class Tags implements CommandExecutor {
                         }
                     }
                 } else {
-                    msgPlayer(player, "&cNo Permission, required permission: &7'supremetags.menu'");
+                    msgPlayer(player, noperm);
                 }
             } else if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("create")) {
@@ -149,7 +155,7 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().createTag(player, name, tag, "&7My tag is " + name, "supremetags.tag." + name, 0);
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else if (args[0].equalsIgnoreCase("settag")) {
                     if (player.hasPermission("supremetags.admin")) {
@@ -158,7 +164,7 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().setTag(player, name, tag);
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else if (args[0].equalsIgnoreCase("setcategory")) {
                         if (player.hasPermission("supremetags.admin")) {
@@ -167,7 +173,7 @@ public class Tags implements CommandExecutor {
 
                             SupremeTags.getInstance().getTagManager().setCategory(player, name, category);
                         } else {
-                            msgPlayer(player, "&cNo Permission.");
+                            msgPlayer(player, noperm);
                         }
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (player.hasPermission("supremetags.admin")) {
@@ -178,10 +184,10 @@ public class Tags implements CommandExecutor {
                             UserData.setActive(target, identifier);
                             msgPlayer(player, "&8[&6&lTag&8] &7Set &b" + target.getName() + "'s &7tag to &b" + identifier);
                         } else {
-                            msgPlayer(player, "&cThis tag does not exist.");
+                            msgPlayer(player, invalidtag);
                         }
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else {
                     sendHelp(sender);
@@ -200,21 +206,21 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getCategoryManager().loadCategories();
                         SupremeTags.getInstance().getCategoryManager().loadCategoriesTags();
-                        msgPlayer(player, "&8[&6&lTag&8] &7Reloaded plugin.");
+                        msgPlayer(player, reload);
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else if (args[0].equalsIgnoreCase("help")) {
                     if (player.hasPermission("supremetags.admin")) {
                         sendHelp(player);
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else if (args[0].equalsIgnoreCase("editor")) {
                         if (player.hasPermission("supremetags.admin")) {
                             new TagEditorMenu(SupremeTags.getMenuUtil(player)).open();
                         } else {
-                            msgPlayer(player, "&cNo Permission.");
+                            msgPlayer(player, noperm);
                         }
                 } else if (args[0].equalsIgnoreCase("merge")) {
                     if (player.hasPermission("supremetags.admin")) {
@@ -242,7 +248,7 @@ public class Tags implements CommandExecutor {
                             msgPlayer(player, "&6Error: &7DeluxeTags can not be found.");
                         }
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 }
             } else if (args.length == 2) {
@@ -252,7 +258,7 @@ public class Tags implements CommandExecutor {
 
                         SupremeTags.getInstance().getTagManager().deleteTag(player, name);
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else if (args[0].equalsIgnoreCase("reset")) {
                     if (player.hasPermission("supremetags.admin")) {
@@ -268,7 +274,7 @@ public class Tags implements CommandExecutor {
                             msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to None.");
                         }
                     } else {
-                        msgPlayer(player, "&cNo Permission.");
+                        msgPlayer(player, noperm);
                     }
                 } else {
                     sendHelp(player);

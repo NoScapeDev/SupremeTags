@@ -1,3 +1,5 @@
+plugin-version: 1.7.1
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                     Settings                         | #
@@ -30,6 +32,15 @@ settings:
 messages:
   tag-select-message: '&8[&6&lTags&8] &e%identifier% &7tag selected.'
   reset-message: '&8[&6&lTags&8] &7Reset tag.'
+  insufficient-funds: '&cInsufficient funds. &7You need &c$%cost% &7to get this tag.'
+  tag-unlocked: '&8[&6Tags&8] &7You have unlocked the tag: &6%identifier%'
+  reload: '&8[&6&lTag&8] &7Reloaded plugin.'
+  no-permission: '&cNo Permission.'
+  no-tags: '&cYou have no tags yet.'
+  tag-command-disabled: '&cTag command is disabled in this world.'
+  invalid-tag: '&cThis tag does not exist.'
+  valid-tag: '&cThis tag already exists.'
+  invalid-category: '&cThis category does not exist.'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -122,7 +133,7 @@ gui:
     refresh-material: 'GREEN_DYE'
   # edit the item names of all items inside the gui.
   strings:
-    back-item: '&7Next'
+    back-item: '&7Back'
     next-item: '&7Next'
     reset-item: '&cReset'
     active-item: '&7Active: &6%identifier%'

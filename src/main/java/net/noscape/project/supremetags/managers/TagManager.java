@@ -18,6 +18,14 @@ public class TagManager {
 
     private boolean isCost;
 
+    private String reload = SupremeTags.getInstance().getConfig().getString("messages.reload");
+    private String noperm = SupremeTags.getInstance().getConfig().getString("messages.no-permission");
+    private String notags = SupremeTags.getInstance().getConfig().getString("messages.no-tags");
+    private String commanddisabled = SupremeTags.getInstance().getConfig().getString("messages.tag-command-disabled");
+    private String invalidtag = SupremeTags.getInstance().getConfig().getString("messages.invalid-tag");
+    private String validtag = SupremeTags.getInstance().getConfig().getString("messages.valid-tag");
+    private String invalidcategory = SupremeTags.getInstance().getConfig().getString("messages.invalid-category");
+
     public TagManager(boolean isCost) {
         this.sort();
         this.isCost = isCost;
@@ -43,7 +51,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &7New tag created &6" + identifier + " &f- " + tag_string);
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag already exists.");
+            msgPlayer(player, validtag);
         }
     }
 
@@ -65,7 +73,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &7New tag created &6" + identifier + " &f- " + tag_string);
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag already exists.");
+            msgPlayer(player, validtag);
         }
     }
 
@@ -101,7 +109,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &7Tag &6" + identifier + " &7is now deleted!");
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
+            msgPlayer(player, invalidtag);
         }
     }
 
@@ -119,7 +127,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &7Tag &6" + identifier + " &7is now deleted!");
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
+            msgPlayer(player, invalidtag);
         }
     }
 
@@ -186,7 +194,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
+            msgPlayer(player, invalidtag);
         }
     }
 
@@ -205,7 +213,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s category &7changed to " + t.getCategory());
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This category doesn't exist!");
+            msgPlayer(player, invalidcategory);
         }
     }
 
@@ -224,7 +232,7 @@ public class TagManager {
 
             msgPlayer(player, "&8[&6&lTAG&8] &6" + t.getIdentifier() + "'s tag &7changed to " + t.getTag());
         } else {
-            msgPlayer(player, "&8[&6&lTAG&8] &7This tag doesn't exist!");
+            msgPlayer(player, invalidtag);
         }
     }
 

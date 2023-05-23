@@ -53,6 +53,10 @@ public class TagMenu extends Paged {
         String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
         String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
 
+
+        String insufficient = SupremeTags.getInstance().getConfig().getString("messages.insufficient-funds");
+        String unlocked = SupremeTags.getInstance().getConfig().getString("messages.tag-unlocked");
+
         if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()))) {
             e.setCancelled(true);
         }
@@ -113,10 +117,10 @@ public class TagMenu extends Paged {
 
                         take(player, cost);
                         addPerm(player, t.getPermission());
-                        msgPlayer(player, "&8[&6Tags&8] &7You have unlocked the tag: &6" + t.getIdentifier());
+                        msgPlayer(player, unlocked.replaceAll("%identifier%", t.getIdentifier()));
                         super.open();
                     } else {
-                        msgPlayer(player, "&cInsufficient funds. &7You need &c$" + t.getCost() + " &7to get this tag.");
+                        msgPlayer(player, insufficient.replaceAll("%cost%", String.valueOf(t.getCost())));
                     }
                 }
             }
@@ -165,7 +169,7 @@ public class TagMenu extends Paged {
                     super.open();
                 }
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(next))) {
-                if (getCurrentItemsOnPage() < tags.size()) {
+                if (!((index + 1) >= tag.size())) {
                     page = page + 1;
                     super.open();
                 }
