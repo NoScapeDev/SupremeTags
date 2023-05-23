@@ -120,7 +120,7 @@ public final class SupremeTags extends JavaPlugin {
 
         merge(logger);
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (isPlaceholderAPI()) {
             logger.info(ChatColor.YELLOW + "> PlaceholderAPI: Found");
             new PAPI(this).register();
         } else {
@@ -396,5 +396,9 @@ public final class SupremeTags extends JavaPlugin {
 
     public HashMap<Player, SetupTag> getSetupList() {
         return setupList;
+    }
+
+    public boolean isPlaceholderAPI() {
+        return getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 }

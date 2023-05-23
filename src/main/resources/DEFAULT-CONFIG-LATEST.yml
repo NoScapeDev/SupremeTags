@@ -1,6 +1,3 @@
-# this is only to see if the DEFAULT-CONFIG-LATEST.YML updates...
-plugin-version: 1.6.4
-
 ############################################################
 # +------------------------------------------------------+ #
 # |                     Settings                         | #
@@ -20,7 +17,7 @@ settings:
   cmi-color-support: false # allow the plugin to change color format to legacy '&x', to support CMI Chat, This will override 'legacy-hex-format'
   tag-command-in-disabled-worlds: true # should /tags command be disabled in 'disabled-worlds'.
   disabled-worlds: # what worlds should tags be allowed in, tags in this world will not be shown.
-    - 'lobby'
+    - 'example'
     - 'world2'
   gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
 
@@ -123,6 +120,14 @@ gui:
     active-tag-material: 'NAME_TAG'
     close-menu-material: 'BARRIER'
     refresh-material: 'GREEN_DYE'
+  # edit the item names of all items inside the gui.
+  strings:
+    back-item: '&7Next'
+    next-item: '&7Next'
+    reset-item: '&cReset'
+    active-item: '&7Active: &6%identifier%'
+    close-item: '&cClose'
+    refresh-item: '&aRefresh'
   # disable items in the gui.
   # setting these values to false will not display the item in tag gui.
   items:

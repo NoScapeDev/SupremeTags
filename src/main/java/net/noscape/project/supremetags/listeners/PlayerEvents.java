@@ -56,6 +56,7 @@ public class PlayerEvents implements Listener {
                 // Store the value of format(twag.getTag()) in a local variable
                 String formattedTag = format(tag.getTag());
                 formattedTag = replacePlaceholders(player, formattedTag);
+
                 e.setFormat(format.replace("{tag}", formattedTag).replace("{supremetags_tag}", formattedTag).replace("{TAG}", formattedTag));
             }
         }

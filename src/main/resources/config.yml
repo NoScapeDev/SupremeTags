@@ -120,6 +120,14 @@ gui:
     active-tag-material: 'NAME_TAG'
     close-menu-material: 'BARRIER'
     refresh-material: 'GREEN_DYE'
+  # edit the item names of all items inside the gui.
+  strings:
+    back-item: '&7Back'
+    next-item: '&7Next'
+    reset-item: '&cReset'
+    active-item: '&7Active: &6%identifier%'
+    close-item: '&cClose'
+    refresh-item: '&aRefresh'
   # disable items in the gui.
   # setting these values to false will not display the item in tag gui.
   items:

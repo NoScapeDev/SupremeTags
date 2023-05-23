@@ -46,20 +46,22 @@ public class TagMenu extends Paged {
 
         Player player = (Player) e.getWhoClicked();
 
+        String back = SupremeTags.getInstance().getConfig().getString("gui.strings.back-item");
+        String close = SupremeTags.getInstance().getConfig().getString("gui.strings.close-item");
+        String next = SupremeTags.getInstance().getConfig().getString("gui.strings.next-item");
+        String refresh = SupremeTags.getInstance().getConfig().getString("gui.strings.refresh-item");
+        String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
+        String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
+
         if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()))) {
             e.setCancelled(true);
         }
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
-                && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Refresh")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
-            NBTItem nbt = new NBTItem(e.getCurrentItem());
+        NBTItem nbt = new NBTItem(e.getCurrentItem());
+
+        if (nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
@@ -120,11 +122,11 @@ public class TagMenu extends Paged {
             }
         }
 
-        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Close")) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(close))) {
             player.closeInventory();
         }
 
-        if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Reset Tag")) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(reset))) {
             if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
                 TagResetEvent tagEvent = new TagResetEvent(player, false);
                 Bukkit.getPluginManager().callEvent(tagEvent);
@@ -157,34 +159,29 @@ public class TagMenu extends Paged {
         }
 
         if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
-            if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(back))) {
                 if (page != 0) {
                     page = page - 1;
                     super.open();
                 }
-            } else if (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")) {
-                if (!((index + 1) >= tag.size())) {
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(next))) {
+                if (getCurrentItemsOnPage() < tags.size()) {
                     page = page + 1;
                     super.open();
                 }
             }
         }
-        //} else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.personal-tags-material")).toUpperCase()))) {
-            //if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")) {
-                //new PersonalTagsMenu(SupremeTags.getMenuUtil(player)).open();
-            //}
-        //}
     }
 
     @Override
     public void setMenuItems() {
-
-        applyLayout();
 
         if (SupremeTags.getInstance().getTagManager().isCost()) {
             getTagItemsCost();
         } else {
             getTagItemsNoneCost();
         }
+
+        applyLayout();
     }
 }

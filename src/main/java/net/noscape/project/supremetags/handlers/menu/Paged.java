@@ -14,8 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-import static net.noscape.project.supremetags.utils.Utils.color;
-import static net.noscape.project.supremetags.utils.Utils.format;
+import static net.noscape.project.supremetags.utils.Utils.*;
 
 public abstract class Paged extends Menu {
 
@@ -23,16 +22,33 @@ public abstract class Paged extends Menu {
     protected int maxItems = 35;
     protected int index = 0;
 
+    private int tagsCount;
+
+    private int currentItemsOnPage = 0;
+
     public Paged(MenuUtil menuUtil) {
         super(menuUtil);
+
+        Map<String, Tag> tags = SupremeTags.getInstance().getTagManager().getTags();
+        ArrayList<Tag> tag = new ArrayList<>(tags.values());
+
+        tagsCount = tag.size();
     }
 
     public void applyEditorLayout() {
-        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
 
-        inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+        String back = SupremeTags.getInstance().getConfig().getString("gui.strings.back-item");
+        String close = SupremeTags.getInstance().getConfig().getString("gui.strings.close-item");
+        String next = SupremeTags.getInstance().getConfig().getString("gui.strings.next-item");
 
-        inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
+
+        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), back));
+
+        inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), close));
+
+        if (tagsCount > 36) {
+            inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), next));
+        }
 
         inventory.setItem(36, super.GLASS);
         inventory.setItem(37, super.GLASS);
@@ -47,20 +63,30 @@ public abstract class Paged extends Menu {
 
     public void applyLayout() {
 
+        String back = SupremeTags.getInstance().getConfig().getString("gui.strings.back-item");
+        String close = SupremeTags.getInstance().getConfig().getString("gui.strings.close-item");
+        String next = SupremeTags.getInstance().getConfig().getString("gui.strings.next-item");
+        String refresh = SupremeTags.getInstance().getConfig().getString("gui.strings.refresh-item");
+        String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
+        String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
+
+
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.back-item")) {
-            inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
+            inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), back));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.close-item")) {
-            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), close));
         }
 
-        if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.next-item")) {
-            inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
+        if (!(getCurrentItemsOnPage() < 36)) {
+            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.next-item")) {
+                inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), next));
+            }
         }
 
         if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
-            inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
+            inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), reset));
         }
 
         //if (SupremeTags.getInstance().getConfig().getBoolean("settings.personal-tags")) {
@@ -70,11 +96,11 @@ public abstract class Paged extends Menu {
         //}
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
-            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), refresh));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
-            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active).replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()))));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
@@ -91,26 +117,36 @@ public abstract class Paged extends Menu {
     }
 
     public void applyPTLayout() {
-        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Back"));
+
+        String back = SupremeTags.getInstance().getConfig().getString("gui.strings.back-item");
+        String close = SupremeTags.getInstance().getConfig().getString("gui.strings.close-item");
+        String next = SupremeTags.getInstance().getConfig().getString("gui.strings.next-item");
+        String refresh = SupremeTags.getInstance().getConfig().getString("gui.strings.refresh-item");
+        String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
+        String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
+
+        inventory.setItem(48, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), back));
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.close-item")) {
-            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), ChatColor.RED + "Close"));
+            inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), close));
         }
 
-        inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), ChatColor.GRAY + "Next"));
+        if (currentItemsOnPage > 36) {
+            inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), next));
+        }
 
         if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
-            inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), ChatColor.RED + "Reset Tag"));
+            inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), reset));
         }
 
         inventory.setItem(53, makeItem(Material.BOOK, ChatColor.AQUA + "Create a Tag"));
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.refresh-item")) {
-            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), ChatColor.GREEN + "Refresh Menu"));
+            inventory.setItem(45, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.refresh-material")).toUpperCase()), refresh));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
-            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format("&7Active: &6" + UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active).replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()))));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
@@ -145,6 +181,8 @@ public abstract class Paged extends Menu {
             int startIndex = page * maxItemsPerPage;
             int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
 
+            currentItemsOnPage = 0;
+
             for (int i = startIndex; i < endIndex; i++) {
                 Tag t = tag.get(i);
                 if (t == null) continue;
@@ -158,6 +196,10 @@ public abstract class Paged extends Menu {
                     displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
                 } else {
                     displayname = format("&7Tag: " + t.getTag());
+                }
+
+                if (SupremeTags.getInstance().isPlaceholderAPI()) {
+                    displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                 }
 
                 String material;
@@ -565,6 +607,7 @@ public abstract class Paged extends Menu {
                         }
                     }
                 }
+                currentItemsOnPage++;
             }
         }
     }
@@ -582,6 +625,8 @@ public abstract class Paged extends Menu {
             int startIndex = page * maxItemsPerPage;
             int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
 
+            currentItemsOnPage = 0;
+
             for (int i = startIndex; i < endIndex; i++) {
                 Tag t = tag.get(i);
                 if (t == null) continue;
@@ -594,6 +639,10 @@ public abstract class Paged extends Menu {
                     displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
                 } else {
                     displayname = format("&7Tag: " + t.getTag());
+                }
+
+                if (SupremeTags.getInstance().isPlaceholderAPI()) {
+                    displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                 }
 
                 String material;
@@ -874,6 +923,7 @@ public abstract class Paged extends Menu {
                         }
                     }
                 }
+                currentItemsOnPage++;
             }
         }
     }
@@ -887,6 +937,10 @@ public abstract class Paged extends Menu {
         ArrayList<Tag> tag = new ArrayList<>(tags.values());
 
         if (!tag.isEmpty()) {
+
+
+            currentItemsOnPage = 0;
+
             for (int i = 0; i < getMaxItems(); i++) {
                 index = getMaxItems() * page + i;
                 if (index >= tag.size()) break;
@@ -903,6 +957,10 @@ public abstract class Paged extends Menu {
                         displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
                     } else {
                         displayname = format("&7Tag: " + t.getTag());
+                    }
+
+                    if (SupremeTags.getInstance().isPlaceholderAPI()) {
+                        displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                     }
 
                     String material;
@@ -1334,6 +1392,7 @@ public abstract class Paged extends Menu {
                         }
                     }
                 }
+                currentItemsOnPage++;
             }
         }
     }
@@ -1347,6 +1406,9 @@ public abstract class Paged extends Menu {
         ArrayList<Tag> tag = new ArrayList<>(tags.values());
 
         if (!tag.isEmpty()) {
+
+            currentItemsOnPage = 0;
+
             for(int i = 0; i < getMaxItems(); i++) {
                 index = getMaxItems() * page + i;
                 if(index >= tag.size()) break;
@@ -1363,6 +1425,10 @@ public abstract class Paged extends Menu {
                         displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
                     } else {
                         displayname = format("&7Tag: " + t.getTag());
+                    }
+
+                    if (SupremeTags.getInstance().isPlaceholderAPI()) {
+                        displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                     }
 
                     String material;
@@ -1649,6 +1715,7 @@ public abstract class Paged extends Menu {
                         }
                     }
                 }
+                currentItemsOnPage++;
             }
         }
     }
@@ -1665,6 +1732,8 @@ public abstract class Paged extends Menu {
             int startIndex = page * maxItemsPerPage;
             int endIndex = Math.min(startIndex + maxItemsPerPage, tag.size());
 
+            currentItemsOnPage = 0;
+
             for (int i = startIndex; i < endIndex; i++) {
                 Tag t = tag.get(i);
                 if (t == null) continue;
@@ -1677,6 +1746,10 @@ public abstract class Paged extends Menu {
                     displayname = Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".displayname")).replace("%tag%", t.getTag());
                 } else {
                     displayname = format("&7Tag: " + t.getTag());
+                }
+
+                if (SupremeTags.getInstance().isPlaceholderAPI()) {
+                    displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                 }
 
                 String material;
@@ -1749,7 +1822,12 @@ public abstract class Paged extends Menu {
                     nbt.setString("identifier", t.getIdentifier());
                     inventory.addItem(nbt.getItem());
                 }
+                currentItemsOnPage++;
             }
         }
+    }
+
+    public int getCurrentItemsOnPage() {
+        return currentItemsOnPage;
     }
 }
