@@ -33,6 +33,7 @@ public final class SupremeTags extends JavaPlugin {
     private static SupremeTags instance;
     private TagManager tagManager;
     private CategoryManager categoryManager;
+    private MergeManager mergeManager;
 
     private static SupremeTagsAPI api;
 
@@ -104,6 +105,7 @@ public final class SupremeTags extends JavaPlugin {
         tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
         categoryManager = new CategoryManager();
         playerManager = new PlayerManager();
+        mergeManager = new MergeManager();
         //playerConfig = new PlayerConfig();
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
@@ -235,26 +237,7 @@ public final class SupremeTags extends JavaPlugin {
     }
 
     public void merge(Logger log) {
-        File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/DeluxeTags/config.yml"); // First we will load the file.
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile); // Now we will load the file into a FileConfiguration.
-
-        if (getConfig().getBoolean("settings.auto-merge")) {
-            ConfigurationSection deluxeTagsSection = config.getConfigurationSection("deluxetags");
-            if (deluxeTagsSection != null) {
-                for (String identifier : deluxeTagsSection.getKeys(false)) {
-                    if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
-                        String tag = config.getString(String.format("deluxetags.%s.tag", identifier));
-                        String description = config.getString(String.format("deluxetags.%s.description", identifier));
-                        String permission = config.getString(String.format("deluxetags.%s.permission", identifier));
-
-                        SupremeTags.getInstance().getTagManager().createTag(identifier, tag, description, permission, 0);
-                    }
-                }
-                log.info("Merger: Added all new tags from DeluxeTags, any existing tags with the same name were not added.");
-            } else {
-                log.warning("Error: DeluxeTags tag config section is empty.");
-            }
-        }
+        mergeManager.merge(log);
     }
 
     private void sendConsoleLog() {

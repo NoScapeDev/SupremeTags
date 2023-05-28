@@ -101,15 +101,23 @@ public class Tags implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
                     if (!SupremeTags.getInstance().isDisabledWorldsTag()) {
-                        if (!SupremeTags.getInstance().getTagManager().isCost()) {
-                            if (hasTags(player)) {
+                        if (!SupremeTags.getInstance().getConfig().getBoolean("settings.locked-view")) {
+                            if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                                if (hasTags(player)) {
+                                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                        new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                                    } else {
+                                        new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                                    }
+                                } else {
+                                    msgPlayer(player, notags);
+                                }
+                            } else {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
                                     new MainMenu(SupremeTags.getMenuUtil(player)).open();
                                 } else {
                                     new TagMenu(SupremeTags.getMenuUtil(player)).open();
                                 }
-                            } else {
-                                msgPlayer(player, notags);
                             }
                         } else {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {

@@ -20,6 +20,7 @@ settings:
     - 'example'
     - 'world2'
   gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
+  locked-view: false # this setting allows players to view locked/unlocked tags.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -79,16 +80,7 @@ gui:
   tag-menu-none-categories:
     title: '&8Tag Menu'
     tag-item: # to edit the tags display name, please proceed below to 'tags.<identifier>.displayname'
-      lore:
-        - '&7&m-----------------------------'
-        - ''
-        - '&bIdentifier: &7%identifier%'
-        - ''
-        - '&dDescription:'
-        - '&7%description%'
-        - ''
-        - '&eClick to Assign!'
-        - '&7&m-----------------------------'
+      # used for cost lores that are locked
       locked-lore:
         - '&c&m-----------------------------'
         - ''
@@ -97,6 +89,15 @@ gui:
         - ''
         - '&cThis tag is locked!'
         - '&c&m-----------------------------'
+      # used for when 'locked-view' is enabled and players doesn't have permission
+      locked-permission:
+        - '&c&m-----------------------------'
+        - ''
+        - '&7No permission to select this tag!'
+        - ''
+        - '&cThis tag is locked!'
+        - '&c&m-----------------------------'
+      # used for unlocked view of the tag
       unlocked-lore:
         - '&7&m-----------------------------'
         - ''

@@ -28,6 +28,8 @@ public class PlayerEvents implements Listener {
             //SupremeTags.getInstance().getPlayerConfig().loadPlayer(player);
         //}
 
+        player.getClientViewDistance();
+
         if (SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
             String activeTag = UserData.getActive(player.getUniqueId());
             if (activeTag.equalsIgnoreCase("None")) {

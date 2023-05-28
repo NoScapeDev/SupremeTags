@@ -1,7 +1,6 @@
 package net.noscape.project.supremetags.guis;
 
 import de.tr7zw.nbtapi.*;
-import me.arcaniax.hdb.api.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.api.events.TagAssignEvent;
 import net.noscape.project.supremetags.api.events.TagBuyEvent;
@@ -10,11 +9,8 @@ import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.handlers.menu.*;
 import net.noscape.project.supremetags.storage.*;
 import org.bukkit.*;
-import org.bukkit.enchantments.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
 
 import java.util.*;
 
@@ -183,7 +179,7 @@ public class TagMenu extends Paged {
         if (SupremeTags.getInstance().getTagManager().isCost()) {
             getTagItemsCost();
         } else {
-            getTagItemsNoneCost();
+            getTagItems();
         }
 
         applyLayout();
