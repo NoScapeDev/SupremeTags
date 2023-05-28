@@ -372,6 +372,9 @@ public final class SupremeTags extends JavaPlugin {
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
+    public MergeManager getMergeManager() {
+        return mergeManager;
+    }
 
     public PlayerConfig getPlayerConfig() {
         return playerConfig;

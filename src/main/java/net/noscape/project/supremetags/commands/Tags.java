@@ -232,29 +232,7 @@ public class Tags implements CommandExecutor {
                         }
                 } else if (args[0].equalsIgnoreCase("merge")) {
                     if (player.hasPermission("supremetags.admin")) {
-                        File configFile = new File(Bukkit.getServer().getWorldContainer().getAbsolutePath() + "/plugins/DeluxeTags/config.yml"); // First we will load the file.
-                        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile); // Now we will load the file into a FileConfiguration.
-
-                        if (configFile.exists()) {
-                            if (config.getConfigurationSection("deluxetags") != null) {
-                                for (String identifier : Objects.requireNonNull(config.getConfigurationSection("deluxetags")).getKeys(false)) {
-                                    if (!SupremeTags.getInstance().getTagManager().getTags().containsKey(identifier)) {
-
-                                        String tag = config.getString("deluxetags." + identifier + ".tag");
-                                        String description = config.getString("deluxetags." + identifier + ".description");
-                                        String permission = config.getString("deluxetags." + identifier + ".permission");
-
-                                        SupremeTags.getInstance().getTagManager().createTag(player, identifier, tag, description, permission, 0);
-                                    }
-
-                                    msgPlayer(player, "&6Merger: &7Added all new tags from &6DeluxeTags&7 were added, any existing tags with the same name won't be added.");
-                                }
-                            } else {
-                                msgPlayer(player, "&6Error: &7DeluxeTags tag config area is empty.");
-                            }
-                        } else {
-                            msgPlayer(player, "&6Error: &7DeluxeTags can not be found.");
-                        }
+                        SupremeTags.getInstance().getMergeManager().merge(player);
                     } else {
                         msgPlayer(player, noperm);
                     }
