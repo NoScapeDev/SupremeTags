@@ -232,7 +232,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -265,7 +265,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -307,7 +307,7 @@ public abstract class Paged extends Menu {
                         tagMeta.setDisplayName(format(displayname));
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -334,7 +334,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -377,7 +377,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -414,7 +414,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -513,7 +513,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -545,7 +545,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -588,7 +588,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -620,7 +620,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -663,7 +663,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -700,7 +700,7 @@ public abstract class Paged extends Menu {
 
                         if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                             if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                             }
                         }
 
@@ -804,7 +804,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -837,7 +837,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -879,7 +879,7 @@ public abstract class Paged extends Menu {
                             tagMeta.setDisplayName(format(displayname));
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -906,7 +906,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -950,7 +950,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -977,7 +977,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1057,7 +1057,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1158,7 +1158,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1190,7 +1190,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1233,7 +1233,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1265,7 +1265,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    tagMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1308,7 +1308,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
@@ -1345,7 +1345,7 @@ public abstract class Paged extends Menu {
 
                             if (UserData.getActive(menuUtil.getOwner().getUniqueId()).equalsIgnoreCase(t.getIdentifier())) {
                                 if (SupremeTags.getInstance().getConfig().getBoolean("settings.active-tag-glow")) {
-                                    nbt.getItem().addEnchantment(Enchantment.KNOCKBACK, 1);
+                                    nbt.getItem().addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
                                 }
                             }
 
