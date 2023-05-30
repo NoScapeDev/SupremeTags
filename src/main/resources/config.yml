@@ -40,6 +40,7 @@ messages:
   invalid-tag: '&cThis tag does not exist.'
   valid-tag: '&cThis tag already exists.'
   invalid-category: '&cThis category does not exist.'
+  locked-tag: '&cYou do not have access to select this tag!'
 
 ############################################################
 # +------------------------------------------------------+ #

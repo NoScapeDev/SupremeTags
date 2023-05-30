@@ -69,19 +69,23 @@ public class CategoryMenu extends Paged {
 
             if (!SupremeTags.getInstance().getTagManager().isCost()) {
                 if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
+                    if (player.hasPermission(t.getPermission())) {
 
-                    TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
-                    Bukkit.getPluginManager().callEvent(tagevent);
+                        TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
+                        Bukkit.getPluginManager().callEvent(tagevent);
 
-                    if (tagevent.isCancelled()) return;
+                        if (tagevent.isCancelled()) return;
 
-                    UserData.setActive(player, tagevent.getTag());
+                        UserData.setActive(player, tagevent.getTag());
 
-                    super.open();
-                    menuUtil.setIdentifier(tagevent.getTag());
+                        super.open();
+                        menuUtil.setIdentifier(tagevent.getTag());
 
-                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                        msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                        }
+                    } else {
+                        msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.locked-tag"));
                     }
                 }
             } else {
