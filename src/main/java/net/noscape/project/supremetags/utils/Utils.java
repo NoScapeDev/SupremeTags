@@ -1,14 +1,22 @@
 package net.noscape.project.supremetags.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.noscape.project.supremetags.SupremeTags;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -167,6 +175,32 @@ public class Utils {
 
     public static String replacePlaceholders(Player user, String base) {
         return PlaceholderAPI.setPlaceholders(user, base);
+    }
+
+    public static ItemStack createSkull(String baseheadtexture64) {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+
+        if (baseheadtexture64 == null || baseheadtexture64.isEmpty()) {
+            return skull;
+        }
+
+        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+        assert skullMeta != null;
+        skullMeta.setOwningPlayer(null);
+
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", baseheadtexture64));
+
+        try {
+            Field profileField = skullMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(skullMeta, profile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        skull.setItemMeta(skullMeta);
+        return skull;
     }
 
 }

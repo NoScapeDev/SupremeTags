@@ -101,9 +101,13 @@ public class Tags implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("supremetags.menu")) {
                     if (!SupremeTags.getInstance().isDisabledWorldsTag()) {
-                        if (!SupremeTags.getInstance().getConfig().getBoolean("settings.locked-view") || !SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system")) {
+                        boolean lockedView = SupremeTags.getInstance().getConfig().getBoolean("settings.locked-view");
+                        boolean costSystem = SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system");
+                        boolean useCategories = SupremeTags.getInstance().getConfig().getBoolean("settings.categories");
+
+                        if ((!lockedView && !costSystem) || (lockedView && !costSystem)) {
                             if (hasTags(player)) {
-                                if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                if (useCategories) {
                                     new MainMenu(SupremeTags.getMenuUtil(player)).open();
                                 } else {
                                     new TagMenu(SupremeTags.getMenuUtil(player)).open();
@@ -111,8 +115,18 @@ public class Tags implements CommandExecutor {
                             } else {
                                 msgPlayer(player, notags);
                             }
-                        } else if (SupremeTags.getInstance().getConfig().getBoolean("settings.locked-view") || SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system")) {
-                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                        } else if (!lockedView && !costSystem) {
+                            if (!hasTags(player)) {
+                                msgPlayer(player, notags);
+                            } else {
+                                if (useCategories) {
+                                    new MainMenu(SupremeTags.getMenuUtil(player)).open();
+                                } else {
+                                    new TagMenu(SupremeTags.getMenuUtil(player)).open();
+                                }
+                            }
+                        } else {
+                            if (useCategories) {
                                 new MainMenu(SupremeTags.getMenuUtil(player)).open();
                             } else {
                                 new TagMenu(SupremeTags.getMenuUtil(player)).open();
@@ -123,9 +137,13 @@ public class Tags implements CommandExecutor {
                             if (player.getWorld().getName().equalsIgnoreCase(world)) {
                                 msgPlayer(player, commanddisabled);
                             } else {
-                                if (!SupremeTags.getInstance().getTagManager().isCost()) {
+                                boolean lockedView = SupremeTags.getInstance().getConfig().getBoolean("settings.locked-view");
+                                boolean costSystem = SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system");
+                                boolean useCategories = SupremeTags.getInstance().getConfig().getBoolean("settings.categories");
+
+                                if ((!lockedView && !costSystem) || (lockedView && !costSystem)) {
                                     if (hasTags(player)) {
-                                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                        if (useCategories) {
                                             new MainMenu(SupremeTags.getMenuUtil(player)).open();
                                         } else {
                                             new TagMenu(SupremeTags.getMenuUtil(player)).open();
@@ -134,7 +152,7 @@ public class Tags implements CommandExecutor {
                                         msgPlayer(player, notags);
                                     }
                                 } else {
-                                    if (SupremeTags.getInstance().getConfig().getBoolean("settings.categories")) {
+                                    if (useCategories) {
                                         new MainMenu(SupremeTags.getMenuUtil(player)).open();
                                     } else {
                                         new TagMenu(SupremeTags.getMenuUtil(player)).open();

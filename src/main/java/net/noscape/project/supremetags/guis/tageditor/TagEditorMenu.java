@@ -42,6 +42,13 @@ public class TagEditorMenu extends Paged {
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
+        String back = SupremeTags.getInstance().getConfig().getString("gui.strings.back-item");
+        String close = SupremeTags.getInstance().getConfig().getString("gui.strings.close-item");
+        String next = SupremeTags.getInstance().getConfig().getString("gui.strings.next-item");
+        String refresh = SupremeTags.getInstance().getConfig().getString("gui.strings.refresh-item");
+        String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
+        String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
+
         if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
                 && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
                 && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
@@ -51,18 +58,24 @@ public class TagEditorMenu extends Paged {
             String identifier = nbt.getString("identifier");
             menuUtil.setIdentifier(identifier);
             new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();
-        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
+        }
+
+        if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()))) {
             player.closeInventory();
-        } else if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
-            if (ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")) {
+        }
+
+        if (e.getCurrentItem().getType().equals(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()))) {
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(back))) {
                 if (page != 0) {
                     page = page - 1;
                     super.open();
                 }
-            } else if (ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")) {
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(next))) {
                 if (!((index + 1) >= tag.size())) {
-                    page = page + 1;
-                    super.open();
+                    if (getCurrentItemsOnPage() == 36) {
+                        page = page + 1;
+                        super.open();
+                    }
                 }
             }
         }
@@ -71,7 +84,7 @@ public class TagEditorMenu extends Paged {
 
     @Override
     public void setMenuItems() {
-        applyEditorLayout();
         getTagItemsEditor();
+        applyEditorLayout();
     }
 }

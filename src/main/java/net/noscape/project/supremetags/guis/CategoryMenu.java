@@ -168,6 +168,8 @@ public class CategoryMenu extends Paged {
                 if (page != 0) {
                     page = page - 1;
                     super.open();
+                } else {
+                    new MainMenu(SupremeTags.getMenuUtil(player)).open();
                 }
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(format(next))) {
                 if (!((index + 1) >= tag.size())) {
