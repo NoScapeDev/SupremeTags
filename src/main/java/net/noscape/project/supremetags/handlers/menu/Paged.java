@@ -5,6 +5,7 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.storage.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
@@ -97,7 +98,19 @@ public abstract class Paged extends Menu {
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
-            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active).replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            active = active.replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()));
+
+            if (SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())).getTag() != null) {
+                active = active.replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())).getTag());
+            } else {
+                active = active.replaceAll("%tag%", "");
+            }
+
+            if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                active = replacePlaceholders(menuUtil.getOwner(), active);
+            }
+
+            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active)));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
@@ -143,7 +156,10 @@ public abstract class Paged extends Menu {
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
-            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active).replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()))));
+            active = active.replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()));
+            active = active.replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())).getTag());
+            active = replacePlaceholders(menuUtil.getOwner(), active);
+            inventory.setItem(52, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.active-tag-material")).toUpperCase()), format(active)));
         }
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
