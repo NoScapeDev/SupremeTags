@@ -100,7 +100,7 @@ public abstract class Paged extends Menu {
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.active-item")) {
             active = active.replaceAll("%identifier%", UserData.getActive(menuUtil.getOwner().getUniqueId()));
 
-            if (SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())).getTag() != null) {
+            if (SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())) != null) {
                 active = active.replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(menuUtil.getOwner().getUniqueId())).getTag());
             } else {
                 active = active.replaceAll("%tag%", "");
