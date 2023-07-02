@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static net.noscape.project.supremetags.utils.Utils.*;
 
@@ -174,7 +175,6 @@ public abstract class Paged extends Menu {
             inventory.setItem(44, super.GLASS);
         }
     }
-
 
     protected int getPage() {
         return page + 1;
@@ -1022,7 +1022,9 @@ public abstract class Paged extends Menu {
     public void getTagItemsCostCategory() {
         Map<String, Tag> tags = SupremeTags.getInstance().getTagManager().getTags();
 
-        ArrayList<Tag> tag = new ArrayList<>(tags.values());
+        ArrayList<Tag> tag = tags.values().stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase(menuUtil.getCategory()))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if (!tag.isEmpty()) {
             int maxItemsPerPage = 36;
@@ -1047,9 +1049,7 @@ public abstract class Paged extends Menu {
 
             for (int i = startIndex; i < endIndex; i++) {
                 Tag t = tag.get(i);
-                if (t == null || !t.getCategory().equalsIgnoreCase(menuUtil.getCategory())) {
-                    continue; // Skip tags that don't match the desired category
-                }
+                if (t == null) continue;
 
                 String permission = SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".permission");
 
@@ -1548,7 +1548,10 @@ public abstract class Paged extends Menu {
     public void getTagItemsCategory() {
         Map<String, Tag> tags = SupremeTags.getInstance().getTagManager().getTags();
 
-        ArrayList<Tag> tag = new ArrayList<>(tags.values());
+        ArrayList<Tag> tag = tags.values().stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase(menuUtil.getCategory()))
+                .collect(Collectors.toCollection(ArrayList::new));
+
 
         if (!tag.isEmpty()) {
             int maxItemsPerPage = 36;
@@ -1573,9 +1576,7 @@ public abstract class Paged extends Menu {
 
             for (int i = startIndex; i < endIndex; i++) {
                 Tag t = tag.get(i);
-                if (t == null || !t.getCategory().equalsIgnoreCase(menuUtil.getCategory())) {
-                    continue; // Skip tags that don't match the desired category
-                }
+                if (t == null) continue;
 
                 String permission = SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".permission");
 

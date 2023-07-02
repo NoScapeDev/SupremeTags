@@ -234,6 +234,14 @@ public class Tags implements CommandExecutor {
                     } else {
                         msgPlayer(player, noperm);
                     }
+                } else if (args[0].equalsIgnoreCase("list")) {
+                    if (player.hasPermission("supremetags.admin")) {
+                        msgPlayer(player,
+                                "&8[&6Tags&8] &7There are &f" + SupremeTags.getInstance().getTagManager().getTags().size() + " &7loaded!",
+                                "&8[&6Tags&8] &7Do &f/tags editor &7to see/edit all tags loaded!");
+                    } else {
+                        msgPlayer(player, noperm);
+                    }
                 } else if (args[0].equalsIgnoreCase("editor")) {
                         if (player.hasPermission("supremetags.admin")) {
                             new TagEditorMenu(SupremeTags.getMenuUtil(player)).open();
@@ -304,6 +312,7 @@ public class Tags implements CommandExecutor {
                 "&e/tags merge &7- merges deluxetags into supremetags.",
                 "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
                 "&e/tags help &7- displays this help message.",
+                "&e/tags list &7- see how many tags are loaded.",
                 "");
     }
 
