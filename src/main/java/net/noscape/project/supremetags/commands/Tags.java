@@ -105,7 +105,7 @@ public class Tags implements CommandExecutor {
                         boolean costSystem = SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system");
                         boolean useCategories = SupremeTags.getInstance().getConfig().getBoolean("settings.categories");
 
-                        if ((!lockedView && !costSystem) || (lockedView && !costSystem)) {
+                        if ((!lockedView && !costSystem)) {
                             if (hasTags(player)) {
                                 if (useCategories) {
                                     new MainMenu(SupremeTags.getMenuUtil(player)).open();
@@ -114,16 +114,6 @@ public class Tags implements CommandExecutor {
                                 }
                             } else {
                                 msgPlayer(player, notags);
-                            }
-                        } else if (!lockedView && !costSystem) {
-                            if (!hasTags(player)) {
-                                msgPlayer(player, notags);
-                            } else {
-                                if (useCategories) {
-                                    new MainMenu(SupremeTags.getMenuUtil(player)).open();
-                                } else {
-                                    new TagMenu(SupremeTags.getMenuUtil(player)).open();
-                                }
                             }
                         } else {
                             if (useCategories) {
@@ -141,7 +131,7 @@ public class Tags implements CommandExecutor {
                                 boolean costSystem = SupremeTags.getInstance().getConfig().getBoolean("settings.cost-system");
                                 boolean useCategories = SupremeTags.getInstance().getConfig().getBoolean("settings.categories");
 
-                                if ((!lockedView && !costSystem) || (lockedView && !costSystem)) {
+                                if ((!lockedView && !costSystem)) {
                                     if (hasTags(player)) {
                                         if (useCategories) {
                                             new MainMenu(SupremeTags.getMenuUtil(player)).open();
@@ -272,6 +262,15 @@ public class Tags implements CommandExecutor {
                             String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
 
                             UserData.setActive(target, defaultTag);
+                            for (Tag tags : SupremeTags.getInstance().getTagManager().getTags().values()) {
+                                if (player.hasPermission(tags.getPermission())) {
+                                    String permission = tags.getPermission();
+
+
+                                }
+                            }
+
+
                             msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to " + defaultTag);
                         } else {
                             UserData.setActive(target, "None");

@@ -180,12 +180,7 @@ public class TagMenu extends Paged {
     @Override
     public void setMenuItems() {
 
-        if (SupremeTags.getInstance().getTagManager().isCost()) {
-            getTagItemsCost();
-        } else {
-            getTagItems();
-        }
-
+        getTagItems();
         applyLayout();
     }
 }

@@ -112,8 +112,6 @@ public class Utils {
         return lore.stream().map(Utils::format).collect(Collectors.toList());
     }
 
-
-
     private static Pattern rgbPat = Pattern.compile("(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\\b|(?:rgb|hsl)a?\\([^\\)]*\\)");
     public static String getRGB(String msg) {
         String temp = msg;

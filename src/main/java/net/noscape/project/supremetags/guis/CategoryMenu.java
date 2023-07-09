@@ -185,10 +185,6 @@ public class CategoryMenu extends Paged {
 
         applyLayout();
 
-        if (SupremeTags.getInstance().getTagManager().isCost()) {
-            getTagItemsCostCategory();
-        } else {
-            getTagItemsCategory();
-        }
+        getTagItemsCategory();
     }
 }

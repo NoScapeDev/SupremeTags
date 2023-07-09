@@ -244,45 +244,45 @@ public final class SupremeTags extends JavaPlugin {
         Logger logger = Bukkit.getLogger();
 
         logger.info("");
-        logger.info(ChatColor.GREEN + "  ____  _   _ ____  ____  _____ __  __ _____ _____  _    ____ ____  ");
-        logger.info(ChatColor.GREEN + " / ___|| | | |  _ \\|  _ \\| ____|  \\/  | ____|_   _|/ \\  / ___/ ___| ");
-        logger.info(ChatColor.GREEN + " \\___ \\| | | | |_) | |_) |  _| | |\\/| |  _|   | | / _ \\| |  _\\___ \\ ");
-        logger.info(ChatColor.GREEN + "  ___) | |_| |  __/|  _ <| |___| |  | | |___  | |/ ___ \\ |_| |___) |");
-        logger.info(ChatColor.GREEN + " |____/ \\___/|_|   |_| \\_\\_____|_|  |_|_____| |_/_/   \\_\\____|____/ ");
-        logger.info(ChatColor.GRAY + " Allow players to show off their supreme tags!");
+        logger.info("  ____  _   _ ____  ____  _____ __  __ _____ _____  _    ____ ____  ");
+        logger.info(" / ___|| | | |  _ \\|  _ \\| ____|  \\/  | ____|_   _|/ \\  / ___/ ___| ");
+        logger.info(" \\___ \\| | | | |_) | |_) |  _| | |\\/| |  _|   | | / _ \\| |  _\\___ \\ ");
+        logger.info("  ___) | |_| |  __/|  _ <| |___| |  | | |___  | |/ ___ \\ |_| |___) |");
+        logger.info(" |____/ \\___/|_|   |_| \\_\\_____|_|  |_|_____| |_/_/   \\_\\____|____/ ");
+        logger.info(" Allow players to show off their supreme tags!");
         logger.info("");
-        logger.info(ChatColor.YELLOW + "> Version: " + getDescription().getVersion());
-        logger.info(ChatColor.YELLOW + "> Author: DevScape");
+        logger.info("> Version: " + getDescription().getVersion());
+        logger.info("> Author: DevScape");
 
         if (getServer().getPluginManager().getPlugin("NBTAPI") == null) {
-            logger.warning(ChatColor.RED + "> NBTAPI: Supremetags requires NBTAPI to run, disabling plugin....");
+            logger.warning("> NBTAPI: Supremetags requires NBTAPI to run, disabling plugin....");
             getServer().getPluginManager().disablePlugin(this);
         } else {
-            logger.info(ChatColor.YELLOW + "> NBTAPI: Found!");
+            logger.info("> NBTAPI: Found!");
         }
 
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             setupEconomy();
             setupPermissions();
-            logger.info(ChatColor.YELLOW + "> Vault: Found!");
+            logger.info("> Vault: Found!");
         } else {
-            logger.info(ChatColor.RED + "> Vault: Not Found!");
+            logger.info("> Vault: Not Found!");
         }
 
         if (isH2()) {
-            logger.info(ChatColor.YELLOW + "> Database: H2!");
+            logger.info("> Database: H2!");
         } else if (isMySQL()) {
-            logger.info(ChatColor.YELLOW + "> Database: MySQL!");
+            logger.info("> Database: MySQL!");
         }
 
         if (getConfig().getBoolean("settings.update-check")) {
             UpdateChecker updater = new UpdateChecker(this);
             updater.fetch();
             if (updater.hasUpdateAvailable()) {
-                logger.info(ChatColor.AQUA + "> An update is available! " + updater.getSpigotVersion());
-                logger.info(ChatColor.AQUA + "Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
+                logger.info("> An update is available! " + updater.getSpigotVersion());
+                logger.info("Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
             } else {
-                logger.info(ChatColor.YELLOW + "> Plugin up to date!");
+                logger.info("> Plugin up to date!");
             }
         }
     }
@@ -353,9 +353,13 @@ public final class SupremeTags extends JavaPlugin {
         latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
 
         if (latestConfigFile.exists()) {
-            latestConfigFile.delete();
+            boolean deletionSuccessful = latestConfigFile.delete();
+            if (!deletionSuccessful) {
+                Bukkit.getLogger().warning("Failed to reset DEFAULT-CONFIG-LATEST.yml");
+            }
         }
     }
+
 
     public HashMap<Player, Editor> getEditorList() {
         return editorList;
