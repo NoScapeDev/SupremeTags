@@ -1,5 +1,9 @@
 package net.noscape.project.supremetags.commands;
 
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.guis.tageditor.TagEditorMenu;
@@ -77,6 +81,22 @@ public class Tags implements CommandExecutor {
                         SupremeTags.getInstance().getTagManager().deleteTag(sender, name);
                     } else if (args[0].equalsIgnoreCase("reset")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
+
+                        if (Bukkit.getServer().getPluginManager().getPlugin("Luckperms") != null) {
+                            LuckPerms luckPerms = LuckPermsProvider.get();
+                            User user = luckPerms.getUserManager().getUser(target.getUniqueId());
+
+                            if (user != null) {
+                                for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
+                                    String permission = tag.getPermission();
+                                    if (user.getCachedData().getPermissionData().checkPermission(permission).asBoolean()) {
+                                        Node permissionNode = Node.builder(permission).build();
+                                        user.data().remove(permissionNode);
+                                    }
+                                }
+                                luckPerms.getUserManager().saveUser(user);
+                            }
+                        }
 
                         if (SupremeTags.getInstance().getConfig().isBoolean("settings.forced-tag")) {
                             String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");

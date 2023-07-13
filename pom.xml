@@ -6,7 +6,7 @@
 
     <groupId>net.noscape.project.supremetags</groupId>
     <artifactId>SupremeTags</artifactId>
-    <version>1.7.9-HOTFIX</version>
+    <version>1.7.11</version>
     <packaging>jar</packaging>
 
     <name>SupremeTags</name>
@@ -141,6 +141,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

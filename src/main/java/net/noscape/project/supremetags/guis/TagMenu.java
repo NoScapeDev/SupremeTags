@@ -81,7 +81,7 @@ public class TagMenu extends Paged {
                         menuUtil.setIdentifier(tagevent.getTag());
 
                         if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replaceAll("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
                         }
                     } else {
                         msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.locked-tag"));
@@ -100,7 +100,7 @@ public class TagMenu extends Paged {
                         menuUtil.setIdentifier(tagevent.getTag());
 
                         if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier));
+                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
                         }
                     }
                 } else {
@@ -117,7 +117,7 @@ public class TagMenu extends Paged {
 
                         take(player, cost);
                         addPerm(player, t.getPermission());
-                        msgPlayer(player, unlocked.replaceAll("%identifier%", t.getIdentifier()));
+                        msgPlayer(player, unlocked.replaceAll("%identifier%", t.getIdentifier()).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
                         super.open();
                     } else {
                         msgPlayer(player, insufficient.replaceAll("%cost%", String.valueOf(t.getCost())));

@@ -109,6 +109,7 @@ public final class SupremeTags extends JavaPlugin {
         //playerConfig = new PlayerConfig();
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
+        Objects.requireNonNull(getCommand("tags")).setTabCompleter(new TagsComplete());
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
