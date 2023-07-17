@@ -3,30 +3,34 @@ package net.noscape.project.supremetags;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import net.noscape.project.supremetags.api.SupremeTagsAPI;
-import net.noscape.project.supremetags.checkers.*;
-import net.noscape.project.supremetags.commands.*;
+import net.noscape.project.supremetags.checkers.Metrics;
+import net.noscape.project.supremetags.checkers.UpdateChecker;
+import net.noscape.project.supremetags.commands.Tags;
+import net.noscape.project.supremetags.commands.TagsComplete;
 import net.noscape.project.supremetags.guis.tageditor.EditorListener;
 import net.noscape.project.supremetags.handlers.Editor;
-import net.noscape.project.supremetags.handlers.SetupTag;
-import net.noscape.project.supremetags.handlers.hooks.*;
-import net.noscape.project.supremetags.handlers.menu.*;
-import net.noscape.project.supremetags.listeners.*;
-import net.noscape.project.supremetags.managers.*;
+import net.noscape.project.supremetags.handlers.hooks.PAPI;
+import net.noscape.project.supremetags.handlers.menu.MenuListener;
+import net.noscape.project.supremetags.handlers.menu.MenuUtil;
+import net.noscape.project.supremetags.listeners.PlayerEvents;
+import net.noscape.project.supremetags.managers.CategoryManager;
+import net.noscape.project.supremetags.managers.MergeManager;
+import net.noscape.project.supremetags.managers.TagManager;
 import net.noscape.project.supremetags.storage.*;
-import org.bukkit.*;
-import org.bukkit.configuration.*;
-import org.bukkit.configuration.file.*;
-import org.bukkit.entity.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.logging.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class SupremeTags extends JavaPlugin {
 
@@ -48,14 +52,10 @@ public final class SupremeTags extends JavaPlugin {
 
     private static final HashMap<Player, MenuUtil> menuUtilMap = new HashMap<>();
     private final HashMap<Player, Editor> editorList = new HashMap<>();
-    private final HashMap<Player, SetupTag> setupList = new HashMap<>();
 
     private boolean legacy_format;
     private boolean cmi_hex;
     private boolean disabledWorldsTag;
-
-    private PlayerManager playerManager;
-    private PlayerConfig playerConfig;
 
     public static File latestConfigFile;
     public static FileConfiguration latestConfigConfig;
@@ -104,9 +104,7 @@ public final class SupremeTags extends JavaPlugin {
 
         tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
         categoryManager = new CategoryManager();
-        playerManager = new PlayerManager();
         mergeManager = new MergeManager();
-        //playerConfig = new PlayerConfig();
 
         Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
         Objects.requireNonNull(getCommand("tags")).setTabCompleter(new TagsComplete());
@@ -115,7 +113,6 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
         getServer().getPluginManager().registerEvents(new EditorListener(), this);
         getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
-        getServer().getPluginManager().registerEvents(new SetupListener(), this);
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
         cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
@@ -361,7 +358,6 @@ public final class SupremeTags extends JavaPlugin {
         }
     }
 
-
     public HashMap<Player, Editor> getEditorList() {
         return editorList;
     }
@@ -374,19 +370,8 @@ public final class SupremeTags extends JavaPlugin {
         return disabledWorldsTag;
     }
 
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
     public MergeManager getMergeManager() {
         return mergeManager;
-    }
-
-    public PlayerConfig getPlayerConfig() {
-        return playerConfig;
-    }
-
-    public HashMap<Player, SetupTag> getSetupList() {
-        return setupList;
     }
 
     public boolean isPlaceholderAPI() {

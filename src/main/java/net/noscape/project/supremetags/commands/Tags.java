@@ -4,6 +4,8 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.PermissionNode;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.guis.*;
 import net.noscape.project.supremetags.guis.tageditor.TagEditorMenu;
@@ -282,11 +284,13 @@ public class Tags implements CommandExecutor {
                             String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
 
                             UserData.setActive(target, defaultTag);
-                            for (Tag tags : SupremeTags.getInstance().getTagManager().getTags().values()) {
-                                if (player.hasPermission(tags.getPermission())) {
-                                    String permission = tags.getPermission();
 
-
+                            if (Bukkit.getServer().getPluginManager().getPlugin("Luckperms") != null) {
+                                for (Tag tags : SupremeTags.getInstance().getTagManager().getTags().values()) {
+                                    if (player.hasPermission(tags.getPermission())) {
+                                        String permission = tags.getPermission();
+                                        removePermission(target.getUniqueId(), permission);
+                                    }
                                 }
                             }
 
@@ -349,5 +353,14 @@ public class Tags implements CommandExecutor {
                 "&e/tags reload &7- reloads the config.yml & unloads/loads tags.",
                 "&e/tags help &7- displays this help message.",
                 "");
+    }
+
+    public void removePermission(UUID player, String permission) {
+        // Add the permission
+        LuckPerms luckPerms = LuckPermsProvider.get();
+        User user = luckPerms.getUserManager().getUser(player);
+        assert user != null;
+        user.data().remove(Node.builder(permission).build());
+        luckPerms.getUserManager().saveUser(user);
     }
 }

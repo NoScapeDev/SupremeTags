@@ -18,13 +18,13 @@ public class TagManager {
 
     private boolean isCost;
 
-    private String reload = SupremeTags.getInstance().getConfig().getString("messages.reload");
-    private String noperm = SupremeTags.getInstance().getConfig().getString("messages.no-permission");
-    private String notags = SupremeTags.getInstance().getConfig().getString("messages.no-tags");
-    private String commanddisabled = SupremeTags.getInstance().getConfig().getString("messages.tag-command-disabled");
-    private String invalidtag = SupremeTags.getInstance().getConfig().getString("messages.invalid-tag");
-    private String validtag = SupremeTags.getInstance().getConfig().getString("messages.valid-tag");
-    private String invalidcategory = SupremeTags.getInstance().getConfig().getString("messages.invalid-category");
+    private final String reload = SupremeTags.getInstance().getConfig().getString("messages.reload");
+    private final String noperm = SupremeTags.getInstance().getConfig().getString("messages.no-permission");
+    private final String notags = SupremeTags.getInstance().getConfig().getString("messages.no-tags");
+    private final String commanddisabled = SupremeTags.getInstance().getConfig().getString("messages.tag-command-disabled");
+    private final String invalidtag = SupremeTags.getInstance().getConfig().getString("messages.invalid-tag");
+    private final String validtag = SupremeTags.getInstance().getConfig().getString("messages.valid-tag");
+    private final String invalidcategory = SupremeTags.getInstance().getConfig().getString("messages.invalid-category");
 
     public TagManager(boolean isCost) {
         this.sort();
