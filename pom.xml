@@ -6,7 +6,7 @@
 
     <groupId>net.noscape.project.supremetags</groupId>
     <artifactId>SupremeTags</artifactId>
-    <version>1.7.14</version>
+    <version>1.7.15</version>
     <packaging>jar</packaging>
 
     <name>SupremeTags</name>
@@ -83,12 +83,22 @@
             <id>minecraft-repo</id>
             <url>https://libraries.minecraft.net/</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

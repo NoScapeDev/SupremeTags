@@ -166,6 +166,9 @@ public abstract class Paged extends Menu {
                     displayname = replacePlaceholders(menuUtil.getOwner(), displayname);
                 }
 
+                displayname = displayname.replaceAll("\\$", "\\\\\\$");
+                permission = permission.replaceAll("\\$", "\\\\\\$");
+
                 String material;
 
                 if (SupremeTags.getInstance().getConfig().getString("tags." + t.getIdentifier() + ".display-item") != null) {
@@ -173,8 +176,6 @@ public abstract class Paged extends Menu {
                 } else {
                     material = "NAME_TAG";
                 }
-
-                assert permission != null;
 
                 // toggle if they don't have permission
                 if (menuUtil.getOwner().hasPermission("supremetags.tag.*") || (menuUtil.getOwner().hasPermission(permission) && !permission.equalsIgnoreCase("none"))) {
@@ -222,6 +223,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -272,6 +277,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -317,6 +326,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -373,6 +386,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -421,6 +438,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -465,6 +486,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -515,6 +540,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -564,6 +593,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -609,6 +642,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -731,6 +768,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -780,6 +821,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -826,6 +871,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -882,6 +931,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -931,6 +984,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -975,6 +1032,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
@@ -1024,6 +1085,11 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -1073,6 +1139,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
 
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
+
                         tagMeta.setLore(color(lore));
 
                         nbt.getItem().setItemMeta(tagMeta);
@@ -1118,6 +1188,10 @@ public abstract class Paged extends Menu {
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%identifier%", t.getIdentifier()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%tag%", t.getTag()));
                         lore.replaceAll(s -> ChatColor.translateAlternateColorCodes('&', s).replaceAll("%cost%", String.valueOf(t.getCost())));
+
+                        lore = lore.stream()
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList());
 
                         tagMeta.setLore(color(lore));
 
