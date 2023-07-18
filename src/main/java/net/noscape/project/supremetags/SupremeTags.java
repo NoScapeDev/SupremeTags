@@ -7,6 +7,7 @@ import net.noscape.project.supremetags.checkers.Metrics;
 import net.noscape.project.supremetags.checkers.UpdateChecker;
 import net.noscape.project.supremetags.commands.Tags;
 import net.noscape.project.supremetags.commands.TagsComplete;
+import net.noscape.project.supremetags.commands.TagsNonLuckperms;
 import net.noscape.project.supremetags.guis.tageditor.EditorListener;
 import net.noscape.project.supremetags.handlers.Editor;
 import net.noscape.project.supremetags.handlers.hooks.PAPI;
@@ -106,8 +107,13 @@ public final class SupremeTags extends JavaPlugin {
         categoryManager = new CategoryManager();
         mergeManager = new MergeManager();
 
-        Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
-        Objects.requireNonNull(getCommand("tags")).setTabCompleter(new TagsComplete());
+        if (Bukkit.getServer().getPluginManager().getPlugin("Luckperms") != null) {
+            Objects.requireNonNull(getCommand("tags")).setExecutor(new Tags());
+            Objects.requireNonNull(getCommand("tags")).setTabCompleter(new TagsComplete());
+        } else {
+            Objects.requireNonNull(getCommand("tags")).setExecutor(new TagsNonLuckperms());
+            Objects.requireNonNull(getCommand("tags")).setTabCompleter(new TagsComplete());
+        }
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
