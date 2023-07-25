@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.listeners;
 
+import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.*;
 import net.noscape.project.supremetags.storage.*;
@@ -31,12 +32,30 @@ public class PlayerEvents implements Listener {
                 UserData.setActive(player, defaultTag);
             }
         }
+
+        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && !tags.containsKey(UserData.getActive(player.getUniqueId()))) {
+            UserData.setActive(player, "None");
+        }
+
+        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
+            Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
+            if (!player.hasPermission(tag.getPermission())) {
+                UserData.setActive(player, "None");
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
         String format = e.getFormat();
+
+        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
+            Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
+            if (!player.hasPermission(tag.getPermission())) {
+                UserData.setActive(player, "None");
+            }
+        }
 
         // Store the value of UserData.getActive(player.getUniqueId()) in a local variable
         String activeTag = UserData.getActive(player.getUniqueId());
@@ -49,7 +68,7 @@ public class PlayerEvents implements Listener {
             if (tag == null) {
                 e.setFormat(replace);
             } else {
-                // Store the value of format(twag.getTag()) in a local variable
+                // Store the value of format(tag.getTag()) in a local variable
                 String formattedTag = format(tag.getTag());
                 formattedTag = replacePlaceholders(player, formattedTag);
 
