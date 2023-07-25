@@ -78,7 +78,7 @@ public abstract class Paged extends Menu {
             }
         }
 
-        if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") || SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
+        if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") && SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
             inventory.setItem(46, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.reset-tag-material")).toUpperCase()), reset));
         }
 

@@ -61,7 +61,7 @@ public class TagMenu extends Paged {
 
         NBTItem nbt = new NBTItem(e.getCurrentItem());
 
-        if (nbt.hasTag("identifier")) {
+        if (nbt.hasNBTData()) {
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
