@@ -34,13 +34,15 @@ public class PlayerEvents implements Listener {
         }
 
         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && !tags.containsKey(UserData.getActive(player.getUniqueId()))) {
-            UserData.setActive(player, "None");
+            String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+            UserData.setActive(player, defaultTag);
         }
 
         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
             Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
             if (!player.hasPermission(tag.getPermission())) {
-                UserData.setActive(player, "None");
+                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+                UserData.setActive(player, defaultTag);
             }
         }
     }
@@ -53,7 +55,8 @@ public class PlayerEvents implements Listener {
         if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
             Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
             if (!player.hasPermission(tag.getPermission())) {
-                UserData.setActive(player, "None");
+                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+                UserData.setActive(player, defaultTag);
             }
         }
 

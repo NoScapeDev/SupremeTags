@@ -78,7 +78,7 @@ public class PAPI extends PlaceholderExpansion {
                     text = String.valueOf(t.getCost());
                 }
             } else {
-                text = "&6";
+                text = SupremeTags.getInstance().getConfig().getString("settings.none-output");
             }
         }
 

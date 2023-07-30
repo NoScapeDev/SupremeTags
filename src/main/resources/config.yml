@@ -21,6 +21,7 @@ settings:
     - 'world2'
   gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
   locked-view: false # this setting allows players to view locked/unlocked tags.
+  none-output: '&6None' # this string will be displayed when a player has no tag selected.
 
 ############################################################
 # +------------------------------------------------------+ #

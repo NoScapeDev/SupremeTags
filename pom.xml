@@ -6,7 +6,7 @@
 
     <groupId>net.noscape.project.supremetags</groupId>
     <artifactId>SupremeTags</artifactId>
-    <version>1.7.17</version>
+    <version>1.8.0</version>
     <packaging>jar</packaging>
 
     <name>SupremeTags</name>
