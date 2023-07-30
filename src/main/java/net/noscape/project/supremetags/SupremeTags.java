@@ -280,14 +280,14 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("settings.update-check")) {
-            UpdateChecker updater = new UpdateChecker(this);
-            updater.fetch();
-            if (updater.hasUpdateAvailable()) {
-                logger.info("> An update is available! " + updater.getSpigotVersion());
-                logger.info("Download at https://www.spigotmc.org/resources/%E2%9C%85-supremetags-%E2%9C%85-1-8-1-19-placeholderapi-support-unlimited-tags-%E2%9C%85.103140/");
-            } else {
-                logger.info("> Plugin up to date!");
-            }
+            new UpdateChecker(this).getVersion(version -> {
+                if (!this.getDescription().getVersion().equals(version)) {
+                    logger.info("> An update is available! " + version);
+                    logger.info("Download at https://www.spigotmc.org/resources/103140/");
+                } else {
+                    getLogger().info("> Plugin up to date!");
+                }
+            });
         }
     }
 
