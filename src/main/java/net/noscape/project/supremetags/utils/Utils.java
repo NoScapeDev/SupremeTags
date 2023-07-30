@@ -5,15 +5,14 @@ import com.mojang.authlib.properties.Property;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.noscape.project.supremetags.SupremeTags;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +72,13 @@ public class Utils {
     }
 
     public static void addPerm(Player player, String permission) {
-        SupremeTags.getPermissions().playerAdd(player, permission);
+        for (World world : Bukkit.getWorlds())
+            SupremeTags.getPermissions().playerAdd(world.getName(), player, permission);
+    }
+
+    public static void removePerm(Player player, String permission) {
+        for (World world : Bukkit.getWorlds())
+            SupremeTags.getPermissions().playerRemove(world.getName(), player, permission);
     }
 
     public static boolean hasAmount(Player player, double cost) {

@@ -49,7 +49,6 @@ public class TagMenu extends Paged {
         String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
         String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
 
-
         String insufficient = SupremeTags.getInstance().getConfig().getString("messages.insufficient-funds");
         String unlocked = SupremeTags.getInstance().getConfig().getString("messages.tag-unlocked");
 
@@ -61,66 +60,69 @@ public class TagMenu extends Paged {
 
         NBTItem nbt = new NBTItem(e.getCurrentItem());
 
-        if (nbt.hasNBTData()) {
+        if (nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);
 
-            if (!SupremeTags.getInstance().getTagManager().isCost()) {
-                if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                    if (player.hasPermission(t.getPermission())) {
+            if (t != null) {
 
-                        TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
-                        Bukkit.getPluginManager().callEvent(tagevent);
-
-                        if (tagevent.isCancelled()) return;
-
-                        UserData.setActive(player, tagevent.getTag());
-
-                        super.open();
-                        menuUtil.setIdentifier(tagevent.getTag());
-
-                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replaceAll("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
-                        }
-                    } else {
-                        msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.locked-tag"));
-                    }
-                }
-            } else {
-                if (player.hasPermission(t.getPermission())) {
+                if (!SupremeTags.getInstance().getTagManager().isCost()) {
                     if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
-                        TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
-                        Bukkit.getPluginManager().callEvent(tagevent);
+                        if (player.hasPermission(t.getPermission())) {
 
-                        if (tagevent.isCancelled()) return;
+                            TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
+                            Bukkit.getPluginManager().callEvent(tagevent);
 
-                        UserData.setActive(player, tagevent.getTag());
-                        super.open();
-                        menuUtil.setIdentifier(tagevent.getTag());
+                            if (tagevent.isCancelled()) return;
 
-                        if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
-                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
+                            UserData.setActive(player, tagevent.getTag());
+
+                            super.open();
+                            menuUtil.setIdentifier(tagevent.getTag());
+
+                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                                msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replaceAll("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
+                            }
+                        } else {
+                            msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.locked-tag"));
                         }
                     }
                 } else {
-                    double cost = t.getCost();
+                    if (player.hasPermission(t.getPermission())) {
+                        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase(identifier) && identifier != null) {
+                            TagAssignEvent tagevent = new TagAssignEvent(player, identifier, false);
+                            Bukkit.getPluginManager().callEvent(tagevent);
 
-                    // check if they have the right amount of money to buy etc....
-                    if (hasAmount(player, cost)) {
-                        // give them the tag
+                            if (tagevent.isCancelled()) return;
 
-                        TagBuyEvent tagevent = new TagBuyEvent(player, identifier, cost, false);
-                        Bukkit.getPluginManager().callEvent(tagevent);
+                            UserData.setActive(player, tagevent.getTag());
+                            super.open();
+                            menuUtil.setIdentifier(tagevent.getTag());
 
-                        if (tagevent.isCancelled()) return;
-
-                        take(player, cost);
-                        addPerm(player, t.getPermission());
-                        msgPlayer(player, unlocked.replaceAll("%identifier%", t.getIdentifier()).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
-                        super.open();
+                            if (SupremeTags.getInstance().getConfig().getBoolean("settings.gui-messages")) {
+                                msgPlayer(player, SupremeTags.getInstance().getConfig().getString("messages.tag-select-message").replace("%identifier%", identifier).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
+                            }
+                        }
                     } else {
-                        msgPlayer(player, insufficient.replaceAll("%cost%", String.valueOf(t.getCost())));
+                        double cost = t.getCost();
+
+                        // check if they have the right amount of money to buy etc....
+                        if (hasAmount(player, cost)) {
+                            // give them the tag
+
+                            TagBuyEvent tagevent = new TagBuyEvent(player, identifier, cost, false);
+                            Bukkit.getPluginManager().callEvent(tagevent);
+
+                            if (tagevent.isCancelled()) return;
+
+                            take(player, cost);
+                            addPerm(player, t.getPermission());
+                            msgPlayer(player, unlocked.replaceAll("%identifier%", t.getIdentifier()).replaceAll("%tag%", SupremeTags.getInstance().getTagManager().getTag(identifier).getTag()));
+                            super.open();
+                        } else {
+                            msgPlayer(player, insufficient.replaceAll("%cost%", String.valueOf(t.getCost())));
+                        }
                     }
                 }
             }

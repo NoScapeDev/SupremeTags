@@ -12,6 +12,7 @@ import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.storage.UserData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import static net.noscape.project.supremetags.utils.Utils.msgPlayer;
+import static net.noscape.project.supremetags.utils.Utils.removePerm;
 
 public class Tags implements CommandExecutor {
 
@@ -291,25 +293,15 @@ public class Tags implements CommandExecutor {
                             UserData.setActive(target, defaultTag);
 
                             // Check if LuckPerms is available
-                            Plugin luckPermsPlugin = Bukkit.getPluginManager().getPlugin("LuckPerms");
-                            if (luckPermsPlugin != null) {
-                                // Use LuckPerms APIs
-                                LuckPerms luckPerms = LuckPermsProvider.get();
-                                User user = luckPerms.getUserManager().getUser(target.getUniqueId());
-
-                                if (user != null) {
-                                    for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
-                                        String permission = tag.getPermission();
-                                        if (user.getCachedData().getPermissionData().checkPermission(permission).asBoolean()) {
-                                            Node permissionNode = Node.builder(permission).build();
-                                            user.data().remove(permissionNode);
+                            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
+                            if (vault != null) {
+                                for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
+                                    String permission = tag.getPermission();
+                                    for (World world : Bukkit.getWorlds())
+                                        if (SupremeTags.getPermissions().playerHas(world.getName(), player, permission)) {
+                                            removePerm(player, permission);
                                         }
-                                    }
-                                    luckPerms.getUserManager().saveUser(user);
                                 }
-                            } else {
-                                // LuckPerms plugin is not available
-                                Bukkit.getLogger().warning("Luckperms not found, the plugin will remove permission features relating to /tag reset");
                             }
 
                             msgPlayer(player, "&8[&6&lTag&8] &7Reset &b" + target.getName() + "'s &7tag back to " + defaultTag);
