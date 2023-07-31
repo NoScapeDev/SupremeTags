@@ -1,6 +1,5 @@
 package net.noscape.project.supremetags.listeners;
 
-import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.checkers.UpdateChecker;
 import net.noscape.project.supremetags.handlers.*;
@@ -8,7 +7,6 @@ import net.noscape.project.supremetags.storage.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
-import org.checkerframework.checker.units.qual.Prefix;
 
 import java.util.*;
 
@@ -50,7 +48,7 @@ public class PlayerEvents implements Listener {
 
         if (SupremeTags.getInstance().getConfig().getBoolean("settings.update-check")) {
             if (player.isOp()) {
-                new UpdateChecker(SupremeTags.getInstance()).getVersion(version -> {
+                new UpdateChecker(SupremeTags.getInstance()).getVersionAsync(version -> {
                     if (!SupremeTags.getInstance().getDescription().getVersion().equals(version)) {
                         msgPlayer(player, "&6&lSupremeTags &8&l> &7An update is available! &b" + version,
                                 "&eDownload at &bhttps://www.spigotmc.org/resources/103140/");

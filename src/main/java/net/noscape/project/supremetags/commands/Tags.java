@@ -85,26 +85,15 @@ public class Tags implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("reset")) {
                         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
 
-                        // Check if LuckPerms is available
-                        Plugin luckPermsPlugin = Bukkit.getPluginManager().getPlugin("LuckPerms");
-                        if (luckPermsPlugin != null) {
-                            // Use LuckPerms APIs
-                            LuckPerms luckPerms = LuckPermsProvider.get();
-                            User user = luckPerms.getUserManager().getUser(target.getUniqueId());
-
-                            if (user != null) {
-                                for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
-                                    String permission = tag.getPermission();
-                                    if (user.getCachedData().getPermissionData().checkPermission(permission).asBoolean()) {
-                                        Node permissionNode = Node.builder(permission).build();
-                                        user.data().remove(permissionNode);
+                        Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
+                        if (vault != null) {
+                            for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
+                                String permission = tag.getPermission();
+                                for (World world : Bukkit.getWorlds())
+                                    if (SupremeTags.getPermissions().playerHas(world.getName(), target, permission)) {
+                                        removePerm(target, permission);
                                     }
-                                }
-                                luckPerms.getUserManager().saveUser(user);
                             }
-                        } else {
-                            // LuckPerms plugin is not available
-                            Bukkit.getLogger().warning("Luckperms not found, the plugin will remove permission features relating to /tag reset");
                         }
 
                         if (SupremeTags.getInstance().getConfig().isBoolean("settings.forced-tag")) {
@@ -298,8 +287,8 @@ public class Tags implements CommandExecutor {
                                 for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
                                     String permission = tag.getPermission();
                                     for (World world : Bukkit.getWorlds())
-                                        if (SupremeTags.getPermissions().playerHas(world.getName(), player, permission)) {
-                                            removePerm(player, permission);
+                                        if (SupremeTags.getPermissions().playerHas(world.getName(), target, permission)) {
+                                            removePerm(target, permission);
                                         }
                                 }
                             }

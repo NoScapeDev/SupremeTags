@@ -20,7 +20,7 @@ public class UpdateChecker implements Listener {
         this.plugin = plugin;
     }
 
-    public void getVersion(final Consumer<String> consumer) {
+    public void getVersionAsync(final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.RESOURCE_ID).openStream(); Scanner scann = new Scanner(is)) {
                 if (scann.hasNext()) {
@@ -30,5 +30,16 @@ public class UpdateChecker implements Listener {
                 plugin.getLogger().info("Unable to check for updates: " + e.getMessage());
             }
         });
+    }
+
+    public void getVersion(final Consumer<String> consumer) {
+        try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.RESOURCE_ID).openStream(); Scanner scann = new Scanner(is)) {
+            if (scann.hasNext()) {
+                consumer.accept(scann.next());
+            }
+        } catch (IOException e) {
+            plugin.getLogger().info("Unable to check for updates: " + e.getMessage());
+        }
+
     }
 }

@@ -71,12 +71,12 @@ public class Utils {
         return input;
     }
 
-    public static void addPerm(Player player, String permission) {
+    public static void addPerm(OfflinePlayer player, String permission) {
         for (World world : Bukkit.getWorlds())
             SupremeTags.getPermissions().playerAdd(world.getName(), player, permission);
     }
 
-    public static void removePerm(Player player, String permission) {
+    public static void removePerm(OfflinePlayer player, String permission) {
         for (World world : Bukkit.getWorlds())
             SupremeTags.getPermissions().playerRemove(world.getName(), player, permission);
     }
