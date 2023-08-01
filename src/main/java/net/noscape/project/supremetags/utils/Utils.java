@@ -3,16 +3,23 @@ package net.noscape.project.supremetags.utils;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import net.md_5.bungee.api.ChatColor;
-import net.noscape.project.supremetags.SupremeTags;
-import org.bukkit.*;
+import net.noscape.project.supremetags.SupremeTagsPremium;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 
 import java.awt.*;
-import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
@@ -27,13 +34,13 @@ public class Utils {
     private static Pattern p3 = Pattern.compile("#([A-Fa-f0-9]){6}");
 
     public static String format(String message) {
-        if (SupremeTags.getInstance().isCMIHex()) {
+        if (SupremeTagsPremium.getInstance().isCMIHex()) {
             Matcher match = p1.matcher(message);
             while (match.find()) {
                 getRGB(message);
             }
             return ChatColor.translateAlternateColorCodes('&', message);
-        } else if (SupremeTags.getInstance().isLegacyFormat()) {
+        } else if (SupremeTagsPremium.getInstance().isLegacyFormat()) {
             message = message.replace(">>", "").replace("<<", "");
             Matcher matcher = p2.matcher(message);
             while (matcher.find()) {
@@ -72,21 +79,19 @@ public class Utils {
     }
 
     public static void addPerm(OfflinePlayer player, String permission) {
-        for (World world : Bukkit.getWorlds())
-            SupremeTags.getPermissions().playerAdd(world.getName(), player, permission);
+        SupremeTagsPremium.getPermissions().playerAdd("world", player, permission);
     }
 
     public static void removePerm(OfflinePlayer player, String permission) {
-        for (World world : Bukkit.getWorlds())
-            SupremeTags.getPermissions().playerRemove(world.getName(), player, permission);
+        SupremeTagsPremium.getPermissions().playerRemove("world", player, permission);
     }
 
     public static boolean hasAmount(Player player, double cost) {
-        return SupremeTags.getEconomy().has(player, cost);
+        return SupremeTagsPremium.getEconomy().has(player, cost);
     }
 
     public static void take(Player player, double cost) {
-        SupremeTags.getEconomy().withdrawPlayer(player, cost);
+        SupremeTagsPremium.getEconomy().withdrawPlayer(player, cost);
     }
 
     public static String deformat(String str) {
@@ -116,6 +121,8 @@ public class Utils {
     public static List<String> color(List<String> lore){
         return lore.stream().map(Utils::format).collect(Collectors.toList());
     }
+
+
 
     private static Pattern rgbPat = Pattern.compile("(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\\b|(?:rgb|hsl)a?\\([^\\)]*\\)");
     public static String getRGB(String msg) {

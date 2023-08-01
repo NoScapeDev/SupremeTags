@@ -11,7 +11,7 @@ public class MySQLUserData {
 
     public boolean exists(Player player) {
         try {
-            PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
+            PreparedStatement statement = SupremeTagsPremium.getMysql().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
             statement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = statement.executeQuery();
 
@@ -29,9 +29,9 @@ public class MySQLUserData {
             return;
         }
 
-        String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+        String defaultTag = SupremeTagsPremium.getInstance().getConfig().getString("settings.default-tag");
 
-        try (PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement(
+        try (PreparedStatement statement = SupremeTagsPremium.getMysql().getConnection().prepareStatement(
                 "INSERT INTO `users` (Name, UUID, Active) VALUES (?,?,?)")) {
             statement.setString(1, player.getName());
             statement.setString(2, player.getUniqueId().toString());
@@ -44,7 +44,7 @@ public class MySQLUserData {
 
     public static void setActive(OfflinePlayer player, String identifier) {
         String sql = "UPDATE `users` SET Active=? WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement(sql)) {
+        try (PreparedStatement statement = SupremeTagsPremium.getMysql().getConnection().prepareStatement(sql)) {
             statement.setString(1, identifier);
             statement.setString(2, player.getUniqueId().toString());
             statement.executeUpdate();
@@ -56,7 +56,7 @@ public class MySQLUserData {
     public static String getActive(UUID uuid) {
         String value = "";
         String query = "SELECT * FROM `users` WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = SupremeTagsPremium.getMysql().getConnection().prepareStatement(query)) {
             statement.setString(1, uuid.toString());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags.handlers.hooks;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.*;
 import net.noscape.project.supremetags.*;
 import net.noscape.project.supremetags.handlers.Tag;
@@ -17,7 +18,7 @@ public class PAPI extends PlaceholderExpansion {
 
     private final Map<String, Tag> tags;
 
-    public PAPI(SupremeTags plugin) {
+    public PAPI(SupremeTagsPremium plugin) {
         tags = plugin.getTagManager().getTags();
     }
 
@@ -33,7 +34,7 @@ public class PAPI extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return SupremeTags.getInstance().getDescription().getVersion();
+        return SupremeTagsPremium.getInstance().getDescription().getVersion();
     }
 
     @Override
@@ -64,8 +65,47 @@ public class PAPI extends PlaceholderExpansion {
                 Tag t = tags.get(UserData.getActive(player.getUniqueId()));
 
                 if (params.equalsIgnoreCase("tag")) {
-                    replacePlaceholders(player.getPlayer(), t.getTag());
-                    text = t.getTag();
+                    String tag;
+
+                    if (UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
+                        text = "&6";
+                    } else {
+                        if (t.getCurrentTag() != null) {
+                            tag = t.getCurrentTag();
+                        } else {
+                            tag = t.getTag().get(0);
+                        }
+
+                        text = PlaceholderAPI.setPlaceholders(player, tag);
+                    }
+                } else if (params.equalsIgnoreCase("identifier")) {
+                    text = t.getIdentifier();
+                } else if (params.equalsIgnoreCase("description")) {
+                    text = t.getDescription();
+                } else if (params.equalsIgnoreCase("permission")) {
+                    text = t.getPermission();
+                } else if (params.equalsIgnoreCase("category")) {
+                    text = t.getCategory();
+                } else if (params.equalsIgnoreCase("cost")) {
+                    text = String.valueOf(t.getCost());
+                }
+            } else if (SupremeTagsPremium.getInstance().getPlayerManager().loadAllPlayerTags(player.getUniqueId()).get(UserData.getActive(player.getUniqueId())) != null) {
+                Tag t = SupremeTagsPremium.getInstance().getPlayerManager().loadAllPlayerTags(player.getUniqueId()).get(UserData.getActive(player.getUniqueId()));
+
+                if (params.equalsIgnoreCase("tag")) {
+                    String tag;
+
+                    if (UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None")) {
+                        text = "&6";
+                    } else {
+                        if (t.getCurrentTag() != null) {
+                            tag = t.getCurrentTag();
+                        } else {
+                            tag = t.getTag().get(0);
+                        }
+
+                        text = PlaceholderAPI.setPlaceholders(player, tag);
+                    }
                 } else if (params.equalsIgnoreCase("identifier")) {
                     text = t.getIdentifier();
                 } else if (params.equalsIgnoreCase("description")) {
@@ -78,7 +118,7 @@ public class PAPI extends PlaceholderExpansion {
                     text = String.valueOf(t.getCost());
                 }
             } else {
-                text = SupremeTags.getInstance().getConfig().getString("settings.none-output");
+                text = "&6";
             }
         }
 
@@ -86,13 +126,12 @@ public class PAPI extends PlaceholderExpansion {
     }
 
     public boolean hasTags(Player player) {
-        for (Tag tag : SupremeTags.getInstance().getTagManager().getTags().values()) {
+        for (Tag tag : SupremeTagsPremium.getInstance().getTagManager().getTags().values()) {
             if (player.hasPermission(tag.getPermission())) {
                 return true;
             }
         }
         return false;
     }
-
 
 }

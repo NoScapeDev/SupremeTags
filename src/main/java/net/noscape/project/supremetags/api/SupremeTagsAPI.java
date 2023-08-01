@@ -1,6 +1,6 @@
 package net.noscape.project.supremetags.api;
 
-import net.noscape.project.supremetags.SupremeTags;
+import net.noscape.project.supremetags.SupremeTagsPremium;
 import net.noscape.project.supremetags.handlers.Tag;
 import net.noscape.project.supremetags.storage.UserData;
 
@@ -16,7 +16,7 @@ public class SupremeTagsAPI {
      * @return
      */
     public Tag getTag(String identifier) {
-        return SupremeTags.getInstance().getTagManager().getTag(identifier);
+        return SupremeTagsPremium.getInstance().getTagManager().getTag(identifier);
     }
 
     /**
@@ -25,7 +25,7 @@ public class SupremeTagsAPI {
      * @return
      */
     public Tag getPlayerTag(UUID uuid) {
-        return SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(uuid));
+        return SupremeTagsPremium.getInstance().getTagManager().getTag(UserData.getActive(uuid));
     }
 
     /**
@@ -42,6 +42,6 @@ public class SupremeTagsAPI {
      * @return
      */
     public List<Tag> getAllTags() {
-        return new ArrayList<>(SupremeTags.getInstance().getTagManager().getTags().values());
+        return new ArrayList<>(SupremeTagsPremium.getInstance().getTagManager().getTags().values());
     }
 }

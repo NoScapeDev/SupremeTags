@@ -1,0 +1,54 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                    Categories                        | #
+# +------------------------------------------------------+ #
+############################################################
+
+categories-menu-fill-empty: false # set this to true if you want to fill empty slots in main menu of categories.
+
+categories:
+  default:
+    title: '&8Default Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    custom-model-data: 0
+    cost-category: false
+    id_display: '&7&lDefault Tags' # item displayname.
+    slot: 11 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&7Default tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.default' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  rank:
+    title: '&8Rank Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    custom-model-data: 0
+    cost-category: false
+    id_display: '&6&lRank Tags' # item displayname.
+    slot: 13 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&6Rank tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.rank' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  xmas:
+    title: '&8Christmas Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    custom-model-data: 0
+    cost-category: false
+    id_display: '&c&lChristmas Tags' # item displayname.
+    slot: 15 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&cChristmas tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.xmas' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.

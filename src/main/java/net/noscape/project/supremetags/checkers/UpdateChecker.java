@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class UpdateChecker implements Listener {
 
-    private final int RESOURCE_ID = 103140;
+    private final int RESOURCE_ID = 111481;
 
     private final JavaPlugin plugin;
 
@@ -40,6 +40,5 @@ public class UpdateChecker implements Listener {
         } catch (IOException e) {
             plugin.getLogger().info("Unable to check for updates: " + e.getMessage());
         }
-
     }
 }

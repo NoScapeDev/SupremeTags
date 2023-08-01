@@ -1,0 +1,88 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                       Tags                           | #
+# +------------------------------------------------------+ #
+############################################################
+
+tags:
+  hexsupport: # 1.16+ server is required for hex colors to work.
+    # tags won't animate if there are only one string tag in the list.
+    tag:
+      - '&8[&#afe4a4&lH&#b1cdb1&le&#b3b6bd&lx&#b59fca&lC&#b688d7&lo&#b871e3&ll&#ba5af0&lo&#bc43fd&lr&8]'
+    permission: 'supremetags.tag.hex'
+    description: '&7This plugin supports normal/hex colors'
+    category: 'default'
+    order: 1
+    withdrawable: true
+    displayname: '&7Tag: %tag%'
+    custom-model-data: 0
+    display-item: 'NAME_TAG'
+    cost: 200 # this is only implemented when 'cost-system' is enabled
+    # used for unlocked view of the tag
+    unlocked-lore:
+      - '&7&m-----------------------------'
+      - ''
+      - '&bIdentifier: &7%identifier%'
+      - ''
+      - '&dDescription:'
+      - '&7%description%'
+      - ''
+      - '&eClick to Assign!'
+      - '&7&m-----------------------------'
+    # used for cost lores that are locked
+    locked-lore:
+      - '&c&m-----------------------------'
+      - ''
+      - '&7Buy &8&l> &fRight-Click'
+      - '&7Cost &8&l> &f$%cost%'
+      - ''
+      - '&cThis tag is locked!'
+      - '&c&m-----------------------------'
+    # used for when 'locked-view' is enabled and players doesn't have permission
+    locked-permission:
+      - '&c&m-----------------------------'
+      - ''
+      - '&7No permission to select this tag!'
+      - ''
+      - '&cThis tag is locked!'
+      - '&c&m-----------------------------'
+  santa: # Christmas themed tag, shows in the Xmas category.
+    tag:
+      - '&8[&c&lSanta&8]'
+    permission: 'supremetags.tag.santa'
+    description: '&7ho ho hooooooo!'
+    category: 'xmas'
+    order: 2
+    withdrawable: false
+    displayname: '&7Tag: %tag%'
+    custom-model-data: 0
+    display-item: 'NAME_TAG'
+    cost: 100 # setting this to 0 when 'cost-system' is enabled, will make this tag free.
+    # used for unlocked view of the tag
+    unlocked-lore:
+      - '&7&m-----------------------------'
+      - ''
+      - '&bIdentifier: &7%identifier%'
+      - ''
+      - '&dDescription:'
+      - '&7%description%'
+      - ''
+      - '&eClick to Assign!'
+      - '&7&m-----------------------------'
+    # used for cost lores that are locked
+    locked-lore:
+      - '&c&m-----------------------------'
+      - ''
+      - '&7Buy &8&l> &fRight-Click'
+      - '&7Cost &8&l> &f$%cost%'
+      - ''
+      - '&cThis tag is locked!'
+      - '&c&m-----------------------------'
+    # used for when 'locked-view' is enabled and players doesn't have permission
+    locked-permission:
+      - '&c&m-----------------------------'
+      - ''
+      - '&7No permission to select this tag!'
+      - ''
+      - '&cThis tag is locked!'
+      - '&c&m-----------------------------'

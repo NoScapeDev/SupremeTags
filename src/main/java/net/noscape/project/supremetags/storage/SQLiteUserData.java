@@ -1,23 +1,24 @@
 package net.noscape.project.supremetags.storage;
 
-import net.noscape.project.supremetags.*;
-import org.bukkit.*;
-import org.bukkit.entity.*;
+import net.noscape.project.supremetags.SupremeTagsPremium;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
-public class H2UserData {
+public class SQLiteUserData {
 
     public boolean exists(Player player) {
-        try {
-            PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
+        try (Connection connection = SupremeTagsPremium.getSQLite().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE (UUID=?)")) {
             statement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                return true;
-            }
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -31,8 +32,9 @@ public class H2UserData {
 
         String defaultTag = SupremeTagsPremium.getInstance().getConfig().getString("settings.default-tag");
 
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(
-                "INSERT INTO `users` (Name, UUID, Active) VALUES (?,?,?)")) {
+        try (Connection connection = SupremeTagsPremium.getSQLite().getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO `users` (Name, UUID, Active) VALUES (?,?,?)")) {
             statement.setString(1, player.getName());
             statement.setString(2, player.getUniqueId().toString());
             statement.setString(3, defaultTag);
@@ -44,7 +46,8 @@ public class H2UserData {
 
     public static void setActive(OfflinePlayer player, String identifier) {
         String sql = "UPDATE `users` SET Active=? WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(sql)) {
+        try (Connection connection = SupremeTagsPremium.getSQLite().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, identifier);
             statement.setString(2, player.getUniqueId().toString());
             statement.executeUpdate();
@@ -53,10 +56,12 @@ public class H2UserData {
         }
     }
 
+
     public static String getActive(UUID uuid) {
         String value = "";
         String query = "SELECT * FROM `users` WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(query)) {
+        try (Connection connection = SupremeTagsPremium.getSQLite().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, uuid.toString());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -66,7 +71,7 @@ public class H2UserData {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return value;
     }
-
 }

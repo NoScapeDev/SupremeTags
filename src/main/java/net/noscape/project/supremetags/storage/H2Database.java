@@ -20,12 +20,12 @@ public class H2Database {
 
         try {
             Class.forName("org.h2.Driver");
-            connection = DriverManager.getConnection(SupremeTags.getConnectionURL());
+            connection = DriverManager.getConnection(SupremeTagsPremium.getConnectionURL());
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
-            SupremeTags.getInstance().getLogger().info("------------------------------");
-            SupremeTags.getInstance().getLogger().info("H2: Something wrong with connecting to h2-sql for SupremeTags, contact the developer if you see this.");
-            SupremeTags.getInstance().getLogger().info("------------------------------");
+            SupremeTagsPremium.getInstance().getLogger().info("------------------------------");
+            SupremeTagsPremium.getInstance().getLogger().info("H2: Something wrong with connecting to h2-sql for SupremeTags, contact the developer if you see this.");
+            SupremeTagsPremium.getInstance().getLogger().info("------------------------------");
         }
 
         return connection;

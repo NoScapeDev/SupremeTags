@@ -1,6 +1,6 @@
 name: SupremeTags
 version: '${project.version}'
-main: net.noscape.project.supremetags.SupremeTags
+main: net.noscape.project.supremetags.SupremeTagsPremium
 api-version: 1.13
 depend: [NBTAPI]
 softdepend: [PlaceholderAPI, HeadDatabase, VaultAPI]
@@ -11,3 +11,6 @@ commands:
   tags:
     aliases: [tag, supremetags, stags]
     description: main tag plugin to open menu and manage tags.
+  mytags:
+    aliases: [ptags, personaltags]
+    description: main command for personal tags.

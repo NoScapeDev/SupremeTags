@@ -6,10 +6,12 @@ public class Editor {
 
     private String identifier;
     private EditingType type;
+    private boolean isPersonalEdit;
 
-    public Editor(String identifier, EditingType type) {
+    public Editor(String identifier, EditingType type, boolean isPersonalEdit) {
         this.identifier = identifier;
         this.type = type;
+        this.isPersonalEdit = isPersonalEdit;
     }
 
     public EditingType getType() {
@@ -26,5 +28,9 @@ public class Editor {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public boolean isPersonalEdit() {
+        return isPersonalEdit;
     }
 }

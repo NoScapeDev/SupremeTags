@@ -7,11 +7,11 @@ import org.bukkit.entity.*;
 import java.sql.*;
 import java.util.*;
 
-public class H2UserData {
+public class MariaUserData {
 
     public boolean exists(Player player) {
         try {
-            PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
+            PreparedStatement statement = SupremeTagsPremium.getMaria().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
             statement.setString(1, player.getUniqueId().toString());
             ResultSet resultSet = statement.executeQuery();
 
@@ -31,7 +31,7 @@ public class H2UserData {
 
         String defaultTag = SupremeTagsPremium.getInstance().getConfig().getString("settings.default-tag");
 
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(
+        try (PreparedStatement statement = SupremeTagsPremium.getMaria().getConnection().prepareStatement(
                 "INSERT INTO `users` (Name, UUID, Active) VALUES (?,?,?)")) {
             statement.setString(1, player.getName());
             statement.setString(2, player.getUniqueId().toString());
@@ -44,7 +44,7 @@ public class H2UserData {
 
     public static void setActive(OfflinePlayer player, String identifier) {
         String sql = "UPDATE `users` SET Active=? WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(sql)) {
+        try (PreparedStatement statement = SupremeTagsPremium.getMaria().getConnection().prepareStatement(sql)) {
             statement.setString(1, identifier);
             statement.setString(2, player.getUniqueId().toString());
             statement.executeUpdate();
@@ -56,7 +56,7 @@ public class H2UserData {
     public static String getActive(UUID uuid) {
         String value = "";
         String query = "SELECT * FROM `users` WHERE (UUID=?)";
-        try (PreparedStatement statement = SupremeTagsPremium.getDatabase().getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = SupremeTagsPremium.getMaria().getConnection().prepareStatement(query)) {
             statement.setString(1, uuid.toString());
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -68,5 +68,4 @@ public class H2UserData {
         }
         return value;
     }
-
 }

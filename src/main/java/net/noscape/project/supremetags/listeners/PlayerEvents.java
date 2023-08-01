@@ -17,7 +17,7 @@ public class PlayerEvents implements Listener {
     private final Map<String, Tag> tags;
 
     public PlayerEvents() {
-        tags = SupremeTags.getInstance().getTagManager().getTags();
+        tags = SupremeTagsPremium.getInstance().getTagManager().getTags();
     }
 
     @EventHandler
@@ -25,51 +25,54 @@ public class PlayerEvents implements Listener {
         Player player = e.getPlayer();
         UserData.createPlayer(player);
 
-        if (SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag")) {
+        if (SupremeTagsPremium.getInstance().getConfig().getBoolean("settings.personal-tags.enable")) {
+            SupremeTagsPremium.getInstance().getPlayerConfig().loadPlayer(player);
+        }
+
+        if (SupremeTagsPremium.getInstance().getConfig().getBoolean("settings.forced-tag")) {
             String activeTag = UserData.getActive(player.getUniqueId());
             if (activeTag.equalsIgnoreCase("None")) {
-                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
+                String defaultTag = SupremeTagsPremium.getInstance().getConfig().getString("settings.default-tag");
                 UserData.setActive(player, defaultTag);
             }
         }
 
-        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && !tags.containsKey(UserData.getActive(player.getUniqueId()))) {
-            String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
-            UserData.setActive(player, defaultTag);
+        /*
+         * CHECK IF TAG STILL EXIST!
+         */
+        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && !tags.containsKey(UserData.getActive(player.getUniqueId())) && SupremeTagsPremium.getInstance().getPlayerManager().getTag(player.getUniqueId(), UserData.getActive(player.getUniqueId())) == null) {
+            UserData.setActive(player, "None");
         }
 
-        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
-            Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
-            if (!player.hasPermission(tag.getPermission())) {
-                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
-                UserData.setActive(player, defaultTag);
-            }
-        }
-
-        if (SupremeTags.getInstance().getConfig().getBoolean("settings.update-check")) {
+        if (SupremeTagsPremium.getInstance().getConfig().getBoolean("settings.update-check")) {
             if (player.isOp()) {
-                new UpdateChecker(SupremeTags.getInstance()).getVersionAsync(version -> {
-                    if (!SupremeTags.getInstance().getDescription().getVersion().equals(version)) {
-                        msgPlayer(player, "&6&lSupremeTags &8&l> &7An update is available! &b" + version,
-                                "&eDownload at &bhttps://www.spigotmc.org/resources/103140/");
+                new UpdateChecker(SupremeTagsPremium.getInstance()).getVersionAsync(version -> {
+                    if (!SupremeTagsPremium.getInstance().getDescription().getVersion().equals(version)) {
+                        msgPlayer(player, "&6&lSupremeTags-Premium &8&l> &7An update is available! &b" + version,
+                                "&eDownload at &bhttps://www.spigotmc.org/resources/111481/");
                     }
                 });
             }
         }
     }
 
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
+
+        if (SupremeTagsPremium.getInstance().getPlayerManager().getPlayerTags(player.getUniqueId()) != null) {
+            PlayerConfig.save(player);
+            SupremeTagsPremium.getInstance().getPlayerManager().getPlayerTags().remove(player.getUniqueId());
+        }
+
+        SupremeTagsPremium.getInstance().getSetupList().remove(player);
+        SupremeTagsPremium.getInstance().getEditorList().remove(player);
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
         String format = e.getFormat();
-
-        if (!UserData.getActive(player.getUniqueId()).equalsIgnoreCase("None") && tags.containsKey(UserData.getActive(player.getUniqueId()))) {
-            Tag tag = SupremeTags.getInstance().getTagManager().getTag(UserData.getActive(player.getUniqueId()));
-            if (!player.hasPermission(tag.getPermission())) {
-                String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
-                UserData.setActive(player, defaultTag);
-            }
-        }
 
         // Store the value of UserData.getActive(player.getUniqueId()) in a local variable
         String activeTag = UserData.getActive(player.getUniqueId());
@@ -78,18 +81,25 @@ public class PlayerEvents implements Listener {
             e.setFormat(replace);
         } else {
             // Store the value of SupremeTags.getInstance().getTagManager().getTags().get(activeTag) in a local variable
-            Tag tag = SupremeTags.getInstance().getTagManager().getTags().get(activeTag);
+            Tag tag = SupremeTagsPremium.getInstance().getTagManager().getTags().get(activeTag);
             if (tag == null) {
                 e.setFormat(replace);
             } else {
-                // Store the value of format(tag.getTag()) in a local variable
-                String formattedTag = format(tag.getTag());
-                formattedTag = replacePlaceholders(player, formattedTag);
+                String t;
 
-                e.setFormat(format.replace("{tag}", formattedTag).replace("{supremetags_tag}", formattedTag).replace("{TAG}", formattedTag));
+                if (tag.getCurrentTag() != null) {
+                    t = tag.getCurrentTag();
+                } else {
+                    t = tag.getTag().get(0);
+                }
+
+                t = replacePlaceholders(player, t); // Replace placeholders for the player only
+
+                e.setFormat(format.replace("{tag}", format(t)).replace("{supremetags_tag}", format(t)).replace("{TAG}", format(t)));
             }
         }
     }
+
 
     public Map<String, Tag> getTags() {
         return tags;
