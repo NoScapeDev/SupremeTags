@@ -1,0 +1,226 @@
+version: 1.7.13
+
+############################################################
+# +------------------------------------------------------+ #
+# |                     Settings                         | #
+# +------------------------------------------------------+ #
+############################################################
+
+settings:
+  default-tag: 'none' # set 'none' players start with no tag.
+  forced-tag: false # this will make it force players to have a tag, they won't beable to take the tag off.
+  categories: false # should supremetags use the category system?
+  default-category: 'default' # used to set the tags category value when creating a new tag with the '/tag create' command
+  update-check: true # the plugin will check if there is an update available.
+  legacy-hex-format: true # should the plugin use the legacy hex colors? (&#d5b47 instead of #d5b47)
+  auto-merge: false # auto merges all tags from deluxetags into supremetags (DeluxeTags is required on the server)
+  active-tag-glow: true # adds a hidden enchantment to the tag item that is active for the player.
+  cost-system: false # should your players be able to buy tags?
+  cmi-color-support: false # allow the plugin to change color format to legacy '&x', to support CMI Chat, This will override 'legacy-hex-format'
+  tag-command-in-disabled-worlds: true # should /tags command be disabled in 'disabled-worlds'.
+  disabled-worlds: # what worlds should tags be allowed in, tags in this world will not be shown.
+    - 'example'
+    - 'world2'
+  gui-messages: true # setting this to true, will enable 'tag-select-message' & 'reset-message'
+  locked-view: false # this setting allows players to view locked/unlocked tags.
+
+############################################################
+# +------------------------------------------------------+ #
+# |                    Messages                          | #
+# +------------------------------------------------------+ #
+############################################################
+
+messages:
+  tag-select-message: '&8[&6&lTags&8] &e%identifier% &7tag selected.'
+  reset-message: '&8[&6&lTags&8] &7Reset tag.'
+  insufficient-funds: '&cInsufficient funds. &7You need &c$%cost% &7to get this tag.'
+  tag-unlocked: '&8[&6Tags&8] &7You have unlocked the tag: &6%identifier%'
+  reload: '&8[&6&lTag&8] &7Reloaded plugin.'
+  no-permission: '&cNo Permission.'
+  no-tags: '&cYou have no tags yet.'
+  tag-command-disabled: '&cTag command is disabled in this world.'
+  invalid-tag: '&cThis tag does not exist.'
+  valid-tag: '&cThis tag already exists.'
+  invalid-category: '&cThis category does not exist.'
+  locked-tag: '&cYou do not have access to select this tag!'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Data                           | #
+# +------------------------------------------------------+ #
+############################################################
+
+# mysql data settings.
+# make sure you can check your panel database info to make sure everything is correct.
+data:
+  # types: [H2 OR MYSQL]
+  type: 'H2'
+
+  # The address for the database server.
+  # - to enable this part, change type to 'MYSQL'
+  # - some hosts can use your domain or server ip.
+  address: 'host'
+  # The standard DB engine port is used by default
+  port: 3306
+  # The name of the database to store tag data in.
+  database: 'database'
+  # Credentials for the database.
+  username: 'user'
+  password: 'pass'
+  # leave this, if you don't know how to use options.
+  options: 'useSSL=false&autoReconnect=true'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Gui                            | #
+# +------------------------------------------------------+ #
+############################################################
+
+gui:
+  main-menu:
+    title: '&8Main Menu'
+    size: 27
+  tag-menu-none-categories:
+    title: '&8Tag Menu'
+    tag-item: # to edit the tags display name, please proceed below to 'tags.<identifier>.displayname'
+      # used for cost lores that are locked
+      locked-lore:
+        - '&c&m-----------------------------'
+        - ''
+        - '&7Buy &8&l> &fRight-Click'
+        - '&7Cost &8&l> &f$%cost%'
+        - ''
+        - '&cThis tag is locked!'
+        - '&c&m-----------------------------'
+      # used for when 'locked-view' is enabled and players doesn't have permission
+      locked-permission:
+        - '&c&m-----------------------------'
+        - ''
+        - '&7No permission to select this tag!'
+        - ''
+        - '&cThis tag is locked!'
+        - '&c&m-----------------------------'
+      # used for unlocked view of the tag
+      unlocked-lore:
+        - '&7&m-----------------------------'
+        - ''
+        - '&bIdentifier: &7%identifier%'
+        - ''
+        - '&dDescription:'
+        - '&7%description%'
+        - ''
+        - '&eClick to Assign!'
+        - '&7&m-----------------------------'
+  tag-editor-menu:
+    title: '&8Tag Editor'
+    tag-item:
+      displayname: '&7Tag: %tag%'
+      lore:
+        - '&7&m-----------------------------'
+        - ''
+        - '&bIdentifier: &7%identifier%'
+        - ''
+        - '&dDescription:'
+        - '&7%description%'
+        - ''
+        - '&eClick to Edit!'
+        - '&7&m-----------------------------'
+  # edit the material of all items inside the gui.
+  layout:
+    glass-material: 'GRAY_STAINED_GLASS_PANE'
+    back-next-material: 'DARK_OAK_BUTTON'
+    reset-tag-material: 'RED_DYE'
+    active-tag-material: 'NAME_TAG'
+    close-menu-material: 'BARRIER'
+    refresh-material: 'GREEN_DYE'
+  # edit the item names of all items inside the gui.
+  strings:
+    back-item: '&7Back'
+    next-item: '&7Next'
+    reset-item: '&cReset'
+    active-item: '&7Active: &6%identifier%'
+    close-item: '&cClose'
+    refresh-item: '&aRefresh'
+  # disable items in the gui.
+  # setting these values to false will not display the item in tag gui.
+  items:
+    close-item: true
+    refresh-item: true
+    reset-item: true
+    glass-item: true
+    active-item: true
+    next-item: true # this only applies to tag type guis.
+    back-item: true # this only applies to tag type guis.
+
+############################################################
+# +------------------------------------------------------+ #
+# |                    Categories                        | #
+# +------------------------------------------------------+ #
+############################################################
+
+categories-menu-fill-empty: false # set this to true if you want to fill empty slots in main menu of categories.
+
+categories:
+  default:
+    title: '&8Default Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&7&lDefault Tags' # item displayname.
+    slot: 11 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&7Default tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.default' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  rank:
+    title: '&8Rank Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&6&lRank Tags' # item displayname.
+    slot: 13 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&6Rank tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.rank' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+  xmas:
+    title: '&8Christmas Tags (Page %page%)' # title of the category gui.
+    material: 'NAME_TAG' # item material.
+    id_display: '&c&lChristmas Tags' # item displayname.
+    slot: 15 # slot this item will be in the main menu.
+    lore:
+      - '&8&m-----------------------------'
+      - ''
+      - '&cChristmas tags: &7%tags_amount%'
+      - ''
+      - '&8&m-----------------------------'
+    permission: 'supremetags.category.xmas' # permission players will need to open this menu
+    permission-see-category: false # if set true and if player doesn't have the permission `supremetags.category.<category>` they will not see it.
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Tags                           | #
+# +------------------------------------------------------+ #
+############################################################
+
+tags:
+  hexsupport: # 1.16+ server is required for hex colors to work.
+    tag: '&8[&#afe4a4&lH&#b1cdb1&le&#b3b6bd&lx&#b59fca&lC&#b688d7&lo&#b871e3&ll&#ba5af0&lo&#bc43fd&lr&8]'
+    permission: 'supremetags.tag.hex'
+    description: '&7This plugin supports normal/hex colors'
+    category: 'default'
+    displayname: '&7Tag: %tag%'
+    display-item: 'NAME_TAG'
+    cost: 200 # this is only implemented when 'cost-system' is enabled
+  santa: # Christmas themed tag, shows in the Xmas category.
+    tag: '&8[&c&lSanta&8]'
+    permission: 'supremetags.tag.santa'
+    description: '&7ho ho hooooooo!'
+    category: 'xmas'
+    displayname: '&7Tag: %tag%'
+    display-item: 'NAME_TAG'
+    cost: 100 # setting this to 0 when 'cost-system' is enabled, will make this tag free.

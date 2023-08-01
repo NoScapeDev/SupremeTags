@@ -1,0 +1,13 @@
+name: SupremeTags
+version: '${project.version}'
+main: net.noscape.project.supremetags.SupremeTags
+api-version: 1.13
+depend: [NBTAPI]
+softdepend: [PlaceholderAPI, HeadDatabase, VaultAPI]
+authors: [DevScape]
+description: Allow players to show of their supreme tags!
+
+commands:
+  tags:
+    aliases: [tag, supremetags, stags]
+    description: main tag plugin to open menu and manage tags.
