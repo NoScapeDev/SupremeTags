@@ -200,7 +200,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -268,7 +268,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -333,7 +333,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -406,7 +406,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -474,7 +474,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -539,7 +539,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -605,7 +605,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -679,7 +679,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -743,7 +743,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -881,7 +881,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -939,7 +939,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -994,7 +994,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1058,7 +1058,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1116,7 +1116,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1171,7 +1171,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1227,7 +1227,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1290,7 +1290,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1345,7 +1345,7 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (isVersionAtLeast("1.16")) {
+                        if (!isVersionLessThan("1.16")) {
                             tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                         }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1462,7 +1462,7 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (isVersionAtLeast("1.16")) {
+                    if (!isVersionLessThan("1.16")) {
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                     }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1495,7 +1495,7 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (isVersionAtLeast("1.16")) {
+                    if (!isVersionLessThan("1.16")) {
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                     }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
@@ -1524,7 +1524,7 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (isVersionAtLeast("1.16")) {
+                    if (!isVersionLessThan("1.16")) {
                         tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
                     }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);

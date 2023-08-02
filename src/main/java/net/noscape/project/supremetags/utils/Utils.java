@@ -27,7 +27,7 @@ public class Utils {
 
     public static String format(String message) {
         // Check if the server version is less than 1.16
-        if (!isVersionAtLeast("1.16")) {
+        if (isVersionLessThan("1.16")) {
             // Now translate normal color codes
             return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
         } else {
@@ -41,32 +41,45 @@ public class Utils {
             } else if (SupremeTags.getInstance().isLegacyFormat()) {
                 message = message.replace(">>", "").replace("<<", "");
                 Matcher matcher = p2.matcher(message);
+                StringBuffer sb = new StringBuffer();
                 while (matcher.find()) {
                     ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-                    String before = message.substring(0, matcher.start());
-                    String after = message.substring(matcher.end());
-                    message = before + hexColor + after;
-                    matcher = p2.matcher(message);
+                    matcher.appendReplacement(sb, hexColor.toString());
                 }
-                return ChatColor.translateAlternateColorCodes('&', message);
+                matcher.appendTail(sb);
+                return ChatColor.translateAlternateColorCodes('&', sb.toString());
             } else {
                 message = message.replace(">>", "").replace("<<", "");
                 Matcher matcher = p3.matcher(message);
+                StringBuffer sb = new StringBuffer();
                 while (matcher.find()) {
                     ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-                    String before = message.substring(0, matcher.start());
-                    String after = message.substring(matcher.end());
-                    message = before + hexColor + after;
-                    matcher = p3.matcher(message);
+                    matcher.appendReplacement(sb, hexColor.toString());
                 }
-                return ChatColor.translateAlternateColorCodes('&', message);
+                matcher.appendTail(sb);
+                return ChatColor.translateAlternateColorCodes('&', sb.toString());
             }
         }
     }
 
-    public static boolean isVersionAtLeast(String version) {
-        String serverVersion = Bukkit.getServer().getVersion();
-        return serverVersion.contains(version);
+    public static boolean isVersionLessThan(String version) {
+        String serverVersion = Bukkit.getVersion();
+
+        String[] serverParts = serverVersion.split(" ")[2].split("\\.");
+        String[] targetParts = version.split("\\.");
+
+        for (int i = 0; i < Math.min(serverParts.length, targetParts.length); i++) {
+            int serverPart = Integer.parseInt(serverParts[i]);
+            int targetPart = Integer.parseInt(targetParts[i]);
+
+            if (serverPart < targetPart) {
+                return true;
+            } else if (serverPart > targetPart) {
+                return false;
+            }
+        }
+
+        return false; // Server version is equal to or greater than the target version
     }
 
     public static String colorizeRGB(String input) {
