@@ -58,11 +58,13 @@ public class CategoryMenu extends Paged {
             e.setCancelled(true);
         }
 
+        if (e.getCurrentItem() == null) return;
+
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
         NBTItem nbt = new NBTItem(e.getCurrentItem());
 
-        if (nbt.hasTag("identifier")) {
+        if (nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);

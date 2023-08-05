@@ -49,12 +49,11 @@ public class TagEditorMenu extends Paged {
         String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
         String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
 
-        if (!ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).startsWith("Active")
-                && !ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Personal Tags")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Back")
-                && !ChatColor.stripColor(Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName()).equalsIgnoreCase("Refresh")) {
-            NBTItem nbt = new NBTItem(e.getCurrentItem());
+        if (e.getCurrentItem() == null) return;
+
+        NBTItem nbt = new NBTItem(e.getCurrentItem());
+
+        if (nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
             menuUtil.setIdentifier(identifier);
             new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();

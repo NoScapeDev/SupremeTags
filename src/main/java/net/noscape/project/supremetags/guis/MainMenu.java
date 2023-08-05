@@ -46,6 +46,8 @@ public class MainMenu extends Menu {
 
         boolean hasMinTags = false;
 
+        if (e.getCurrentItem() == null) return;
+
         for (String cats : getCatorgies()) {
             if (cats != null) {
                 if (categoriesTags.get(cats) != null) {

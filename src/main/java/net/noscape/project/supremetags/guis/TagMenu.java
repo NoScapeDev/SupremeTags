@@ -56,6 +56,8 @@ public class TagMenu extends Paged {
             e.setCancelled(true);
         }
 
+        if (e.getCurrentItem() == null) return;
+
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
         NBTItem nbt = new NBTItem(e.getCurrentItem());
@@ -181,7 +183,6 @@ public class TagMenu extends Paged {
 
     @Override
     public void setMenuItems() {
-
         getTagItems();
         applyLayout();
     }
