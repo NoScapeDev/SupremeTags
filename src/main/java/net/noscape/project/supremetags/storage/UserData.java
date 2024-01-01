@@ -16,7 +16,6 @@ public class UserData {
         }
     }
 
-
     public static void setActive(OfflinePlayer player, String identifier) {
         if (SupremeTags.getInstance().isH2()) {
             H2UserData.setActive(player, identifier);
@@ -26,7 +25,6 @@ public class UserData {
     }
 
     public static String getActive(UUID uuid) {
-
         if (SupremeTags.getInstance().isH2()) {
             return H2UserData.getActive(uuid);
         } else if (SupremeTags.getInstance().isMySQL()) {

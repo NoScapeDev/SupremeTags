@@ -1,9 +1,11 @@
 package net.noscape.project.supremetags.managers;
 
+import lombok.Getter;
 import net.noscape.project.supremetags.*;
 
 import java.util.*;
 
+@Getter
 public class CategoryManager {
 
     private final List<String> catorgies = new ArrayList<>();
@@ -30,14 +32,5 @@ public class CategoryManager {
             }
             catorgiesTags.put(cats, value);
         }
-    }
-
-
-    public List<String> getCatorgies() {
-        return catorgies;
-    }
-
-    public Map<String, Integer> getCatorgiesTags() {
-        return catorgiesTags;
     }
 }

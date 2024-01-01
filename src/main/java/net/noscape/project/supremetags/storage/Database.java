@@ -35,10 +35,6 @@ public class Database {
 
         String userTable = "CREATE TABLE IF NOT EXISTS `users` " +
                 "(`Name` VARCHAR(100), `UUID` VARCHAR(100) primary key, `Active` VARCHAR(100))";
-
-        String ptTable = "CREATE TABLE IF NOT EXISTS `pttags` " +
-                "(`UUID` VARCHAR(100) primary key, `Name` VARCHAR(100), `Tag` VARCHAR(100))";
-
         try {
             preparedStatement = getConnection().prepareStatement(userTable);
             preparedStatement.executeUpdate();

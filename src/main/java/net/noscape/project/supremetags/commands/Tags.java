@@ -1,9 +1,5 @@
 package net.noscape.project.supremetags.commands;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import net.noscape.project.supremetags.SupremeTags;
 import net.noscape.project.supremetags.guis.MainMenu;
 import net.noscape.project.supremetags.guis.TagMenu;
@@ -18,7 +14,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import static net.noscape.project.supremetags.utils.Utils.msgPlayer;

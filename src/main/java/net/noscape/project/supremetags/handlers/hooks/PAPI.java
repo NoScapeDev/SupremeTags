@@ -1,16 +1,15 @@
 package net.noscape.project.supremetags.handlers.hooks;
 
-import me.clip.placeholderapi.expansion.*;
-import net.noscape.project.supremetags.*;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.noscape.project.supremetags.SupremeTags;
 import net.noscape.project.supremetags.handlers.Tag;
-import net.noscape.project.supremetags.storage.*;
-import org.bukkit.*;
+import net.noscape.project.supremetags.storage.UserData;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Map;
 
-import static net.noscape.project.supremetags.utils.Utils.msgPlayer;
 import static net.noscape.project.supremetags.utils.Utils.replacePlaceholders;
 
 public class PAPI extends PlaceholderExpansion {

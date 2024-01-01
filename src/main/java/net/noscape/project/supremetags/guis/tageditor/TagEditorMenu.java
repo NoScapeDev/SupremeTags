@@ -49,11 +49,17 @@ public class TagEditorMenu extends Paged {
         String reset = SupremeTags.getInstance().getConfig().getString("gui.strings.reset-item");
         String active = SupremeTags.getInstance().getConfig().getString("gui.strings.active-item");
 
-        if (e.getCurrentItem() == null) return;
+        if (e.getCurrentItem() == null) {
+            e.setCancelled(true);
+        }
 
-        NBTItem nbt = new NBTItem(e.getCurrentItem());
+        NBTItem nbt = null;
 
-        if (nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
+        if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
+            nbt = new NBTItem(e.getCurrentItem());
+        }
+
+        if (nbt != null && nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
             menuUtil.setIdentifier(identifier);
             new SpecificTagMenu(SupremeTags.getMenuUtilIdentifier(player, identifier)).open();

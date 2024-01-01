@@ -31,7 +31,7 @@ public class MySQL {
 
     public void openConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
 
@@ -47,7 +47,7 @@ public class MySQL {
                     Logger.getLogger("Error: connection to sql was not successful.");
                     return;
                 }
-                Class.forName("com.mysql.cj.jdbc.Driver");
+                Class.forName("com.mysql.jdbc.Driver");
                 this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + ssl + "&autoReconnect=true", user, pass);
                 this.isconnected = true;
                 createTable();

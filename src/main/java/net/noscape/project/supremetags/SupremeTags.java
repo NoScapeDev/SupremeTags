@@ -1,5 +1,6 @@
 package net.noscape.project.supremetags;
 
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import net.noscape.project.supremetags.api.SupremeTagsAPI;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+@Getter
 public final class SupremeTags extends JavaPlugin {
 
     private static SupremeTags instance;
@@ -54,7 +56,7 @@ public final class SupremeTags extends JavaPlugin {
     private final HashMap<Player, Editor> editorList = new HashMap<>();
 
     private boolean legacy_format;
-    private boolean cmi_hex;
+    private boolean cmiHex;
     private boolean disabledWorldsTag;
 
     public static File latestConfigFile;
@@ -77,6 +79,8 @@ public final class SupremeTags extends JavaPlugin {
         tagManager.unloadTags();
         editorList.clear();
         //setupList.clear();
+
+        DataCache.clearCache();
 
         if (isMySQL()) {
             mysql.disconnected();
@@ -115,7 +119,7 @@ public final class SupremeTags extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new UpdateChecker(this), this);
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
-        cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
+        cmiHex = getConfig().getBoolean("settings.cmi-color-support");
         disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
 
         merge(logger);
@@ -158,9 +162,6 @@ public final class SupremeTags extends JavaPlugin {
 
     public static SupremeTags getInstance() { return instance; }
 
-    public TagManager getTagManager() { return tagManager; }
-
-    public CategoryManager getCategoryManager() { return categoryManager; }
 
     public static MenuUtil getMenuUtil(Player player) {
         MenuUtil menuUtil;
@@ -226,7 +227,7 @@ public final class SupremeTags extends JavaPlugin {
         super.reloadConfig();
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
-        cmi_hex = getConfig().getBoolean("settings.cmi-color-support");
+        cmiHex = getConfig().getBoolean("settings.cmi-color-support");
         disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
     }
 
@@ -356,22 +357,6 @@ public final class SupremeTags extends JavaPlugin {
                 Bukkit.getLogger().warning("Failed to reset DEFAULT-CONFIG-LATEST.yml");
             }
         }
-    }
-
-    public HashMap<Player, Editor> getEditorList() {
-        return editorList;
-    }
-
-    public boolean isCMIHex() {
-        return cmi_hex;
-    }
-
-    public boolean isDisabledWorldsTag() {
-        return disabledWorldsTag;
-    }
-
-    public MergeManager getMergeManager() {
-        return mergeManager;
     }
 
     public boolean isPlaceholderAPI() {

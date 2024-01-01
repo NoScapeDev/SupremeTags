@@ -58,13 +58,19 @@ public class CategoryMenu extends Paged {
             e.setCancelled(true);
         }
 
-        if (e.getCurrentItem() == null) return;
+        if (e.getCurrentItem() == null) {
+            e.setCancelled(true);
+        }
 
         ArrayList<String> tag = new ArrayList<>(tags.keySet());
 
-        NBTItem nbt = new NBTItem(e.getCurrentItem());
+        NBTItem nbt = null;
 
-        if (nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
+        if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
+            nbt = new NBTItem(e.getCurrentItem());
+        }
+
+        if (nbt != null && nbt.hasCustomNbtData() && nbt.hasTag("identifier")) {
             String identifier = nbt.getString("identifier");
 
             Tag t = SupremeTags.getInstance().getTagManager().getTag(identifier);

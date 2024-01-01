@@ -32,7 +32,7 @@ public class Utils {
             return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
         } else {
             // Server is 1.16 or above, so process both hex and normal color codes
-            if (SupremeTags.getInstance().isCMIHex()) {
+            if (SupremeTags.getInstance().isCmiHex()) {
                 Matcher match = p1.matcher(message);
                 while (match.find()) {
                     getRGB(message);
@@ -62,13 +62,20 @@ public class Utils {
         }
     }
 
-    public static boolean isVersionLessThan(String version) {
+    public static boolean isVersionLessThan(String targetVersion) {
         String serverVersion = Bukkit.getVersion();
 
+        // Extract the version parts
         String[] serverParts = serverVersion.split(" ")[2].split("\\.");
-        String[] targetParts = version.split("\\.");
+        String[] targetParts = targetVersion.split("\\.");
 
-        for (int i = 0; i < Math.min(serverParts.length, targetParts.length); i++) {
+        // Check if both version strings have the expected format
+        if (serverParts.length != 3 || targetParts.length != 3) {
+            // Handle invalid version format, you may throw an exception or log an error.
+            return false; // For example, return false to avoid incorrect comparisons.
+        }
+
+        for (int i = 0; i < 3; i++) { // Assuming major, minor, patch
             int serverPart = Integer.parseInt(serverParts[i]);
             int targetPart = Integer.parseInt(targetParts[i]);
 
@@ -79,7 +86,8 @@ public class Utils {
             }
         }
 
-        return false; // Server version is equal to or greater than the target version
+        // If the loop completes, versions are equal
+        return false;
     }
 
     public static String colorizeRGB(String input) {
@@ -215,7 +223,7 @@ public class Utils {
         assert skullMeta != null;
         skullMeta.setOwningPlayer(null);
 
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "Dummy");
         profile.getProperties().put("textures", new Property("textures", baseheadtexture64));
 
         try {

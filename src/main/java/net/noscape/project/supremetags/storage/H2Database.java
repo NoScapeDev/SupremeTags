@@ -15,9 +15,7 @@ public class H2Database {
     }
 
     public Connection getConnection() {
-
         Connection connection = null;
-
         try {
             Class.forName("org.h2.Driver");
             connection = DriverManager.getConnection(SupremeTags.getConnectionURL());

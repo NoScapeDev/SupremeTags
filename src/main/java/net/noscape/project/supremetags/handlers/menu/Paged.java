@@ -72,10 +72,8 @@ public abstract class Paged extends Menu {
             inventory.setItem(49, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.close-menu-material")).toUpperCase()), close));
         }
 
-        if (!(getCurrentItemsOnPage() < 36)) {
-            if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.next-item")) {
-                inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), next));
-            }
+        if (getCurrentItemsOnPage() == 36 && SupremeTags.getInstance().getConfig().getBoolean("gui.items.next-item")) {
+            inventory.setItem(50, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.back-next-material")).toUpperCase()), next));
         }
 
         if (!SupremeTags.getInstance().getConfig().getBoolean("settings.forced-tag") && SupremeTags.getInstance().getConfig().getBoolean("gui.items.reset-item")) {
