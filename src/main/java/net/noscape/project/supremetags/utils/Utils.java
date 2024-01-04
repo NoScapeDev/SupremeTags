@@ -53,7 +53,7 @@ public class Utils {
                 Matcher matcher = p3.matcher(message);
                 StringBuffer sb = new StringBuffer();
                 while (matcher.find()) {
-                    ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
+                    ChatColor hexColor = ChatColor.of(matcher.group().substring(0));
                     matcher.appendReplacement(sb, hexColor.toString());
                 }
                 matcher.appendTail(sb);
