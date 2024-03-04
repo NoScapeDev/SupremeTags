@@ -26,8 +26,7 @@ public class Utils {
     private static Pattern p3 = Pattern.compile("#([A-Fa-f0-9]){6}");
 
     public static String format(String message) {
-        // Check if the server version is less than 1.16
-        if (isVersionLessThan("1.16")) {
+        if (isVersionLess16()) {
             // Now translate normal color codes
             return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
         } else {
@@ -39,6 +38,7 @@ public class Utils {
                 }
                 return ChatColor.translateAlternateColorCodes('&', message);
             } else if (SupremeTags.getInstance().isLegacyFormat()) {
+                // Legacy format handling for Minecraft versions 1.16 and above
                 message = message.replace(">>", "").replace("<<", "");
                 Matcher matcher = p2.matcher(message);
                 StringBuffer sb = new StringBuffer();
@@ -49,6 +49,7 @@ public class Utils {
                 matcher.appendTail(sb);
                 return ChatColor.translateAlternateColorCodes('&', sb.toString());
             } else {
+                // Non-legacy format handling for Minecraft versions 1.16 and above
                 message = message.replace(">>", "").replace("<<", "");
                 Matcher matcher = p3.matcher(message);
                 StringBuffer sb = new StringBuffer();
@@ -62,31 +63,14 @@ public class Utils {
         }
     }
 
-    public static boolean isVersionLessThan(String targetVersion) {
-        String serverVersion = Bukkit.getVersion();
+    public static boolean isVersionLess16() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        int subVersion = Integer.parseInt(version.replace("v1_", "").replaceAll("_R\\d", ""));
 
-        // Extract the version parts
-        String[] serverParts = serverVersion.split(" ")[2].split("\\.");
-        String[] targetParts = targetVersion.split("\\.");
-
-        // Check if both version strings have the expected format
-        if (serverParts.length != 3 || targetParts.length != 3) {
-            // Handle invalid version format, you may throw an exception or log an error.
-            return false; // For example, return false to avoid incorrect comparisons.
+        if (subVersion == 8 || subVersion == 9 || subVersion == 10 || subVersion == 11 || subVersion == 12 || subVersion == 13 || subVersion == 14 || subVersion == 15) {
+            return true;
         }
 
-        for (int i = 0; i < 3; i++) { // Assuming major, minor, patch
-            int serverPart = Integer.parseInt(serverParts[i]);
-            int targetPart = Integer.parseInt(targetParts[i]);
-
-            if (serverPart < targetPart) {
-                return true;
-            } else if (serverPart > targetPart) {
-                return false;
-            }
-        }
-
-        // If the loop completes, versions are equal
         return false;
     }
 

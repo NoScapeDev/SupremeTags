@@ -52,7 +52,7 @@ public abstract class Paged extends Menu {
         }
 
         for (int i = 36; i <= 44; i++) {
-            inventory.setItem(i, super.GLASS);
+            inventory.setItem(i, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()), " "));
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class Paged extends Menu {
 
         if (SupremeTags.getInstance().getConfig().getBoolean("gui.items.glass-item")) {
             for (int i = 36; i <= 44; i++) {
-                inventory.setItem(i, super.GLASS);
+                inventory.setItem(i, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()), " "));
             }
         }
     }
@@ -198,9 +198,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -266,9 +263,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -331,9 +325,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -404,9 +395,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -472,9 +460,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -537,9 +522,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -603,9 +585,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -677,9 +656,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -741,9 +717,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -879,9 +852,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -937,9 +907,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -992,9 +959,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1056,9 +1020,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1114,9 +1075,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1169,9 +1127,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1225,9 +1180,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1288,9 +1240,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1343,9 +1292,6 @@ public abstract class Paged extends Menu {
 
                         tagMeta.setDisplayName(format(displayname));
                         tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                        if (!isVersionLessThan("1.16")) {
-                            tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                        }
                         tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1460,9 +1406,6 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (!isVersionLessThan("1.16")) {
-                        tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                    }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1493,9 +1436,6 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (!isVersionLessThan("1.16")) {
-                        tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                    }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -1522,9 +1462,6 @@ public abstract class Paged extends Menu {
 
                     tagMeta.setDisplayName(format(displayname));
                     tagMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    if (!isVersionLessThan("1.16")) {
-                        tagMeta.addItemFlags(ItemFlag.HIDE_DYE);
-                    }
                     tagMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     tagMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);

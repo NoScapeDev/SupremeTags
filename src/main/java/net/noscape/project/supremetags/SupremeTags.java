@@ -68,6 +68,7 @@ public final class SupremeTags extends JavaPlugin {
     private final String username = getConfig().getString("data.username");
     private final String password = getConfig().getString("data.password");
     private final String options = getConfig().getString("data.options");
+    private final boolean useSSL = getConfig().getBoolean("data.useSSL");
 
     @Override
     public void onEnable() {
@@ -83,7 +84,7 @@ public final class SupremeTags extends JavaPlugin {
         DataCache.clearCache();
 
         if (isMySQL()) {
-            mysql.disconnected();
+            mysql.disconnect();
         }
     }
 
@@ -103,7 +104,7 @@ public final class SupremeTags extends JavaPlugin {
         }
 
         if (isMySQL()) {
-            mysql = new MySQL(host, port, database, username, password, options);
+            mysql = new MySQL(host, port, database, username, password, options, useSSL);
         }
 
         tagManager = new TagManager(getConfig().getBoolean("settings.cost-system"));
@@ -139,19 +140,6 @@ public final class SupremeTags extends JavaPlugin {
         tagManager.getDataItem().clear();
 
         deleteCurrentLatestConfig();
-
-        latestConfigFile = new File(getDataFolder(), "DEFAULT-CONFIG-LATEST.yml");
-
-        if (!latestConfigFile.exists()) {
-            saveResource("DEFAULT-CONFIG-LATEST.yml", true);
-        }
-
-        latestConfigConfig = new YamlConfiguration();
-        try {
-            latestConfigConfig.load(latestConfigFile);
-        } catch (IOException | org.bukkit.configuration.InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
 
         api = new SupremeTagsAPI();
 

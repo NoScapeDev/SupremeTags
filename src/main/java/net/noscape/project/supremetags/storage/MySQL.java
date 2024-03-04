@@ -1,131 +1,125 @@
 package net.noscape.project.supremetags.storage;
 
-import net.noscape.project.supremetags.*;
-import org.bukkit.*;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
-import java.util.logging.*;
 
 public class MySQL {
 
-    private final String host;
-    private final int port;
-    private final String database;
-    private final String username;
-    private final String password;
-    private final String options;
+    protected final HikariConfig config = new HikariConfig();
+    protected final HikariDataSource ds;
 
-    public Connection connection;
-    private boolean isconnected = false;
+    private boolean isConnected = false;
 
-    public MySQL(String host, int port, String database, String username, String password, String options) {
-        this.host = host;
-        this.port = port;
-        this.database = database;
-        this.username = username;
-        this.password = password;
-        this.options = options;
+    public MySQL(String host, int port, String database, String username, String password, String options, boolean useSSL) {
+        config.setIdleTimeout(870000000);
+        config.setMaxLifetime(870000000);
+        config.setConnectionTimeout(870000000);
+        config.setMinimumIdle(20);
+        config.setRegisterMbeans(true);
+        config.setMaximumPoolSize(10);
 
-        this.connect(host, port, database, username, password, true);
+        config.setConnectionTestQuery("SELECT 1");
+        config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
+        config.addDataSourceProperty("serverName", host);
+        config.addDataSourceProperty("port", port);
+        config.addDataSourceProperty("databaseName", database);
+        config.addDataSourceProperty("user", username);
+        config.addDataSourceProperty("password", password);
+
+        config.addDataSourceProperty( "cachePrepStmts" , "true" );
+        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
+        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        config.addDataSourceProperty("useSSL", useSSL);
+        ds = new HikariDataSource(this.config);
+
+        this.connect();
     }
 
-    public void openConnection() throws SQLException {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?" + options, username, password);
-
-        }
-    }
-
-    public void connect(String host, int port, String database, String user, String pass, boolean ssl) {
-        try {
-            synchronized (this) {
-                if (connection != null && !connection.isClosed()) {
-                    Logger.getLogger("Error: connection to sql was not successful.");
-                    return;
-                }
-                Class.forName("com.mysql.jdbc.Driver");
-                this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + ssl + "&autoReconnect=true", user, pass);
-                this.isconnected = true;
-                createTable();
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage("MYSQL: Something wrong with connecting to mysql database type, check mysql data details before contacting the developer if you see this.");
-        }
-    }
-
-    public void createTable() throws SQLException {
-        String userTable = "CREATE TABLE IF NOT EXISTS `users` (Name VARCHAR(255) NOT NULL, UUID VARCHAR(255) NOT NULL, Active VARCHAR(255) NOT NULL, PRIMARY KEY (UUID))";
-
-        Statement stmt = connection.createStatement();
-        stmt.execute(userTable);
-    }
-
-    public void updateQuery(String query) {
-        Connection con = connection;
+    public void executeQuery(String query, Object... parameters) {
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
+
         try {
-            preparedStatement = con.prepareStatement(query);
+            connection = ds.getConnection();
+
+            preparedStatement = prepareStatement(query, parameters);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(null, preparedStatement);
+            closeConnections(preparedStatement, connection, null);
         }
     }
 
-    public void disconnected() {
+    public void closeConnections(PreparedStatement preparedStatement, Connection connection, ResultSet resultSet) {
         try {
-            if (isConnected()) {
-                this.connection.close();
-                this.isconnected = false;
+            if (!connection.isClosed()) {
+                if (resultSet != null)
+                    resultSet.close();
+                if (preparedStatement != null)
+                    preparedStatement.close();
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void openConnection() {
+        try {
+            this.getConnection();
+            if (this.getConnection().isClosed() || !this.getConnection().isValid(2)) {
+                this.ds.getConnection();
+                this.isConnected = true;
+                createTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("MYSQL: Something went wrong with connecting to the MySQL database. Please check your MySQL details.");
+        }
+    }
+
+    public void connect() {
+        openConnection();
+    }
+
+    public void createTable() {
+        String userTable = "CREATE TABLE IF NOT EXISTS `users` (Name VARCHAR(255) NOT NULL, UUID VARCHAR(255) NOT NULL, Active VARCHAR(255) NOT NULL, PRIMARY KEY (UUID))";
+
+        try (Statement stmt = getConnection().createStatement()) {
+            stmt.execute(userTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect() {
+        try {
+            getConnection();
+            if (isConnected) {
+                this.getConnection().close();
+                this.isConnected = false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public ResultSet executeQuery(String query) {
-        if (isConnected()) {
-            return null;
-        } else {
-            try {
-                this.connection.createStatement().executeQuery(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    private PreparedStatement prepareStatement(String query, Object... parameters) throws SQLException {
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        for (int i = 0; i < parameters.length; i++) {
+            preparedStatement.setObject(i + 1, parameters[i]);
         }
-        return null;
+        return preparedStatement;
     }
 
-    public void closeResources(ResultSet rs, PreparedStatement st) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (st != null) {
-            try {
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    @NotNull
+    public final Connection getConnection() throws SQLException {
+        return this.ds.getConnection();
     }
-
-    public boolean isConnected() {
-        return !this.isconnected;
-    }
-
-    public Connection getConnection() {
-        return this.connection;
-    }
-
 }

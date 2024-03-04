@@ -10,17 +10,26 @@ import java.util.*;
 public class MySQLUserData {
 
     public boolean exists(Player player) {
-        try {
-            PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement("SELECT * FROM `users` WHERE (UUID=?)");
-            statement.setString(1, player.getUniqueId().toString());
-            ResultSet resultSet = statement.executeQuery();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-            if (resultSet.next()) {
-                return true;
-            }
+        String query = "SELECT * FROM `users` WHERE (UUID=?)";
+
+        try {
+            connection = SupremeTags.getMysql().getConnection();
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, player.getUniqueId().toString());
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            SupremeTags.getMysql().closeConnections(preparedStatement, connection, resultSet);
         }
+
         return false;
     }
 
@@ -31,70 +40,107 @@ public class MySQLUserData {
 
         String defaultTag = SupremeTags.getInstance().getConfig().getString("settings.default-tag");
 
-        try (PreparedStatement statement = SupremeTags.getMysql().getConnection().prepareStatement(
-                "INSERT INTO users (Name, UUID, Active) VALUES (?,?,?) ON DUPLICATE KEY UPDATE UUID = ?, Active = ?")) {
-            statement.setString(1, player.getName());
-            statement.setString(2, player.getUniqueId().toString());
-            statement.setString(3, defaultTag);
-            statement.setString(4, player.getUniqueId().toString()); // Update based on the same UUID
-            statement.setString(5, defaultTag); // Update Active
-            statement.executeUpdate();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String query = "INSERT INTO users (Name, UUID, Active) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Active = ?";
+
+        try {
+            connection = SupremeTags.getMysql().getConnection();
+
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set parameters
+            preparedStatement.setString(1, player.getName());
+            preparedStatement.setString(2, player.getUniqueId().toString());
+            preparedStatement.setString(3, defaultTag);
+            preparedStatement.setString(4, player.getName());
+            preparedStatement.setString(5, defaultTag);
+
+            // Execute the update
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                // No rows were affected, handle this scenario if needed
+            }
+
+            DataCache.removeFromCache(player.getUniqueId().toString());
+            DataCache.cacheData(player.getUniqueId().toString(), defaultTag);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            SupremeTags.getMysql().closeConnections(preparedStatement, connection, null); // No ResultSet to close
         }
     }
 
     public static void setActive(OfflinePlayer player, String identifier) {
-        String sql = "INSERT INTO users (Name, UUID, Active) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Active = ?";
+        String cachedData = DataCache.getCachedData(player.getUniqueId().toString());
 
-        try (Connection connection = SupremeTags.getMysql().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        if (cachedData != null && cachedData.equalsIgnoreCase(identifier)) {
+            return;
+        }
 
-            statement.setString(1, player.getName());
-            statement.setString(2, player.getUniqueId().toString());
-            statement.setString(3, identifier);
-            statement.setString(4, player.getName());
-            statement.setString(5, identifier);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
 
-            statement.executeUpdate();
+        String query = "INSERT INTO users (Name, UUID, Active) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Name = ?, Active = ?";
 
-            // Invalidate the cache for the updated data
+        try {
+            connection = SupremeTags.getMysql().getConnection();
+
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set parameters
+            preparedStatement.setString(1, player.getName());
+            preparedStatement.setString(2, player.getUniqueId().toString());
+            preparedStatement.setString(3, identifier);
+            preparedStatement.setString(4, player.getName());
+            preparedStatement.setString(5, identifier);
+
+            // Execute the update
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                // No rows were affected, handle this scenario if needed
+            }
+
             DataCache.removeFromCache(player.getUniqueId().toString());
-
+            DataCache.cacheData(player.getUniqueId().toString(), identifier);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            SupremeTags.getMysql().closeConnections(preparedStatement, connection, null); // No ResultSet to close
         }
     }
 
     public static String getActive(UUID uuid) {
-        // Check if data is in cache
         String cachedData = DataCache.getCachedData(uuid.toString());
 
         if (cachedData != null) {
-            // Use cached data
             return cachedData;
         }
 
-        // If not in cache, fetch from the database
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         String query = "SELECT Active FROM users WHERE UUID=?";
         String value = "";
 
-        try (Connection connection = SupremeTags.getMysql().getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        try {
+            connection = SupremeTags.getMysql().getConnection();
 
-            statement.setString(1, uuid.toString());
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, uuid.toString());
+            resultSet = preparedStatement.executeQuery();
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    value = resultSet.getString("Active");
+            if (resultSet.next()) {
+                value = resultSet.getString("Active");
 
-                    // Cache the result for future use
-                    DataCache.cacheData(uuid.toString(), value);
-                }
+                DataCache.cacheData(uuid.toString(), value);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            SupremeTags.getMysql().closeConnections(preparedStatement, connection, resultSet);
         }
 
         return value;

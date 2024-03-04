@@ -17,7 +17,6 @@ public abstract class Menu implements InventoryHolder {
     protected Inventory inventory;
 
     protected MenuUtil menuUtil;
-    protected ItemStack GLASS = makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()), " ");
 
     public Menu(MenuUtil menuUtil) {
         this.menuUtil = menuUtil;
@@ -79,7 +78,7 @@ public abstract class Menu implements InventoryHolder {
     public void fillEmpty() {
         for (int i = 0; i <inventory.getSize(); i++) {
             if (inventory.getItem(i) == null) {
-                inventory.setItem(i, GLASS);
+                inventory.setItem(i, makeItem(Material.valueOf(Objects.requireNonNull(SupremeTags.getInstance().getConfig().getString("gui.layout.glass-material")).toUpperCase()), " "));
             }
         }
     }

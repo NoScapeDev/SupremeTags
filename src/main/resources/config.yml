@@ -68,6 +68,7 @@ data:
   password: 'pass'
   # leave this, if you don't know how to use options.
   options: 'useSSL=false&autoReconnect=true'
+  useSSL: false
 
 ############################################################
 # +------------------------------------------------------+ #
