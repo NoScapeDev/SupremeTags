@@ -2,6 +2,7 @@ package net.noscape.project.supremetags.storage;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import net.noscape.project.supremetags.SupremeTags;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -36,6 +37,7 @@ public class MySQL {
         ds = new HikariDataSource(this.config);
 
         this.connect();
+        this.createTable();
     }
 
     public void executeQuery(String query, Object... parameters) {
@@ -72,15 +74,14 @@ public class MySQL {
 
     public void openConnection() {
         try {
-            this.getConnection();
-            if (this.getConnection().isClosed() || !this.getConnection().isValid(2)) {
+            Connection connection = this.getConnection();
+            if (connection.isClosed() || !connection.isValid(2)) {
+                // If the connection is closed or not valid, obtain a new one
                 this.ds.getConnection();
                 this.isConnected = true;
-                createTable();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("MYSQL: Something went wrong with connecting to the MySQL database. Please check your MySQL details.");
+            SupremeTags.getInstance().getLogger().warning("MYSQL: Something went wrong with connecting to the MySQL database.\n" + e);
         }
     }
 
@@ -91,7 +92,8 @@ public class MySQL {
     public void createTable() {
         String userTable = "CREATE TABLE IF NOT EXISTS `users` (Name VARCHAR(255) NOT NULL, UUID VARCHAR(255) NOT NULL, Active VARCHAR(255) NOT NULL, PRIMARY KEY (UUID))";
 
-        try (Statement stmt = getConnection().createStatement()) {
+        try (Connection connection = getConnection();
+             Statement stmt = connection.createStatement()) {
             stmt.execute(userTable);
         } catch (SQLException e) {
             e.printStackTrace();
