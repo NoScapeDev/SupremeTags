@@ -6,7 +6,7 @@
 
     <groupId>net.noscape.project.supremetags</groupId>
     <artifactId>SupremeTags</artifactId>
-    <version>1.9.5</version>
+    <version>1.9.6</version>
     <packaging>jar</packaging>
 
     <name>SupremeTags</name>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.12.2</version>
+            <version>2.12.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

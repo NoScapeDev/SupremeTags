@@ -93,7 +93,8 @@ public final class SupremeTags extends JavaPlugin {
 
         Logger logger = Bukkit.getLogger();
 
-        this.saveDefaultConfig();
+        this.getConfig().options().copyDefaults(true);
+        this.saveConfig();
         this.callMetrics();
 
         sendConsoleLog();
@@ -212,11 +213,19 @@ public final class SupremeTags extends JavaPlugin {
 
     @Override
     public void reloadConfig() {
+        /// reloading the config.yml
         super.reloadConfig();
+
+        saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
 
         legacy_format = getConfig().getBoolean("settings.legacy-hex-format");
         cmiHex = getConfig().getBoolean("settings.cmi-color-support");
         disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
+
+        tagManager.unloadTags();
+        tagManager.loadTags();
     }
 
     public boolean isLegacyFormat() {
