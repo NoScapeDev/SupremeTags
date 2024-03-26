@@ -133,9 +133,6 @@ public final class SupremeTags extends JavaPlugin {
             logger.info(ChatColor.RED + "> PlaceholderAPI: Not Found!");
         }
 
-
-        tagManager.loadTags();
-
         categoryManager.loadCategories();
         categoryManager.loadCategoriesTags();
         tagManager.getDataItem().clear();
@@ -224,8 +221,10 @@ public final class SupremeTags extends JavaPlugin {
         cmiHex = getConfig().getBoolean("settings.cmi-color-support");
         disabledWorldsTag = getConfig().getBoolean("settings.tag-command-in-disabled-worlds");
 
-        tagManager.unloadTags();
-        tagManager.loadTags();
+        if (tagManager != null) {
+            tagManager.unloadTags();
+            tagManager.loadTags();
+        }
     }
 
     public boolean isLegacyFormat() {
